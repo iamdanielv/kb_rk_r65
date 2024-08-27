@@ -1,4 +1,5 @@
-# kb_rk_r65
+# RK ROYAL KLUDGE R65 - custom QMK firmware
+
 I bought this keyboard from amazon:
 [RK ROYAL KLUDGE R65](https://www.amazon.com/dp/B0CNP1BG1W?th=1)
 
@@ -19,6 +20,9 @@ Copy the folder structure from `rk\r65\iamdanielv` into the qmk repo `keyboard` 
 ## Thanks!
 
 Thanks to [@irfan](https://github.com/irfanjmdn/) for getting the ball rolling on getting the PCB and source code.
+
+Thanks to [sdk66](https://github.com/sdk66/) for providing a lot of samples and guidance.
+The [Tide65 code base](https://github.com/sdk66/qmk_firmware/tree/wireless/keyboards/epomaker/tide65) was very helpful in getting a lot of things figured out.
 
 ## New Keymap
 
