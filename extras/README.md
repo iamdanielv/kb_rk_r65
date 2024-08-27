@@ -19,5 +19,5 @@ You might need a JSON file to use in VIA
 
 I've included a version of [my custom firmware](rk_r65_iamdanielv_iamdanielv.bin) that works well for me. There you will also find the [original firmware](original_rk_r65_firmware.hex) in case something goes horribly wrong.
 
-- [Original](original_rk_r65_firmware)
+- [Original](original_rk_r65_firmware.hex)
 - [Custom](rk_r65_iamdanielv_iamdanielv.bin)
