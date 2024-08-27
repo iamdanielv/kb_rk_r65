@@ -54,7 +54,7 @@ For me it was: `C:\Users\<USER>\qmk_firmware\rk_r65_iamdanielv_iamdanielv.bin`
 
 I've included a version of [my custom firmware](extras/rk_r65_iamdanielv_iamdanielv.bin) that works well for me. There you will also find the [original firmware](extras/original_rk_r65_firmware.hex) in case something goes horribly wrong.
 
-- [Original](extras/original_rk_r65_firmware)
+- [Original](extras/original_rk_r65_firmware.hex)
 - [Custom](extras/rk_r65_iamdanielv_iamdanielv.bin)
 
 ## Using via
