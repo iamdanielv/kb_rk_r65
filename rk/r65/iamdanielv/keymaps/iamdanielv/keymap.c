@@ -242,10 +242,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 39; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
         }
 
         // highlight right shift as moving to ctl layer
@@ -264,10 +261,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 15; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
         }
 
         // highlight q and z as reset and clear
@@ -287,10 +281,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 9; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 0);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 0);
         }
     }
 
@@ -309,10 +300,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 16; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 0, 255);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 0, 255);
         }
     }
 
@@ -332,10 +320,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 8; i++) {
-            if(led_indexes[i] >= led_min && led_indexes[i] <= led_max)
-            {
-                RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
-            }
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
         }
     }
 
