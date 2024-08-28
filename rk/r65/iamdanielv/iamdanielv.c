@@ -1,9 +1,6 @@
-//#include "quantum.h"
-
 #include QMK_KEYBOARD_H
 
 #define LED_ENABLE_PIN A5
-
 
 void keyboard_pre_init_kb(void) {
     gpio_set_pin_output(LED_ENABLE_PIN);
@@ -23,14 +20,12 @@ void keyboard_pre_init_kb(void) {
     keyboard_pre_init_user();
 }
 
-void housekeeping_task_kb(void){
-
+void housekeeping_task_kb(void) {
     // Note: The Mac LED should be handled at the user level to provide more flexibility
     // put the code in a function with this signature
     // void housekeeping_task_user(void) { }
 
-    if(keymap_config.no_gui)
-    {
+    if (keymap_config.no_gui) {
         // we have enabled the no_gui, so turn on the Win Lock LED
         gpio_write_pin_low(LED_WIN_LOCK_PIN);
     } else {

@@ -4,20 +4,20 @@
 #include QMK_KEYBOARD_H
 
 enum layer_names {
-    _WIN_LYR,       // 0
-    _WIN_FN_LYR,    // 1
-    _MAC_LYR,       // 2
-    _MAC_FN_LYR,    // 3
-    _EXTRA_LYR,     // 4
-    _EXTRA2_LYR,    // 5
+    _WIN_LYR,    // 0
+    _WIN_FN_LYR, // 1
+    _MAC_LYR,    // 2
+    _MAC_FN_LYR, // 3
+    _EXTRA_LYR,  // 4
+    _EXTRA2_LYR, // 5
 };
 
 void housekeeping_task_user(void) {
     // Note: We can decide what to do with the MAC Led in this function
     if (IS_LAYER_ON(_MAC_LYR) || IS_LAYER_ON(_MAC_FN_LYR)) { // if either Mac or Mac FN are on
-      gpio_write_pin_low(LED_MAC_PIN); // low means turn on
+        gpio_write_pin_low(LED_MAC_PIN);  // low means turn on
     } else {
-      gpio_write_pin_high(LED_MAC_PIN); // high means turn it off
+        gpio_write_pin_high(LED_MAC_PIN); // high means turn off
     }
 }
 

@@ -4,12 +4,12 @@
 #include QMK_KEYBOARD_H
 
 enum layer_names {
-    _WIN_LYR,       // 0
-    _WIN_ALT_LYR,   // 1
-    _CTL_LYR,       // 2
-    _NUM_LYR,       // 3
-    _NAV_LYR,       // 4
-    _FN_LYR,        // 5
+    _WIN_LYR,     // 0
+    _WIN_ALT_LYR, // 1
+    _CTL_LYR,     // 2
+    _NUM_LYR,     // 3
+    _NAV_LYR,     // 4
+    _FN_LYR,      // 5
 };
 
 // ***********************
@@ -17,19 +17,19 @@ enum layer_names {
 // ***********************
 void housekeeping_task_user(void) {
     // Note: We can decide what to do with the MAC Led in this function
-    if (IS_LAYER_ON(_CTL_LYR)) { // if the Ctl layer is active
-      gpio_write_pin_low(LED_MAC_PIN); // low means turn on
+    if (IS_LAYER_ON(_CTL_LYR)) {         // if the Ctl layer is active
+        gpio_write_pin_low(LED_MAC_PIN); // low means turn on
     } else {
-      gpio_write_pin_high(LED_MAC_PIN); // high means turn off
+        gpio_write_pin_high(LED_MAC_PIN); // high means turn off
     }
 
-    if(!keymap_config.no_gui) {
+    if (!keymap_config.no_gui) {
         // we have NOT enabled the no_gui,
         // we can re-use the Win Lock LED as NumLock indicator
-        if(IS_LAYER_ON(_NUM_LYR)) { // if the Num layer is active
+        if (IS_LAYER_ON(_NUM_LYR)) { // if the Num layer is active
             // get the current LED state
             led_t led_state = host_keyboard_led_state();
-            if(led_state.num_lock) {
+            if (led_state.num_lock) {
                 // Num/Win lock should be on
                 gpio_write_pin_low(LED_WIN_LOCK_PIN);
             } else {
@@ -40,25 +40,23 @@ void housekeeping_task_user(void) {
     } // else we have enabled no_gui, skip re-using the LED
 }
 
-
 // from https://thomasbaart.nl/2018/12/13/qmk-basics-tap-dance/
 void safe_reset(tap_dance_state_t *state, void *user_data) {
-  if (state->count >= 3) {
-    // Reset the keyboard if you tap the key more than three times
-    reset_keyboard();
-    reset_tap_dance(state);
-  }
+    if (state->count >= 3) {
+        // Reset the keyboard if you tap the key more than three times
+        reset_keyboard();
+        reset_tap_dance(state);
+    }
 }
 
 void safe_clear(tap_dance_state_t *state, void *user_data) {
-  if (state->count >= 3) {
-    // clear eprom if you tap the key more than three times
-    eeconfig_init();
-    soft_reset_keyboard();
-    reset_tap_dance(state);
-  }
+    if (state->count >= 3) {
+        // clear eprom if you tap the key more than three times
+        eeconfig_init();
+        soft_reset_keyboard();
+        reset_tap_dance(state);
+    }
 }
-
 
 // ************
 // * Tap Hold *
@@ -122,12 +120,11 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 // clang-format on
 
-
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define FN_W_CAPS LT(_WIN_ALT_LYR,KC_CAPS)
-#define FN_W_RALT LT(_WIN_ALT_LYR,KC_RALT)
+#define FN_W_CAPS LT(_WIN_ALT_LYR, KC_CAPS)
+#define FN_W_RALT LT(_WIN_ALT_LYR, KC_RALT)
 
 #define MY_UNDO   C(KC_Z)
 #define MY_CUT    C(KC_X)
@@ -204,21 +201,21 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 // clang-format on
 
 // clang-format off
-/* LED Matrix
-        KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,     KC_6,     KC_7,     KC_8,      KC_9,     KC_0,       KC_MINS,  KC_EQL,   KC_BSPC,   KC_MUTE,
-        56         55         54         53         52         51        50        49        48         47        46          45        44        43
+/*  LED Matrix
+    KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_MUTE,
+    56       55       54       53       52       51       50       49       48       47       46       45       44       43
 
-        KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,     KC_Y,     KC_U,     KC_I,      KC_O,     KC_P,       KC_LBRC,  KC_RBRC,  KC_BSLS,   KC_HOME,
-        29         30         31         32         33         34        35        36        37         38        39          40        41        42         57
+    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_HOME,
+    29       30       31       32       33       34       35       36       37       38       39       40       41       42       57
 
-        CAPS,      KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
-        28         27         26         25         24         23        22        21        20         19        18          17                  16         58
+    CAPS,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP,
+    28       27       26       25       24       23       22       21       20       19       18       17                16       58
 
-        KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,   KC_DOT,   KC_SLSH,    KC_RSFT,            KC_UP,     KC_PGDN,
-        3          4          5          6          7          8         9         10        11         12        13          14                  15         59
+    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,          KC_UP,   KC_PGDN,
+    3        4        5        6        7        8        9        10       11       12       13       14                15       59
 
-        KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       KC_RALT,   FN,                   KC_LEFT,            KC_DOWN,   KCRGHT
-        2          1          0                                65                            64         63                    62                  61         60
+    KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                    KC_RALT, FN,               KC_LEFT,          KC_DOWN, KCRGHT
+    2        1        0                          65                         64       63                62                61       60
 */
 // clang-format on
 
@@ -237,7 +234,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             // 3rd row
             27, 26, 25, 24, 23, 18, 17, // = 7 keys
 
-            //4th row
+            // 4th row
             4, 5, 6, 7, 8, 11, 12 // = 7 keys
         };
 
@@ -255,9 +252,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
             // RGB buttons
             39, 40, 41, 42, // P [ } \ =  4 keys
-            18, 17, // ; ' = 2 keys
-            9, 10, 11, 12, // N M , . = 4 keys
-            62, 61, 60, 15// arrow keys = 4 keys
+            18, 17,         // ; ' = 2 keys
+            9, 10, 11, 12,  // N M , . = 4 keys
+            62, 61, 60, 15  // arrow keys = 4 keys
         };
 
         for (int i = 0; i < 15; i++) {
@@ -295,8 +292,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             // 3rd row
             27, 26, 25, 24, 23, // = 5 keys
 
-            //4th row
-            4, 5, 6, 7, 8  // = 5 keys
+            // 4th row
+            4, 5, 6, 7, 8 // = 5 keys
         };
 
         for (int i = 0; i < 16; i++) {
