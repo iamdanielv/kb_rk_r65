@@ -5,7 +5,7 @@
 
 enum layer_names {
     _WIN_LYR,       // 0
-    _WIN_ALT_LYR,    // 1
+    _WIN_ALT_LYR,   // 1
     _CTL_LYR,       // 2
     _NUM_LYR,       // 3
     _NAV_LYR,       // 4
@@ -25,7 +25,7 @@ void housekeeping_task_user(void) {
 
     if(!keymap_config.no_gui) {
         // we have NOT enabled the no_gui,
-        // we can re-use the Win Lock LED
+        // we can re-use the Win Lock LED as NumLock indicator
         if(IS_LAYER_ON(_NUM_LYR)) { // if the Num layer is active
             // get the current LED state
             led_t led_state = host_keyboard_led_state();
