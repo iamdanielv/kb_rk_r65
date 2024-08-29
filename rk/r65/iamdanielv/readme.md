@@ -1,6 +1,9 @@
 # RK839
 
-* Keyboard Maintainer: [sdk66](https://github.com/sdk66)
+* Keyboard Maintainers:
+  * Original - [sdk66](https://github.com/sdk66)
+  * This customization - [iamdanielv](https://github.com/iamdanielv)
+  * Another customization - [irfan](https://github.com/irfanjmdn/)
 * Hardware Supported: RK839
 * Hardware Availability: [rk](http://www.rkgaming.com)
 
