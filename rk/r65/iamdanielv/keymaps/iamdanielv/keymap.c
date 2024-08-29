@@ -221,6 +221,18 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
+    if (IS_LAYER_ON(_WIN_ALT_LYR) ||
+        IS_LAYER_ON(_CTL_LYR) ||
+        IS_LAYER_ON(_NUM_LYR) ||
+        IS_LAYER_ON(_NAV_LYR) ||
+        IS_LAYER_ON(_FN_LYR)) {
+        // we are in a custom layer, clear all background colors
+        // this will make our custom colors stand out more
+        for (int i = led_min; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
+        }
+    }
+
     if (IS_LAYER_ON(_WIN_ALT_LYR)) {
         const uint8_t led_indexes[39] = {
             28, // use caps as indicator
