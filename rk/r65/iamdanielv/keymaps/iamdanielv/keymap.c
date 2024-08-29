@@ -112,6 +112,14 @@ void td_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
 #define ACTION_TAP_DANCE_TAP_HOLD(on_tap, on_hold) \
     { .fn = {NULL, td_tap_hold_finished, td_tap_hold_reset}, .user_data = (void *)&((td_tap_hold_t){on_tap, on_hold, 0}), }
 
+
+// *****************************
+// * Custom processing of keys *
+// *****************************
+enum custom_keycodes {
+    KC_SWP_FN = SAFE_RANGE
+};
+
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
     [TD_RESET]  = ACTION_TAP_DANCE_FN(safe_reset),
@@ -119,6 +127,43 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_CTL_TG] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_RCTL, _CTL_LYR)
 };
 // clang-format on
+
+const uint16_t number_to_function[] PROGMEM = {
+    KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    static bool fn_mode = false;
+
+    if (keycode == KC_SWP_FN) {
+        if (record->event.pressed) {
+            fn_mode = !fn_mode;
+        }
+        return false;
+    }
+
+    if (fn_mode) {
+        if ( ( keycode >= KC_1 && keycode <= KC_0 ) || keycode == KC_MINS || keycode == KC_EQL ) {
+            uint8_t index = keycode - KC_1;
+
+            // '-' and '=' are not in numerical order aligned with the numbers
+            // they need special handling
+            if (keycode == KC_MINS) { index = 10;}
+            else if (keycode == KC_EQL) { index = 11;}
+
+            if (record->event.pressed) {
+                register_code(pgm_read_word(&number_to_function[index]));
+            } else {
+                unregister_code(pgm_read_word(&number_to_function[index]));
+            }
+            return false;
+        }
+    }
+
+    return true;
+}
+
 
 // ******************************
 // * Aliases to simplify keymap *
@@ -162,7 +207,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   TD_KB_RST, _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  RGB_M_P,    RGB_RMOD, RGB_MOD,  RGB_TOG,   _______,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  RGB_SPD,    RGB_SPI,            _______,   _______,
         _______,   TD_KB_CLR, _______,   _______,   _______,   _______,  NK_TOGG,  RGB_HUI,  RGB_VAD,   RGB_VAI,  _______,    _______,            RGB_VAI,   TG_CTL,
-        _______,   _______,   _______,                         _______,                      _______,   _______,              RGB_SPD,            RGB_VAD,   RGB_SPI
+        KC_SWP_FN, _______,   _______,                         _______,                      _______,   _______,              RGB_SPD,            RGB_VAD,   RGB_SPI
     ),
     [_NUM_LYR] = LAYOUT( // 3
         _______,   _______,   _______,   _______,   _______,   _______,  KC_NUM,   KC_P7,    KC_P8,     KC_P9,   KC_PAST,    _______,  _______,  _______,   _______,
@@ -259,17 +304,17 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
-        const uint8_t led_indexes[15] = {
+        const uint8_t led_indexes[16] = {
             59, // use PgDn as indicator
 
             // RGB buttons
             39, 40, 41, 42, // P [ } \ =  4 keys
             18, 17,         // ; ' = 2 keys
             9, 10, 11, 12,  // N M , . = 4 keys
-            62, 61, 60, 15  // arrow keys = 4 keys
+            2, 62, 61, 60, 15  // ctl and arrow keys = 5 keys
         };
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 16; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
         }
 
