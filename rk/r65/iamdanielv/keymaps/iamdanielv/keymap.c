@@ -259,7 +259,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,          KC_UP,   KC_PGDN,
     3        4        5        6        7        8        9        10       11       12       13       14                15       59
 
-    KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                    KC_RALT, FN,               KC_LEFT,          KC_DOWN, KCRGHT
+    KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                    KC_RALT, FN,               KC_LEFT,          KC_DOWN, KC_RGHT
     2        1        0                          65                         64       63                62                61       60
 */
 // clang-format on
