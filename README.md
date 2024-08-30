@@ -1,4 +1,4 @@
-# RK ROYAL KLUDGE R65 - custom QMK firmware
+# RK ROYAL KLUDGE R65 - 🚧 Custom QMK firmware
 
 I bought this keyboard from amazon:
 [RK ROYAL KLUDGE R65](https://www.amazon.com/dp/B0CNP1BG1W?th=1)
@@ -17,14 +17,22 @@ Since I don't have the original source, I decided to create a new folder called 
 
 Copy the folder structure from `rk\r65\iamdanielv` into the qmk repo `keyboard` directory.
 
-## Thanks!
+## ⚠️ Disclaimer
+> [!CAUTION]
+> This is a custom firmware that could break your keyboard. 🛑 **Use at your own risk!** 🛑
+> 
+> I have tried my best to make sure everything works, but I may miss something.
+>
+> It works for my keyboard, but there may be revisions in the future that are not compatible. Use at your own risk!
+
+## 🥳Thanks!
 
 Thanks to [@irfan](https://github.com/irfanjmdn/) for getting the ball rolling on getting the PCB and source code.
 
 Thanks to [sdk66](https://github.com/sdk66/) for providing a lot of samples and guidance.
 The [Tide65 code base](https://github.com/sdk66/qmk_firmware/tree/wireless/keyboards/epomaker/tide65) was very helpful in getting a lot of things figured out.
 
-## New Keymap
+## ⌨️ New Keymap
 
 I've updated the **default** keymap to work with the current source. It can be used as a starting point for customization.
 
@@ -38,7 +46,7 @@ I use `6 layers` for my changes, `keyboard.json` specifies that in the following
 }
 ```
 
-## Compiling
+## 🖥️ Compiling
 
 You can now use QMK builder with the following command:
 
@@ -57,7 +65,7 @@ I've included a version of [my custom firmware](extras/rk_r65_iamdanielv_iamdani
 - [Original](extras/original_rk_r65_firmware.hex)
 - [Custom](extras/rk_r65_iamdanielv_iamdanielv.bin)
 
-## Using via
+## 🌐 Using via
 
 In order to use via, you may have to upload the [json specification](extras/rk_r65_via.json), it can be found under the `extras` folder.
 
@@ -67,7 +75,7 @@ To prevent accidental KB Bootloader triggers, I have it hidden under a layer.
 - To reboot and `enter bootloader mode`: push `Fn`, then `shift`, then while holding `shift` triple tap the `q` key.
 - To `clear eeprom`: push `Fn`, then `shift`, then while holding `shift` triple tap the `z` key.
 
-## Conclusion and Next Steps
+## 🎉 Conclusion and Next Steps
 
 **That's it!** You now should be able to flash the custom firmware using qmk toolbox.
 
