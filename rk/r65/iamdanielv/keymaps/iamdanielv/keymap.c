@@ -317,7 +317,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(_WIN_ALT_LYR) ||
-        IS_LAYER_ON(_CTL_LYR) ||
+        // IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
         IS_LAYER_ON(_NUM_LYR) ||
         IS_LAYER_ON(_NAV_LYR) ||
         IS_LAYER_ON(_FN_LYR)) {
