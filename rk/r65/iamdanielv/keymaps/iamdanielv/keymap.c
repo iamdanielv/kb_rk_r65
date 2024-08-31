@@ -162,6 +162,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
+        case QK_MAGIC_TOGGLE_NKRO:
+            if (record->event.pressed) {
+                clear_keyboard(); // clear first buffer to prevent stuck keys
+                wait_ms(50);
+                keymap_config.nkro = !keymap_config.nkro;
+                wait_ms(50);
+                clear_keyboard(); // clear first buffer to prevent stuck keys
+                wait_ms(50);
+            }
+            return false;
         case RGB_TOG:
             if (record->event.pressed) {
                 rgb_matrix_toggle_noeeprom();
