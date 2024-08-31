@@ -12,6 +12,10 @@ enum layer_names {
     _FN_LYR,      // 5
 };
 
+void blink_arrows(void);
+void blink_NKRO(bool);
+void blink_numbers(bool);
+
 // ***********************
 // * Keyboard Management *
 // ***********************
@@ -139,6 +143,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode = !fn_mode;
+            blink_numbers(fn_mode);
         }
         return false;
     }
@@ -167,6 +172,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 clear_keyboard(); // clear first buffer to prevent stuck keys
                 wait_ms(50);
                 keymap_config.nkro = !keymap_config.nkro;
+                blink_NKRO(keymap_config.nkro);
                 wait_ms(50);
                 clear_keyboard(); // clear first buffer to prevent stuck keys
                 wait_ms(50);
@@ -194,21 +200,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_VAI:
             if (record->event.pressed) {
+                if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
+                    blink_arrows();
+                }
                 rgb_matrix_increase_val_noeeprom();
             }
             return false;
         case RGB_VAD:
             if (record->event.pressed) {
+                if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
+                    blink_arrows();
+                }
                 rgb_matrix_decrease_val_noeeprom();
             }
             return false;
         case RGB_SPI:
             if (record->event.pressed) {
+                if (rgb_matrix_get_speed() >= (RGB_MATRIX_SPD_STEP * 5)) {
+                    blink_arrows();
+                }
+
                 rgb_matrix_increase_speed_noeeprom();
             }
             return false;
         case RGB_SPD:
             if (record->event.pressed) {
+                if (rgb_matrix_get_speed() <= RGB_MATRIX_SPD_STEP) {
+                    blink_arrows();
+                    rgb_matrix_set_speed_noeeprom(RGB_MATRIX_SPD_STEP);
+                }
                 rgb_matrix_decrease_speed_noeeprom();
             }
             return false;
@@ -324,6 +344,115 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 */
 // clang-format on
 
+/******************
+ * RGB Indicators *
+ ******************/
+#define INDICATOR_QUEUE_MAX 20
+
+typedef struct {
+    bool active;
+    uint32_t timer;
+    uint32_t interval;
+    uint8_t timesToFlash;
+    uint8_t ledIndex;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+} hs_rgb_indicator_t;
+
+hs_rgb_indicator_t indicatorsQueue[INDICATOR_QUEUE_MAX];
+
+void indicatorsQueueAdd(uint8_t ledIndex, uint32_t interval, uint8_t timesToFlash, uint8_t r, uint8_t g, uint8_t b) {
+    for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
+        if (!indicatorsQueue[i].active) {
+            // this queue position is not active, so we can use it
+            indicatorsQueue[i].active = true;
+            indicatorsQueue[i].timer = timer_read32();
+            indicatorsQueue[i].interval = interval;
+            indicatorsQueue[i].timesToFlash = timesToFlash * 2;
+            indicatorsQueue[i].ledIndex = ledIndex;
+            indicatorsQueue[i].r = r;
+            indicatorsQueue[i].g = g;
+            indicatorsQueue[i].b = b;
+            break;
+        }
+    }
+}
+
+void processIndicatorQueue(void) {
+    for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
+        if (indicatorsQueue[i].active) {
+            // this queue position is active, process it
+            if (timer_elapsed32(indicatorsQueue[i].timer) >= indicatorsQueue[i].interval) {
+                // the timer has elapsed, perform the action
+
+                indicatorsQueue[i].timer = timer_read32(); // reset the timer to now
+
+                if (indicatorsQueue[i].timesToFlash) {
+                    indicatorsQueue[i].timesToFlash--;
+                }
+
+                if (indicatorsQueue[i].timesToFlash <= 0) {
+                    // we have flashed as many times as requested
+                    // clear this queue spot
+                    indicatorsQueue[i].active = false;
+                    indicatorsQueue[i].timer = 0x00;
+                }
+            }
+
+            if (indicatorsQueue[i].timesToFlash % 2) {
+                rgb_matrix_set_color(indicatorsQueue[i].ledIndex, indicatorsQueue[i].r, indicatorsQueue[i].g, indicatorsQueue[i].b);
+            } else {
+                rgb_matrix_set_color(indicatorsQueue[i].ledIndex, 0x00, 0x00, 0x00);
+            }
+        }
+    }
+}
+
+void blink_numbers(bool isEnabling){
+    for( int i = 55; i >= 44; i--) // 1(55) to EQL(44)
+    {
+        if(isEnabling){
+            // enabling, flash white slowly
+            indicatorsQueueAdd(i, 300, 3, RGB_WHITE);
+        } else {
+            // disabling, flash red quickly
+            indicatorsQueueAdd(i, 200, 4, RGB_RED);
+        }
+    }
+}
+
+void blink_arrows(void){
+    indicatorsQueueAdd(62, 250, 3, RGB_WHITE );  // left
+    indicatorsQueueAdd(61, 250, 3, RGB_WHITE );  // down
+    indicatorsQueueAdd(15, 250, 3, RGB_WHITE );  // up
+    indicatorsQueueAdd(60, 250, 3, RGB_WHITE );  // right
+}
+
+void blink_NKRO(bool isEnabling){
+    if(isEnabling){
+        indicatorsQueueAdd(9, 250, 3, RGB_BLUE );   // N
+        indicatorsQueueAdd(8, 250, 3, RGB_BLUE );  // B
+        indicatorsQueueAdd(22, 250, 3, RGB_BLUE );  // H
+        indicatorsQueueAdd(21, 250, 3, RGB_BLUE );  // J
+        indicatorsQueueAdd(10, 250, 3, RGB_BLUE );  // M
+        indicatorsQueueAdd(7, 300, 4, RGB_PURPLE );  // V
+        indicatorsQueueAdd(23, 300, 4, RGB_PURPLE );   // G
+        indicatorsQueueAdd(35, 300, 4, RGB_PURPLE );  // Y
+        indicatorsQueueAdd(36, 300, 4, RGB_PURPLE );  // U
+        indicatorsQueueAdd(37, 300, 4, RGB_PURPLE );  // I
+        indicatorsQueueAdd(20, 300, 4, RGB_PURPLE );  // K
+        indicatorsQueueAdd(11, 300, 4, RGB_PURPLE );  // ,
+    }
+    else {
+        indicatorsQueueAdd(9, 200, 4, RGB_AZURE );   // N
+        indicatorsQueueAdd(8, 200, 4, RGB_BLUE );  // B
+        indicatorsQueueAdd(22, 200, 4, RGB_BLUE );  // H
+        indicatorsQueueAdd(21, 200, 4, RGB_BLUE );  // J
+        indicatorsQueueAdd(10, 200, 4, RGB_BLUE );  // M
+    }
+}
+
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(_WIN_ALT_LYR) ||
@@ -375,12 +504,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 16; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 255);
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0x00, 0x80, 0x80);
         }
 
         // highlight q and z as reset and clear
-        RGB_MATRIX_INDICATOR_SET_COLOR(30, 0, 255, 255);
-        RGB_MATRIX_INDICATOR_SET_COLOR(4, 0, 255, 255);
+        RGB_MATRIX_INDICATOR_SET_COLOR(30, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(27, 0xFF, 0x00, 0x00); // turn on A LED below the key too
+        RGB_MATRIX_INDICATOR_SET_COLOR(4, 0x7A, 0x00, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(0, 0x7A, 0x00, 0xFF); // turn on LALT LED below the key too
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
@@ -437,6 +568,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
         }
     }
+
+    processIndicatorQueue();
 
     return true;
 }
