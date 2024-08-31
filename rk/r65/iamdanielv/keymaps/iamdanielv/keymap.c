@@ -161,6 +161,56 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     }
 
+    switch (keycode) {
+        case RGB_TOG:
+            if (record->event.pressed) {
+                rgb_matrix_toggle_noeeprom();
+            }
+            return false;
+        case RGB_MOD:
+            if (record->event.pressed) {
+                rgb_matrix_step_noeeprom();
+            }
+            return false;
+        case RGB_RMOD:
+            if (record->event.pressed) {
+                rgb_matrix_step_reverse_noeeprom();
+            }
+            return false;
+        case RGB_M_P:
+            if (record->event.pressed) {
+                rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+            }
+            return false;
+        case RGB_VAI:
+            if (record->event.pressed) {
+                rgb_matrix_increase_val_noeeprom();
+            }
+            return false;
+        case RGB_VAD:
+            if (record->event.pressed) {
+                rgb_matrix_decrease_val_noeeprom();
+            }
+            return false;
+        case RGB_SPI:
+            if (record->event.pressed) {
+                rgb_matrix_increase_speed_noeeprom();
+            }
+            return false;
+        case RGB_SPD:
+            if (record->event.pressed) {
+                rgb_matrix_decrease_speed_noeeprom();
+            }
+            return false;
+        case RGB_HUI:
+            if (record->event.pressed) {
+                rgb_matrix_increase_hue_noeeprom();
+            }
+            return false;
+        default:
+            return true;
+    }
+
     return true;
 }
 
