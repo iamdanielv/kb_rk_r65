@@ -20,6 +20,20 @@ void keyboard_pre_init_kb(void) {
     keyboard_pre_init_user();
 }
 
+void suspend_power_down_kb(void) {
+    // turn off our RGB LEDs
+    gpio_write_pin_low(LED_ENABLE_PIN);
+
+    suspend_power_down_user();
+}
+
+void suspend_wakeup_init_kb(void) {
+    // turn on our RGB LEDs
+    gpio_write_pin_high(LED_ENABLE_PIN);
+
+    suspend_wakeup_init_user();
+}
+
 void housekeeping_task_kb(void) {
     // Note: The Mac LED should be handled at the user level to provide more flexibility
     // put the code in a function with this signature
