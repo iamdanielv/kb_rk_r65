@@ -496,25 +496,32 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
-        const uint8_t led_indexes[16] = {
+        const uint8_t led_indexes[4] = {
             59, // use PgDn as indicator
 
             // RGB buttons
-            39, 40, 41, 42, // P [ } \ =  4 keys
-            18, 17,         // ; ' = 2 keys
-            9, 10, 11, 12,  // N M , . = 4 keys
-            2, 62, 61, 60, 15  // ctl and arrow keys = 5 keys
+            39,        // P for persistent color
+            // 40, 41, 42, // [ } \ = 3 keys
+            // 18, 17,     // ; ' = 2 keys
+            9,         // N for NKRO
+            // 10, 11, 12, // M , . = 4 keys
+            2 // ctl for Fn toggle
+            // 62, 61, 60, 15  // arrow keys = 4 keys
         };
-
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 4; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0x00, 0x80, 0x80);
         }
 
-        // highlight q and z as reset and clear
+        // light up the M key in white
+        RGB_MATRIX_INDICATOR_SET_COLOR(10, 0x80, 0x80, 0x80);
+
+        // highlight Q as reset
         RGB_MATRIX_INDICATOR_SET_COLOR(30, 0xFF, 0x00, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(27, 0xFF, 0x00, 0x00); // turn on A LED below the key too
+        // RGB_MATRIX_INDICATOR_SET_COLOR(27, 0xFF, 0x00, 0x00); // turn on A LED below the key too
+
+        // highlight Z as clear
         RGB_MATRIX_INDICATOR_SET_COLOR(4, 0x7A, 0x00, 0xFF);
-        RGB_MATRIX_INDICATOR_SET_COLOR(0, 0x7A, 0x00, 0xFF); // turn on LALT LED below the key too
+        // RGB_MATRIX_INDICATOR_SET_COLOR(0, 0x7A, 0x00, 0xFF); // turn on LALT LED below the key too
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
