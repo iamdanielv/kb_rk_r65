@@ -19,7 +19,9 @@ Copy the folder structure from `rk\r65\iamdanielv` into the qmk repo `keyboard` 
 
 ## ⚠️ Disclaimer
 > [!CAUTION]
-> This is a custom firmware that could break your keyboard. 🛑 **Use at your own risk!** 🛑
+> This is a custom firmware that could break your keyboard.
+>
+> 🛑 **Use at your own risk!** 🛑
 > 
 > I have tried my best to make sure everything works, but I may miss something.
 >
