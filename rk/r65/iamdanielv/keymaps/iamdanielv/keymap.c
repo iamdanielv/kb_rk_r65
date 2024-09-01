@@ -363,50 +363,50 @@ typedef struct {
     uint8_t b;
 } indicator_t;
 
-indicator_t indicatorQueue[INDICATOR_QUEUE_MAX];
+indicator_t indicator_queue[INDICATOR_QUEUE_MAX];
 
-void indicatorEnqueue(uint8_t ledIndex, uint32_t interval, uint8_t timesToFlash, uint8_t r, uint8_t g, uint8_t b) {
+void indicator_enqueue(uint8_t ledIndex, uint32_t interval, uint8_t timesToFlash, uint8_t r, uint8_t g, uint8_t b) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
-        if (!indicatorQueue[i].active) {
+        if (!indicator_queue[i].active) {
             // this queue position is not active, so we can use it
-            indicatorQueue[i].active = true;
-            indicatorQueue[i].timer = timer_read32();
-            indicatorQueue[i].interval = interval;
-            indicatorQueue[i].timesToFlash = timesToFlash * 2;
-            indicatorQueue[i].ledIndex = ledIndex;
-            indicatorQueue[i].r = r;
-            indicatorQueue[i].g = g;
-            indicatorQueue[i].b = b;
+            indicator_queue[i].active = true;
+            indicator_queue[i].timer = timer_read32();
+            indicator_queue[i].interval = interval;
+            indicator_queue[i].timesToFlash = timesToFlash * 2;
+            indicator_queue[i].ledIndex = ledIndex;
+            indicator_queue[i].r = r;
+            indicator_queue[i].g = g;
+            indicator_queue[i].b = b;
             break;
         }
     }
 }
 
-void processIndicatorQueue(void) {
+void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
-        if (indicatorQueue[i].active) {
+        if (indicator_queue[i].active) {
             // this queue position is active, process it
-            if (timer_elapsed32(indicatorQueue[i].timer) >= indicatorQueue[i].interval) {
+            if (timer_elapsed32(indicator_queue[i].timer) >= indicator_queue[i].interval) {
                 // the timer has elapsed, perform the action
 
-                indicatorQueue[i].timer = timer_read32(); // reset the timer to now
+                indicator_queue[i].timer = timer_read32(); // reset the timer to now
 
-                if (indicatorQueue[i].timesToFlash) {
-                    indicatorQueue[i].timesToFlash--;
+                if (indicator_queue[i].timesToFlash) {
+                    indicator_queue[i].timesToFlash--;
                 }
 
-                if (indicatorQueue[i].timesToFlash <= 0) {
+                if (indicator_queue[i].timesToFlash <= 0) {
                     // we have flashed as many times as requested
                     // clear this queue spot
-                    indicatorQueue[i].active = false;
-                    indicatorQueue[i].timer = 0x00;
+                    indicator_queue[i].active = false;
+                    indicator_queue[i].timer = 0x00;
                 }
             }
 
-            if (indicatorQueue[i].timesToFlash % 2) {
-                rgb_matrix_set_color(indicatorQueue[i].ledIndex, indicatorQueue[i].r, indicatorQueue[i].g, indicatorQueue[i].b);
+            if (indicator_queue[i].timesToFlash % 2) {
+                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].ledIndex, indicator_queue[i].r, indicator_queue[i].g, indicator_queue[i].b);
             } else {
-                rgb_matrix_set_color(indicatorQueue[i].ledIndex, 0x00, 0x00, 0x00);
+                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].ledIndex, 0x00, 0x00, 0x00);
             }
         }
     }
@@ -417,42 +417,42 @@ void blink_numbers(bool isEnabling){
     {
         if(isEnabling){
             // enabling, flash white slowly
-            indicatorEnqueue(i, 300, 3, RGB_WHITE);
+            indicator_enqueue(i, 300, 3, RGB_WHITE);
         } else {
             // disabling, flash red quickly
-            indicatorEnqueue(i, 200, 4, RGB_RED);
+            indicator_enqueue(i, 200, 4, RGB_RED);
         }
     }
 }
 
 void blink_arrows(void){
-    indicatorEnqueue(62, 250, 3, RGB_WHITE );  // left
-    indicatorEnqueue(61, 250, 3, RGB_WHITE );  // down
-    indicatorEnqueue(15, 250, 3, RGB_WHITE );  // up
-    indicatorEnqueue(60, 250, 3, RGB_WHITE );  // right
+    indicator_enqueue(62, 250, 3, RGB_WHITE );  // left
+    indicator_enqueue(61, 250, 3, RGB_WHITE );  // down
+    indicator_enqueue(15, 250, 3, RGB_WHITE );  // up
+    indicator_enqueue(60, 250, 3, RGB_WHITE );  // right
 }
 
 void blink_NKRO(bool isEnabling){
     if(isEnabling){
-        indicatorEnqueue(9, 250, 3, RGB_BLUE );   // N
-        indicatorEnqueue(8, 250, 3, RGB_BLUE );  // B
-        indicatorEnqueue(22, 250, 3, RGB_BLUE );  // H
-        indicatorEnqueue(21, 250, 3, RGB_BLUE );  // J
-        indicatorEnqueue(10, 250, 3, RGB_BLUE );  // M
-        indicatorEnqueue(7, 300, 4, RGB_PURPLE );  // V
-        indicatorEnqueue(23, 300, 4, RGB_PURPLE );   // G
-        indicatorEnqueue(35, 300, 4, RGB_PURPLE );  // Y
-        indicatorEnqueue(36, 300, 4, RGB_PURPLE );  // U
-        indicatorEnqueue(37, 300, 4, RGB_PURPLE );  // I
-        indicatorEnqueue(20, 300, 4, RGB_PURPLE );  // K
-        indicatorEnqueue(11, 300, 4, RGB_PURPLE );  // ,
+        indicator_enqueue(9, 250, 3, RGB_BLUE );   // N
+        indicator_enqueue(8, 250, 3, RGB_BLUE );  // B
+        indicator_enqueue(22, 250, 3, RGB_BLUE );  // H
+        indicator_enqueue(21, 250, 3, RGB_BLUE );  // J
+        indicator_enqueue(10, 250, 3, RGB_BLUE );  // M
+        indicator_enqueue(7, 300, 4, RGB_PURPLE );  // V
+        indicator_enqueue(23, 300, 4, RGB_PURPLE );   // G
+        indicator_enqueue(35, 300, 4, RGB_PURPLE );  // Y
+        indicator_enqueue(36, 300, 4, RGB_PURPLE );  // U
+        indicator_enqueue(37, 300, 4, RGB_PURPLE );  // I
+        indicator_enqueue(20, 300, 4, RGB_PURPLE );  // K
+        indicator_enqueue(11, 300, 4, RGB_PURPLE );  // ,
     }
     else {
-        indicatorEnqueue(9, 200, 4, RGB_AZURE );   // N
-        indicatorEnqueue(8, 200, 4, RGB_BLUE );  // B
-        indicatorEnqueue(22, 200, 4, RGB_BLUE );  // H
-        indicatorEnqueue(21, 200, 4, RGB_BLUE );  // J
-        indicatorEnqueue(10, 200, 4, RGB_BLUE );  // M
+        indicator_enqueue(9, 200, 4, RGB_AZURE );   // N
+        indicator_enqueue(8, 200, 4, RGB_BLUE );  // B
+        indicator_enqueue(22, 200, 4, RGB_BLUE );  // H
+        indicator_enqueue(21, 200, 4, RGB_BLUE );  // J
+        indicator_enqueue(10, 200, 4, RGB_BLUE );  // M
     }
 }
 
