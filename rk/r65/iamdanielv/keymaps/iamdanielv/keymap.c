@@ -339,7 +339,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     LSFT Z    X    C    V    B    N    M    ,    .    /    RSFT      UP   PGDN
     3    4    5    6    7    8    9    10   11   12   13   14        15   59
 
-    LCTL LG   LAL            " "            RALT LFT       LEFT      DOWN RGHT
+    LCTL LG   LALT           " "            RALT LFT       LEFT      DOWN RGHT
     2    1    0              65             64   63        62        61   60
 */
 // clang-format on
@@ -358,22 +358,22 @@ typedef struct {
     uint8_t r;
     uint8_t g;
     uint8_t b;
-} hs_rgb_indicator_t;
+} indicator_t;
 
-hs_rgb_indicator_t indicatorsQueue[INDICATOR_QUEUE_MAX];
+indicator_t indicatorQueue[INDICATOR_QUEUE_MAX];
 
-void indicatorsQueueAdd(uint8_t ledIndex, uint32_t interval, uint8_t timesToFlash, uint8_t r, uint8_t g, uint8_t b) {
+void indicatorEnqueue(uint8_t ledIndex, uint32_t interval, uint8_t timesToFlash, uint8_t r, uint8_t g, uint8_t b) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
-        if (!indicatorsQueue[i].active) {
+        if (!indicatorQueue[i].active) {
             // this queue position is not active, so we can use it
-            indicatorsQueue[i].active = true;
-            indicatorsQueue[i].timer = timer_read32();
-            indicatorsQueue[i].interval = interval;
-            indicatorsQueue[i].timesToFlash = timesToFlash * 2;
-            indicatorsQueue[i].ledIndex = ledIndex;
-            indicatorsQueue[i].r = r;
-            indicatorsQueue[i].g = g;
-            indicatorsQueue[i].b = b;
+            indicatorQueue[i].active = true;
+            indicatorQueue[i].timer = timer_read32();
+            indicatorQueue[i].interval = interval;
+            indicatorQueue[i].timesToFlash = timesToFlash * 2;
+            indicatorQueue[i].ledIndex = ledIndex;
+            indicatorQueue[i].r = r;
+            indicatorQueue[i].g = g;
+            indicatorQueue[i].b = b;
             break;
         }
     }
@@ -381,29 +381,29 @@ void indicatorsQueueAdd(uint8_t ledIndex, uint32_t interval, uint8_t timesToFlas
 
 void processIndicatorQueue(void) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
-        if (indicatorsQueue[i].active) {
+        if (indicatorQueue[i].active) {
             // this queue position is active, process it
-            if (timer_elapsed32(indicatorsQueue[i].timer) >= indicatorsQueue[i].interval) {
+            if (timer_elapsed32(indicatorQueue[i].timer) >= indicatorQueue[i].interval) {
                 // the timer has elapsed, perform the action
 
-                indicatorsQueue[i].timer = timer_read32(); // reset the timer to now
+                indicatorQueue[i].timer = timer_read32(); // reset the timer to now
 
-                if (indicatorsQueue[i].timesToFlash) {
-                    indicatorsQueue[i].timesToFlash--;
+                if (indicatorQueue[i].timesToFlash) {
+                    indicatorQueue[i].timesToFlash--;
                 }
 
-                if (indicatorsQueue[i].timesToFlash <= 0) {
+                if (indicatorQueue[i].timesToFlash <= 0) {
                     // we have flashed as many times as requested
                     // clear this queue spot
-                    indicatorsQueue[i].active = false;
-                    indicatorsQueue[i].timer = 0x00;
+                    indicatorQueue[i].active = false;
+                    indicatorQueue[i].timer = 0x00;
                 }
             }
 
-            if (indicatorsQueue[i].timesToFlash % 2) {
-                rgb_matrix_set_color(indicatorsQueue[i].ledIndex, indicatorsQueue[i].r, indicatorsQueue[i].g, indicatorsQueue[i].b);
+            if (indicatorQueue[i].timesToFlash % 2) {
+                rgb_matrix_set_color(indicatorQueue[i].ledIndex, indicatorQueue[i].r, indicatorQueue[i].g, indicatorQueue[i].b);
             } else {
-                rgb_matrix_set_color(indicatorsQueue[i].ledIndex, 0x00, 0x00, 0x00);
+                rgb_matrix_set_color(indicatorQueue[i].ledIndex, 0x00, 0x00, 0x00);
             }
         }
     }
@@ -414,42 +414,42 @@ void blink_numbers(bool isEnabling){
     {
         if(isEnabling){
             // enabling, flash white slowly
-            indicatorsQueueAdd(i, 300, 3, RGB_WHITE);
+            indicatorEnqueue(i, 300, 3, RGB_WHITE);
         } else {
             // disabling, flash red quickly
-            indicatorsQueueAdd(i, 200, 4, RGB_RED);
+            indicatorEnqueue(i, 200, 4, RGB_RED);
         }
     }
 }
 
 void blink_arrows(void){
-    indicatorsQueueAdd(62, 250, 3, RGB_WHITE );  // left
-    indicatorsQueueAdd(61, 250, 3, RGB_WHITE );  // down
-    indicatorsQueueAdd(15, 250, 3, RGB_WHITE );  // up
-    indicatorsQueueAdd(60, 250, 3, RGB_WHITE );  // right
+    indicatorEnqueue(62, 250, 3, RGB_WHITE );  // left
+    indicatorEnqueue(61, 250, 3, RGB_WHITE );  // down
+    indicatorEnqueue(15, 250, 3, RGB_WHITE );  // up
+    indicatorEnqueue(60, 250, 3, RGB_WHITE );  // right
 }
 
 void blink_NKRO(bool isEnabling){
     if(isEnabling){
-        indicatorsQueueAdd(9, 250, 3, RGB_BLUE );   // N
-        indicatorsQueueAdd(8, 250, 3, RGB_BLUE );  // B
-        indicatorsQueueAdd(22, 250, 3, RGB_BLUE );  // H
-        indicatorsQueueAdd(21, 250, 3, RGB_BLUE );  // J
-        indicatorsQueueAdd(10, 250, 3, RGB_BLUE );  // M
-        indicatorsQueueAdd(7, 300, 4, RGB_PURPLE );  // V
-        indicatorsQueueAdd(23, 300, 4, RGB_PURPLE );   // G
-        indicatorsQueueAdd(35, 300, 4, RGB_PURPLE );  // Y
-        indicatorsQueueAdd(36, 300, 4, RGB_PURPLE );  // U
-        indicatorsQueueAdd(37, 300, 4, RGB_PURPLE );  // I
-        indicatorsQueueAdd(20, 300, 4, RGB_PURPLE );  // K
-        indicatorsQueueAdd(11, 300, 4, RGB_PURPLE );  // ,
+        indicatorEnqueue(9, 250, 3, RGB_BLUE );   // N
+        indicatorEnqueue(8, 250, 3, RGB_BLUE );  // B
+        indicatorEnqueue(22, 250, 3, RGB_BLUE );  // H
+        indicatorEnqueue(21, 250, 3, RGB_BLUE );  // J
+        indicatorEnqueue(10, 250, 3, RGB_BLUE );  // M
+        indicatorEnqueue(7, 300, 4, RGB_PURPLE );  // V
+        indicatorEnqueue(23, 300, 4, RGB_PURPLE );   // G
+        indicatorEnqueue(35, 300, 4, RGB_PURPLE );  // Y
+        indicatorEnqueue(36, 300, 4, RGB_PURPLE );  // U
+        indicatorEnqueue(37, 300, 4, RGB_PURPLE );  // I
+        indicatorEnqueue(20, 300, 4, RGB_PURPLE );  // K
+        indicatorEnqueue(11, 300, 4, RGB_PURPLE );  // ,
     }
     else {
-        indicatorsQueueAdd(9, 200, 4, RGB_AZURE );   // N
-        indicatorsQueueAdd(8, 200, 4, RGB_BLUE );  // B
-        indicatorsQueueAdd(22, 200, 4, RGB_BLUE );  // H
-        indicatorsQueueAdd(21, 200, 4, RGB_BLUE );  // J
-        indicatorsQueueAdd(10, 200, 4, RGB_BLUE );  // M
+        indicatorEnqueue(9, 200, 4, RGB_AZURE );   // N
+        indicatorEnqueue(8, 200, 4, RGB_BLUE );  // B
+        indicatorEnqueue(22, 200, 4, RGB_BLUE );  // H
+        indicatorEnqueue(21, 200, 4, RGB_BLUE );  // J
+        indicatorEnqueue(10, 200, 4, RGB_BLUE );  // M
     }
 }
 
