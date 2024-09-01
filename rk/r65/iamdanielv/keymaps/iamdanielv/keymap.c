@@ -62,15 +62,17 @@ void safe_clear(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-// ************
-// * Tap Hold *
-// ************
-enum tap_hold_keys {
+// *************
+// * Tap Dance *
+// *************
+enum tap_dance_keys {
     TD_RESET, // require 3 taps to reset board
     TD_CLEAR, // require 3 taps to clear eeprom
     TD_CTL_TG // require double tap to enable ctl layer
 };
 
+//#define TAP_HOLD_ENABLE
+#ifdef TAP_HOLD_ENABLE
 typedef struct {
     uint16_t on_tap;  // key to send on tap
     uint16_t on_hold; // key to send on hold
@@ -116,6 +118,7 @@ void td_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
 #define ACTION_TAP_DANCE_TAP_HOLD(on_tap, on_hold) \
     { .fn = {NULL, td_tap_hold_finished, td_tap_hold_reset}, .user_data = (void *)&((td_tap_hold_t){on_tap, on_hold, 0}), }
 
+#endif
 
 // *****************************
 // * Custom processing of keys *
