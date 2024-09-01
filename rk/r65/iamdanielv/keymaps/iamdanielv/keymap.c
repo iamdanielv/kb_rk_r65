@@ -471,23 +471,23 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_WIN_ALT_LYR)) {
-        const uint8_t led_indexes[39] = {
+        const uint8_t led_indexes[16] = {
             28, // use caps as indicator
             64, // use right alt as indicator
 
-            56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, // the whole first row is used for Fn keys = 14 keys
+            56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43 // the whole first row is used for Fn keys = 14 keys
 
             // 2nd row
-            29, 30, 31, 32, 33, 34, 39, 40, 41, // = 9 keys
+            // 29, 30, 31, 32, 33, 34, 39, 40, 41, // = 9 keys
 
             // 3rd row
-            27, 26, 25, 24, 23, 18, 17, // = 7 keys
+            // 27, 26, 25, 24, 23, 18, 17, // = 7 keys
 
             // 4th row
-            4, 5, 6, 7, 8, 11, 12 // = 7 keys
+            // 4, 5, 6, 7, 8, 11, 12 // = 7 keys
         };
 
-        for (int i = 0; i < 39; i++) {
+        for (int i = 0; i < 16; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
         }
 
