@@ -327,20 +327,20 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 
 // clang-format off
 /*  LED Matrix
-    KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_MUTE,
-    56       55       54       53       52       51       50       49       48       47       46       45       44       43
+    ESC  1    2    3    4    5    6    7    8    9    0    -    =    BSPC MUTE
+    56   55   54   53   52   51   50   49   48   47   46   45   44   43
 
-    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_HOME,
-    29       30       31       32       33       34       35       36       37       38       39       40       41       42       57
+    TAB  Q    W    E    R    T    Y    U    I    O    P    [    ]    BSLS HOME
+    29   30   31   32   33   34   35   36   37   38   39   40   41   42   57
 
-    CAPS,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP,
-    28       27       26       25       24       23       22       21       20       19       18       17                16       58
+    CAPS A    S    D    F    G    H    J    K    L    ;    '         ENT  PGUP
+    28   27   26   25   24   23   22   21   20   19   18   17        16   58
 
-    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,          KC_UP,   KC_PGDN,
-    3        4        5        6        7        8        9        10       11       12       13       14                15       59
+    LSFT Z    X    C    V    B    N    M    ,    .    /    RSFT      UP   PGDN
+    3    4    5    6    7    8    9    10   11   12   13   14        15   59
 
-    KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                    KC_RALT, FN,               KC_LEFT,          KC_DOWN, KC_RGHT
-    2        1        0                          65                         64       63                62                61       60
+    LCTL LG   LAL            " "            RALT LFT       LEFT      DOWN RGHT
+    2    1    0              65             64   63        62        61   60
 */
 // clang-format on
 
