@@ -444,25 +444,25 @@ void blink_arrows(void){
 
 void blink_NKRO(bool isEnabling){
     if(isEnabling){
-        indicator_enqueue(9, 200, 3, RGB_BLUE );    // N
-        indicator_enqueue(8, 200, 3, RGB_BLUE );    // B
-        indicator_enqueue(22, 200, 3, RGB_BLUE );   // H
-        indicator_enqueue(21, 200, 3, RGB_BLUE );   // J
-        indicator_enqueue(10, 200, 3, RGB_BLUE );   // M
-        indicator_enqueue(7, 250, 4, RGB_PURPLE );  // V
-        indicator_enqueue(23, 250, 4, RGB_PURPLE ); // G
-        indicator_enqueue(35, 250, 4, RGB_PURPLE ); // Y
-        indicator_enqueue(36, 250, 4, RGB_PURPLE ); // U
-        indicator_enqueue(37, 250, 4, RGB_PURPLE ); // I
-        indicator_enqueue(20, 250, 4, RGB_PURPLE ); // K
-        indicator_enqueue(11, 250, 4, RGB_PURPLE ); // ,
+        const uint8_t led_indexes[12] = {
+            7, 8, 9, 10, 11, // V B N M ,
+            20, 21, 22, 23, // K J H G
+            35, 36, 37 // Y U I
+        };
+
+        for (int i = 0; i < 12; i++) {
+            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE );
+        }
     }
     else {
-        indicator_enqueue(9, 200, 4, RGB_AZURE );  // N
-        indicator_enqueue(8, 200, 4, RGB_BLUE );   // B
-        indicator_enqueue(22, 200, 4, RGB_BLUE );  // H
-        indicator_enqueue(21, 200, 4, RGB_BLUE );  // J
-        indicator_enqueue(10, 200, 4, RGB_BLUE );  // M
+        const uint8_t led_indexes[4] = {
+            8, 10, // B M
+            21, 22  // H J
+        };
+
+        for (int i = 0; i < 4; i++) {
+            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED );
+        }
     }
 }
 
