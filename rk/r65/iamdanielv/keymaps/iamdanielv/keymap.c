@@ -434,22 +434,22 @@ void blink_arrows(void){
 
 void blink_NKRO(bool isEnabling){
     if(isEnabling){
-        indicator_enqueue(9, 250, 3, RGB_BLUE );   // N
-        indicator_enqueue(8, 250, 3, RGB_BLUE );  // B
-        indicator_enqueue(22, 250, 3, RGB_BLUE );  // H
-        indicator_enqueue(21, 250, 3, RGB_BLUE );  // J
-        indicator_enqueue(10, 250, 3, RGB_BLUE );  // M
-        indicator_enqueue(7, 300, 4, RGB_PURPLE );  // V
-        indicator_enqueue(23, 300, 4, RGB_PURPLE );   // G
-        indicator_enqueue(35, 300, 4, RGB_PURPLE );  // Y
-        indicator_enqueue(36, 300, 4, RGB_PURPLE );  // U
-        indicator_enqueue(37, 300, 4, RGB_PURPLE );  // I
-        indicator_enqueue(20, 300, 4, RGB_PURPLE );  // K
-        indicator_enqueue(11, 300, 4, RGB_PURPLE );  // ,
+        indicator_enqueue(9, 200, 3, RGB_BLUE );    // N
+        indicator_enqueue(8, 200, 3, RGB_BLUE );    // B
+        indicator_enqueue(22, 200, 3, RGB_BLUE );   // H
+        indicator_enqueue(21, 200, 3, RGB_BLUE );   // J
+        indicator_enqueue(10, 200, 3, RGB_BLUE );   // M
+        indicator_enqueue(7, 250, 4, RGB_PURPLE );  // V
+        indicator_enqueue(23, 250, 4, RGB_PURPLE ); // G
+        indicator_enqueue(35, 250, 4, RGB_PURPLE ); // Y
+        indicator_enqueue(36, 250, 4, RGB_PURPLE ); // U
+        indicator_enqueue(37, 250, 4, RGB_PURPLE ); // I
+        indicator_enqueue(20, 250, 4, RGB_PURPLE ); // K
+        indicator_enqueue(11, 250, 4, RGB_PURPLE ); // ,
     }
     else {
-        indicator_enqueue(9, 200, 4, RGB_AZURE );   // N
-        indicator_enqueue(8, 200, 4, RGB_BLUE );  // B
+        indicator_enqueue(9, 200, 4, RGB_AZURE );  // N
+        indicator_enqueue(8, 200, 4, RGB_BLUE );   // B
         indicator_enqueue(22, 200, 4, RGB_BLUE );  // H
         indicator_enqueue(21, 200, 4, RGB_BLUE );  // J
         indicator_enqueue(10, 200, 4, RGB_BLUE );  // M
