@@ -342,7 +342,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     LSFT Z    X    C    V    B    N    M    ,    .    /    RSFT      UP   PGDN
     3    4    5    6    7    8    9    10   11   12   13   14        15   59
 
-    LCTL LG   LALT           " "            RALT LFT       LEFT      DOWN RGHT
+    LCTL LG   LALT           SPC            RALT Fn       LEFT      DOWN RGHT
     2    1    0              65             64   63        62        61   60
 */
 // clang-format on
