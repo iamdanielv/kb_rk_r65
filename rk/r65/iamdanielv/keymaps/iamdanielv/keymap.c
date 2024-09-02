@@ -251,8 +251,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define FN_W_CAPS LT(_WIN_ALT_LYR, KC_CAPS)
-#define FN_W_RALT LT(_WIN_ALT_LYR, KC_RALT)
+#define W_ALT_CAPS LT(_WIN_ALT_LYR, KC_CAPS)
+#define FN_RALT LT(_FN_LYR, KC_RALT)
 
 #define MY_UNDO   C(KC_Z)
 #define MY_CUT    C(KC_X)
@@ -263,7 +263,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #define TG_NUM    TG(_NUM_LYR)
 #define TG_CTL    TG(_CTL_LYR)
 #define MO_CTL    MO(_CTL_LYR)
-#define MO_FN     MO(_FN_LYR)
+#define MO_FN     MO(_WIN_ALT_LYR)
 #define TD_TG_CTL TD(TD_CTL_TG)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
@@ -274,9 +274,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_WIN_LYR] = LAYOUT( // 0
         KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,     KC_6,     KC_7,     KC_8,      KC_9,     KC_0,       KC_MINS,  KC_EQL,   KC_BSPC,   KC_MUTE,
         KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,     KC_Y,     KC_U,     KC_I,      KC_O,     KC_P,       KC_LBRC,  KC_RBRC,  KC_BSLS,   KC_HOME,
-        FN_W_CAPS, KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
+        W_ALT_CAPS,KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
         KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,   KC_DOT,   KC_SLSH,    KC_RSFT,            KC_UP,     KC_PGDN,
-        KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       FN_W_RALT, MO_FN,                KC_LEFT,            KC_DOWN,   KC_RGHT
+        KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       FN_RALT,   MO_FN,                KC_LEFT,            KC_DOWN,   KC_RGHT
     ),
     [_WIN_ALT_LYR] = LAYOUT( // 1
         KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,     KC_F11,   KC_F12,   KC_DEL,    _______,
@@ -518,18 +518,27 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (IS_LAYER_ON(_CTL_LYR)) {
         const uint8_t led_indexes[4] = {
             59, // use PgDn as indicator
-
-            // RGB buttons
-            39,        // P for persistent color
-            // 40, 41, 42, // [ } \ = 3 keys
-            // 18, 17,     // ; ' = 2 keys
-            9,         // N for NKRO
-            // 10, 11, 12, // M , . = 4 keys
-            2 // ctl for Fn toggle
-            // 62, 61, 60, 15  // arrow keys = 4 keys
+            39, // P for persistent color
+            9,  // N for NKRO
+            2   // lctl for Fn toggle
         };
         for (int i = 0; i < 4; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0x00, 0x80, 0x80);
+        }
+
+        const uint8_t led_off_indexes[15] = {
+            // turn off some of the LEDS to make it easier to see our indicators
+            // A, Home, PgUp
+            27, 57, 58,
+            // Arrow keys
+            60, 61, 62, 15,
+             // TAB, CAPS, LSFT, LG
+            29, 28, 3, 1,
+            // LALT, SPC, RALT, Fn
+            0, 65, 64, 63
+        };
+        for (int i = 0; i < 15; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
         }
 
         // light up the M key in white
@@ -537,11 +546,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // highlight Q as reset
         RGB_MATRIX_INDICATOR_SET_COLOR(30, 0xFF, 0x00, 0x00);
-        // RGB_MATRIX_INDICATOR_SET_COLOR(27, 0xFF, 0x00, 0x00); // turn on A LED below the key too
 
         // highlight Z as clear
         RGB_MATRIX_INDICATOR_SET_COLOR(4, 0x7A, 0x00, 0xFF);
-        // RGB_MATRIX_INDICATOR_SET_COLOR(0, 0x7A, 0x00, 0xFF); // turn on LALT LED below the key too
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
@@ -589,12 +596,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(14, 0, 255, 255);
 
         // highlight the aux buttons on right of keyboard
-        const uint8_t led_indexes[8] = {
-            63, //highlight the fn button
-            49, 48, 47, 46, 45, 44, 43 // used for media keys = 7 keys
+        const uint8_t led_indexes[7] = {
+            64, //highlight the RALT button
+            49, 48, 47, 46, 45, 44 // used for media keys = 6 keys
         };
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 7; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
         }
     }
