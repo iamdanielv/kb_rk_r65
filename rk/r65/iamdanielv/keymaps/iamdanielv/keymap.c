@@ -354,10 +354,10 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 
 typedef struct {
     bool active;
-    uint32_t timer;
+    uint8_t led_index;
+    uint32_t last_update;
     uint32_t interval;
-    uint8_t timesToFlash;
-    uint8_t ledIndex;
+    uint8_t times_to_flash;
     uint8_t r;
     uint8_t g;
     uint8_t b;
@@ -365,15 +365,15 @@ typedef struct {
 
 indicator_t indicator_queue[INDICATOR_QUEUE_MAX];
 
-void indicator_enqueue(uint8_t ledIndex, uint32_t interval, uint8_t timesToFlash, uint8_t r, uint8_t g, uint8_t b) {
+void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_flash, uint8_t r, uint8_t g, uint8_t b) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
         if (!indicator_queue[i].active) {
             // this queue position is not active, so we can use it
             indicator_queue[i].active = true;
-            indicator_queue[i].timer = timer_read32();
+            indicator_queue[i].led_index = led_index;
+            indicator_queue[i].last_update = timer_read32();
             indicator_queue[i].interval = interval;
-            indicator_queue[i].timesToFlash = timesToFlash * 2;
-            indicator_queue[i].ledIndex = ledIndex;
+            indicator_queue[i].times_to_flash = times_to_flash * 2;
             indicator_queue[i].r = r;
             indicator_queue[i].g = g;
             indicator_queue[i].b = b;
@@ -386,20 +386,20 @@ void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
         if (indicator_queue[i].active) {
             // this queue position is active, process it
-            if (timer_elapsed32(indicator_queue[i].timer) >= indicator_queue[i].interval) {
+            if (timer_elapsed32(indicator_queue[i].last_update) >= indicator_queue[i].interval) {
                 // the timer has elapsed, perform the action
 
-                indicator_queue[i].timer = timer_read32(); // reset the timer to now
+                indicator_queue[i].last_update = timer_read32(); // reset the timer to now
 
-                if (indicator_queue[i].timesToFlash) {
-                    indicator_queue[i].timesToFlash--;
+                if (indicator_queue[i].times_to_flash) {
+                    indicator_queue[i].times_to_flash--;
                 }
 
-                if (indicator_queue[i].timesToFlash <= 0) {
+                if (indicator_queue[i].times_to_flash <= 0) {
                     // we have flashed as many times as requested
                     // clear this queue spot
                     indicator_queue[i].active = false;
-                    indicator_queue[i].timer = 0x00;
+                    indicator_queue[i].last_update = 0x00;
                 }
             }
 
