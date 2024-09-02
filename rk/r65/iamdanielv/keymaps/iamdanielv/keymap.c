@@ -426,10 +426,10 @@ void blink_numbers(bool isEnabling){
 }
 
 void blink_arrows(void){
-    indicator_enqueue(62, 250, 3, RGB_WHITE );  // left
-    indicator_enqueue(61, 250, 3, RGB_WHITE );  // down
-    indicator_enqueue(15, 250, 3, RGB_WHITE );  // up
-    indicator_enqueue(60, 250, 3, RGB_WHITE );  // right
+    indicator_enqueue(62, 200, 3, RGB_WHITE );  // left
+    indicator_enqueue(61, 200, 3, RGB_WHITE );  // down
+    indicator_enqueue(15, 200, 3, RGB_WHITE );  // up
+    indicator_enqueue(60, 200, 3, RGB_WHITE );  // right
 }
 
 void blink_NKRO(bool isEnabling){
