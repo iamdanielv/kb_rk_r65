@@ -416,11 +416,11 @@ void blink_numbers(bool isEnabling){
     for( int i = 55; i >= 44; i--) // 1(55) to EQL(44)
     {
         if(isEnabling){
-            // enabling, flash white slowly
-            indicator_enqueue(i, 300, 3, RGB_WHITE);
+            // enabling, flash white
+            indicator_enqueue(i, 200, 3, RGB_WHITE);
         } else {
-            // disabling, flash red quickly
-            indicator_enqueue(i, 200, 4, RGB_RED);
+            // disabling, flash red
+            indicator_enqueue(i, 150, 4, RGB_RED);
         }
     }
 }
