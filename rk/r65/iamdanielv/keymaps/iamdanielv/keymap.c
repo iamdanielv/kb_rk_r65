@@ -219,7 +219,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_SPI:
             if (record->event.pressed) {
-                if (rgb_matrix_get_speed() >= (RGB_MATRIX_SPD_STEP * 5)) {
+                if ( rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
+                    // this update would put us at max
                     blink_arrows();
                 }
 
