@@ -403,10 +403,19 @@ void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
                 }
             }
 
-            if (indicator_queue[i].timesToFlash % 2) {
-                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].ledIndex, indicator_queue[i].r, indicator_queue[i].g, indicator_queue[i].b);
+            if (indicator_queue[i].times_to_flash % 2) {
+                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].led_index, indicator_queue[i].r, indicator_queue[i].g, indicator_queue[i].b);
             } else {
-                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].ledIndex, 0x00, 0x00, 0x00);
+                uint8_t r = 0xFF - indicator_queue[i].r;
+                uint8_t g = 0xFF - indicator_queue[i].g;
+                uint8_t b = 0xFF - indicator_queue[i].b;
+                // scale the alternate flash color to be not as bright
+                if( r > 0x80) { r = r - 0x80;}
+                if( g > 0x80) { g = g - 0x80;}
+                if( b > 0x80) { b = b - 0x80;}
+                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].led_index, r,g,b);
+
+                //RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].led_index, 0xFF - indicator_queue[i].r, 0xFF - indicator_queue[i].g , 0xFF - indicator_queue[i].b);
             }
         }
     }
