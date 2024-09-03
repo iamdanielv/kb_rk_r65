@@ -557,7 +557,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // highlight Q as reset
         RGB_MATRIX_INDICATOR_SET_COLOR(30, 0xFF, 0x00, 0x00);
 
-        // highlight Z as clear
+        // highlight Z as clear eeprom
         RGB_MATRIX_INDICATOR_SET_COLOR(4, 0x7A, 0x00, 0xFF);
     }
 
