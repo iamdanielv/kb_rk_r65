@@ -5,7 +5,7 @@
 
 enum layer_names {
     _WIN_LYR,     // 0
-    _WIN_ALT_LYR, // 1
+    _WIN_FN_LYR, // 1
     _CTL_LYR,     // 2
     _NUM_LYR,     // 3
     _NAV_LYR,     // 4
@@ -252,7 +252,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define W_ALT_CAPS LT(_WIN_ALT_LYR, KC_CAPS)
+#define W_ALT_CAPS LT(_WIN_FN_LYR, KC_CAPS)
 #define FN_RALT LT(_FN_LYR, KC_RALT)
 
 #define MY_UNDO   C(KC_Z)
@@ -264,7 +264,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #define TG_NUM    TG(_NUM_LYR)
 #define TG_CTL    TG(_CTL_LYR)
 #define MO_CTL    MO(_CTL_LYR)
-#define MO_FN     MO(_WIN_ALT_LYR)
+#define MO_FN     MO(_WIN_FN_LYR)
 #define TD_TG_CTL TD(TD_CTL_TG)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
@@ -279,7 +279,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,   KC_DOT,   KC_SLSH,    KC_RSFT,            KC_UP,     KC_PGDN,
         KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       FN_RALT,   MO_FN,                KC_LEFT,            KC_DOWN,   KC_RGHT
     ),
-    [_WIN_ALT_LYR] = LAYOUT( // 1
+    [_WIN_FN_LYR] = LAYOUT( // 1
         KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,     KC_F11,   KC_F12,   KC_DEL,    _______,
         KC_GRV,    KC_HOME,   KC_UP,     KC_END,    C(KC_R),   KC_PGUP,  _______,  _______,  _______,   _______,  KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
         _______,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  C(KC_F),   KC_PGDN,  _______,  _______,  _______,   _______,  KC_HOME,    KC_END,             _______,   KC_SCRL,
@@ -320,7 +320,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef ENCODER_MAP_ENABLE
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [_WIN_LYR]      = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [_WIN_ALT_LYR]  = {ENCODER_CCW_CW(_______, _______)},
+    [_WIN_FN_LYR]  = {ENCODER_CCW_CW(_______, _______)},
     [_CTL_LYR]      = {ENCODER_CCW_CW(_______, _______)},
     [_NUM_LYR]      = {ENCODER_CCW_CW(_______, _______)},
     [_NAV_LYR]      = {ENCODER_CCW_CW(_______, _______)},
@@ -489,7 +489,7 @@ void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
-    if (IS_LAYER_ON(_WIN_ALT_LYR) ||
+    if (IS_LAYER_ON(_WIN_FN_LYR) ||
         // IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
         IS_LAYER_ON(_NUM_LYR) ||
         IS_LAYER_ON(_NAV_LYR) ||
@@ -505,7 +505,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         highlight_fn_keys(led_min, led_max);
     }
 
-    if (IS_LAYER_ON(_WIN_ALT_LYR)) {
+    if (IS_LAYER_ON(_WIN_FN_LYR)) {
         if(!fn_mode){
             // we are not in fn_mode, but this layer also uses fn keys
             highlight_fn_keys(led_min, led_max);
