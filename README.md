@@ -71,11 +71,21 @@ I've included a version of [my custom firmware](extras/rk_r65_iamdanielv_iamdani
 
 In order to use via, you may have to upload the [json specification](extras/rk_r65_via.json), it can be found under the `extras` folder.
 
-## Bootloader
+## 🥾 Bootloader and Clearing eeprom
 
 To prevent accidental KB Bootloader triggers, I have it hidden under a layer.
-- To reboot and `enter bootloader mode`: push `Fn`, then `shift`, then while holding `shift` triple tap the `q` key.
-- To `clear eeprom`: push `Fn`, then `shift`, then while holding `shift` triple tap the `z` key.
+
+- To reboot and `enter bootloader mode`:
+  - hold `Fn`, then hold `shift`, then triple tap the `q` key
+  - OR hold `RAlt`, then hold `shift`, then triple tap the `q` key
+  - OR hold `CAPS Lock`, then hold `shift`, then triple tap the `q` key
+  - OR hold `Ralt`, then double tap `PgDn`, then triple tap the `q` key
+- To `clear eeprom`:
+  - hold `Fn`, then hold `shift`, then triple tap the `z` key
+  - OR hold `RAlt`, then hold `shift`, then triple tap the `z` key
+  - OR hold `CAPS Lock`, then hold `shift`, then triple tap the `z` key
+  - OR hold `Ralt`, then double tap `PgDn`, then triple tap the `q` key
+
 
 ## 🎉 Conclusion and Next Steps
 
