@@ -86,6 +86,40 @@ To prevent accidental KB Bootloader triggers, I have it hidden under a layer.
   - OR hold `CAPS Lock`, then hold `shift`, then triple tap the `z` key
   - OR hold `Ralt`, then double tap `PgDn`, then triple tap the `q` key
 
+## ⭐ Features
+
+I use a `control layer` to modify the keyboard settings.
+
+To enable the control layer
+- Momentary - will be deactivated as soon as you release `shift`:
+    - hold `Fn`, then hold `shift`
+    - OR hold `RAlt`, then hold `shift`
+    - OR hold `CAPS Lock`, then hold `shift`
+- Toggle:
+    - hold `Ralt`, then double tap `PgDn`
+
+While on the Control Layer, you have the following available:
+
+- `Q` - triple tap to `enter bootloader mode`
+- `Z` - triple tap to `clear eeprom`
+
+- `LCTL` - Swap Number row for Fn Keys (1 is F1 ... + is F12)
+- `N` - Toggle NKRO
+- `M` - Change Background Color HUE
+- `,` - RGB_VAD
+- `.` - RGB_VAI
+- `;` - RGB_SPD
+- `'` - RGB_SPI
+- `P` - RGB Matrix solid color
+- `[` - RGB_RMOD
+- `]` - RGB_RMD
+- `\` - RGB_TOG -- this will turn off RGB Matrix
+
+- ⬅️ - RGB_SPD
+- ➡️ - RGB_SPI
+- ⬆️ - RGB_VAI
+- ⬇️ - RGB_VAD
+
 
 ## 🎉 Conclusion and Next Steps
 
