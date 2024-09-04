@@ -183,7 +183,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_TOG:
             if (record->event.pressed) {
-                rgb_matrix_toggle_noeeprom();
+                switch (rgb_matrix_get_flags()) {
+                    case LED_FLAG_ALL: {
+                        rgb_matrix_set_flags_noeeprom(LED_FLAG_INDICATOR);
+                        //rgb_matrix_set_color_all(0, 0, 0);
+                    } break;
+                    default: {
+                        HSV current_hsv = rgb_matrix_get_hsv();
+                        RGB rgb = hsv_to_rgb(current_hsv);
+                        rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
+                        rgb_matrix_set_flags_noeeprom(LED_FLAG_ALL);
+                    } break;
+                }
             }
             return false;
         case RGB_MOD:
@@ -488,6 +499,17 @@ void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+
+    uint8_t current_layer = get_highest_layer(layer_state);
+    if(current_layer == _WIN_LYR)
+    {
+        if (rgb_matrix_get_flags() == LED_FLAG_INDICATOR) {
+            for (int i = led_min; i < led_max; i++) {
+                rgb_matrix_set_color(i, 0, 0, 0);
+            }
+            //rgb_matrix_set_color_all(0, 0, 0);
+        }
+    }
 
     if (IS_LAYER_ON(_WIN_FN_LYR) ||
         // IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
