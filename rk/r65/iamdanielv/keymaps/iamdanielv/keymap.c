@@ -3,6 +3,8 @@
 
 #include QMK_KEYBOARD_H
 
+#include "features/indicator_queue.h"
+
 enum layer_names {
     _WIN_LYR,     // 0
     _WIN_FN_LYR, // 1
@@ -362,77 +364,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 /******************
  * RGB Indicators *
  ******************/
-#define INDICATOR_QUEUE_MAX 20
-
-typedef struct {
-    bool active;
-    uint8_t led_index;
-    uint32_t last_update;
-    uint32_t interval;
-    uint8_t times_to_flash;
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-} indicator_t;
-
-indicator_t indicator_queue[INDICATOR_QUEUE_MAX];
-
-void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_flash, uint8_t r, uint8_t g, uint8_t b) {
-    for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
-        if (!indicator_queue[i].active) {
-            // this queue position is not active, so we can use it
-            indicator_queue[i].active = true;
-            indicator_queue[i].led_index = led_index;
-            indicator_queue[i].last_update = timer_read32();
-            indicator_queue[i].interval = interval;
-            indicator_queue[i].times_to_flash = times_to_flash * 2;
-            indicator_queue[i].r = r;
-            indicator_queue[i].g = g;
-            indicator_queue[i].b = b;
-            break;
-        }
-    }
-}
-
-void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
-    for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
-        if (indicator_queue[i].active) {
-            // this queue position is active, process it
-            if (timer_elapsed32(indicator_queue[i].last_update) >= indicator_queue[i].interval) {
-                // the timer has elapsed, perform the action
-
-                indicator_queue[i].last_update = timer_read32(); // reset the timer to now
-
-                if (indicator_queue[i].times_to_flash) {
-                    indicator_queue[i].times_to_flash--;
-                }
-
-                if (indicator_queue[i].times_to_flash <= 0) {
-                    // we have flashed as many times as requested
-                    // clear this queue spot
-                    indicator_queue[i].active = false;
-                    indicator_queue[i].last_update = 0x00;
-                }
-            }
-
-            if (indicator_queue[i].times_to_flash % 2) {
-                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].led_index, indicator_queue[i].r, indicator_queue[i].g, indicator_queue[i].b);
-            } else {
-                uint8_t r = 0xFF - indicator_queue[i].r;
-                uint8_t g = 0xFF - indicator_queue[i].g;
-                uint8_t b = 0xFF - indicator_queue[i].b;
-                // scale the alternate flash color to be not as bright
-                if( r > 0x80) { r = r - 0x80;}
-                if( g > 0x80) { g = g - 0x80;}
-                if( b > 0x80) { b = b - 0x80;}
-                RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].led_index, r,g,b);
-
-                //RGB_MATRIX_INDICATOR_SET_COLOR(indicator_queue[i].led_index, 0xFF - indicator_queue[i].r, 0xFF - indicator_queue[i].g , 0xFF - indicator_queue[i].b);
-            }
-        }
-    }
-}
-
 void blink_numbers(bool isEnabling){
     for( int i = 55; i >= 44; i--) // 1(55) to EQL(44)
     {
@@ -484,17 +415,10 @@ void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
     // maximize brightness
     current_hsv.v = 255;
 
-    // convert to RGB and scale downward
-    RGB rgb = hsv_to_rgb(current_hsv);
-    uint8_t new_r = 0xFF - rgb.r;
-    uint8_t new_g = 0xFF - rgb.g;
-    uint8_t new_b = 0xFF - rgb.b;
-    // scale the alternate color to be not as bright
-    if( new_r > 0x80) { new_r = new_r - 0x80;}
-    if( new_g > 0x80) { new_g = new_g - 0x80;}
-    if( new_b > 0x80) { new_b = new_b - 0x80;}
+    rgb_led_t rgb = hsv_to_rgb(current_hsv);
+    rgb_led_t new_rgb = get_complementary_color(rgb, true);
     for( int i = 55; i >= 44; i--){ // 55 - 44 are the number keys and - =
-        RGB_MATRIX_INDICATOR_SET_COLOR(i, new_r, new_g, new_b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(i, new_rgb.r, new_rgb.g, new_rgb.b);
     }
 }
 
