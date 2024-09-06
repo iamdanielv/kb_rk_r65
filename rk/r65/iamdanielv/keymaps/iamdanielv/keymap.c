@@ -195,22 +195,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
             }
             return false;
-        case RGB_VAI:
-            if (record->event.pressed) {
-                if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
-                    blink_arrows();
-                }
-                rgb_matrix_increase_val_noeeprom();
-            }
-            return false;
-        case RGB_VAD:
-            if (record->event.pressed) {
-                if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
-                    blink_arrows();
-                }
-                rgb_matrix_decrease_val_noeeprom();
-            }
-            return false;
         case RGB_SPI:
             if (record->event.pressed) {
                 if ( rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
@@ -232,7 +216,60 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_HUI:
             if (record->event.pressed) {
+                if ( rgb_matrix_get_hue() >= (255 - RGB_MATRIX_HUE_STEP)) {
+                    // this update would put us at max
+                    // indicator_enqueue(37, 200, 2, RGB_WHITE ); // I - HUD
+                    indicator_enqueue(38, 100, 4, RGB_RED ); // O - HUI
+                }
                 rgb_matrix_increase_hue_noeeprom();
+            }
+            return false;
+        case RGB_HUD:
+            if (record->event.pressed) {
+                if ( rgb_matrix_get_hue() <= RGB_MATRIX_HUE_STEP ) {
+                    // this update would put us at min
+                    indicator_enqueue(37, 100, 4, RGB_RED ); // I - HUD
+                    // indicator_enqueue(38, 200, 2, RGB_WHITE ); // O - HUI
+                }
+                rgb_matrix_decrease_hue_noeeprom();
+            }
+            return false;
+        case RGB_SAI:
+            if (record->event.pressed) {
+                if ( rgb_matrix_get_sat() >= (255 - RGB_MATRIX_SAT_STEP)) {
+                    // this update would put us at max
+                    // indicator_enqueue(20, 200, 2, RGB_WHITE ); // K - SAD
+                    indicator_enqueue(19, 100, 4, RGB_RED ); // L - SAI
+                }
+                rgb_matrix_increase_sat_noeeprom();
+            }
+            return false;
+        case RGB_SAD:
+            if (record->event.pressed) {
+                if ( rgb_matrix_get_sat() <= RGB_MATRIX_SAT_STEP ) {
+                    // this update would put us at min
+                    indicator_enqueue(20, 100, 4, RGB_RED ); // K - SAD
+                    // indicator_enqueue(19, 200, 2, RGB_WHITE ); // L - SAI
+                }
+                rgb_matrix_decrease_sat_noeeprom();
+            }
+            return false;
+        case RGB_VAI:
+            if (record->event.pressed) {
+                if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
+                    indicator_enqueue(12, 100, 4, RGB_RED ); // . - VAI
+                    blink_arrows();
+                }
+                rgb_matrix_increase_val_noeeprom();
+            }
+            return false;
+        case RGB_VAD:
+            if (record->event.pressed) {
+                if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
+                    indicator_enqueue(11, 100, 4, RGB_RED ); // , - VAD
+                    blink_arrows();
+                }
+                rgb_matrix_decrease_val_noeeprom();
             }
             return false;
         default:
@@ -282,9 +319,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_CTL_LYR] = LAYOUT( // 2
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   TD_KB_RST, _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  RGB_M_P,    RGB_RMOD, RGB_MOD,  RGB_TOG,   _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  RGB_SPD,    RGB_SPI,            _______,   _______,
-        _______,   TD_KB_CLR, _______,   _______,   _______,   _______,  NK_TOGG,  RGB_HUI,  RGB_VAD,   RGB_VAI,  _______,    _______,            RGB_VAI,   TG_CTL,
+        _______,   TD_KB_RST, _______,   _______,   _______,   _______,  _______,  _______,  RGB_HUD,   RGB_HUI,  RGB_M_P,    RGB_RMOD, RGB_MOD,  RGB_TOG,   _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  RGB_SAD,   RGB_SAI,  RGB_SPD,    RGB_SPI,            _______,   _______,
+        _______,   TD_KB_CLR, _______,   _______,   _______,   _______,  NK_TOGG,  _______,  RGB_VAD,   RGB_VAI,  _______,    _______,            RGB_VAI,   TG_CTL,
         KC_SWP_FN, _______,   _______,                         _______,                      _______,   _______,              RGB_SPD,            RGB_VAD,   RGB_SPI
     ),
     [_NUM_LYR] = LAYOUT( // 3
@@ -477,9 +514,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         for (int i = 0; i < 15; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
         }
-
-        // light up the M key in white
-        RGB_MATRIX_INDICATOR_SET_COLOR(10, 0x80, 0x80, 0x80);
 
         // highlight Q as reset
         RGB_MATRIX_INDICATOR_SET_COLOR(30, 0xFF, 0x00, 0x00);
