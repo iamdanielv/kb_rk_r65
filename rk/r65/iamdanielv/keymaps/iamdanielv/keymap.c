@@ -146,6 +146,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
             blink_numbers(fn_mode_enabled);
+            indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
+            indicator_enqueue(0, 200, 3, RGB_BLACK );   // blink left alt
+            indicator_enqueue(64, 200, 3, RGB_BLACK );  // blink right alt
         }
         return false;
     }
