@@ -235,8 +235,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if ( rgb_matrix_get_hue() >= (255 - RGB_MATRIX_HUE_STEP)) {
                     // this update would put us at max
-                    // indicator_enqueue(37, 200, 2, RGB_WHITE ); // I - HUD
-                    indicator_enqueue(38, 100, 4, RGB_RED ); // O - HUI
+                    indicator_enqueue(38, 200, 4, INDICATOR_RGB_DARK_RED ); // O - HUI
+                    indicator_enqueue(37, 200, 2, RGB_BLACK );              // I - HUD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE );              // blink space too
                 }
                 rgb_matrix_increase_hue_noeeprom();
             }
@@ -245,8 +246,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if ( rgb_matrix_get_hue() <= RGB_MATRIX_HUE_STEP ) {
                     // this update would put us at min
-                    indicator_enqueue(37, 100, 4, RGB_RED ); // I - HUD
-                    // indicator_enqueue(38, 200, 2, RGB_WHITE ); // O - HUI
+                    indicator_enqueue(38, 200, 2, RGB_BLACK );              // O - HUI
+                    indicator_enqueue(37, 200, 4, INDICATOR_RGB_DARK_RED ); // I - HUD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE );              // blink space too
                 }
                 rgb_matrix_decrease_hue_noeeprom();
             }
