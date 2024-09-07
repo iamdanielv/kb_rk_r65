@@ -257,8 +257,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if ( rgb_matrix_get_sat() >= (255 - RGB_MATRIX_SAT_STEP)) {
                     // this update would put us at max
-                    // indicator_enqueue(20, 200, 2, RGB_WHITE ); // K - SAD
-                    indicator_enqueue(19, 100, 4, RGB_RED ); // L - SAI
+                    indicator_enqueue(19, 200, 4, INDICATOR_RGB_DARK_RED ); // L - SAI
+                    indicator_enqueue(20, 200, 2, RGB_BLACK ); // K - SAD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
                 }
                 rgb_matrix_increase_sat_noeeprom();
             }
@@ -267,8 +268,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if ( rgb_matrix_get_sat() <= RGB_MATRIX_SAT_STEP ) {
                     // this update would put us at min
-                    indicator_enqueue(20, 100, 4, RGB_RED ); // K - SAD
-                    // indicator_enqueue(19, 200, 2, RGB_WHITE ); // L - SAI
+                    indicator_enqueue(19, 200, 2, RGB_BLACK );              // L - SAI
+                    indicator_enqueue(20, 200, 4, INDICATOR_RGB_DARK_RED ); // K - SAD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE );              // blink space too
                 }
                 rgb_matrix_decrease_sat_noeeprom();
             }
