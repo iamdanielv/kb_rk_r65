@@ -8,7 +8,7 @@
 
 enum layer_names {
     _WIN_LYR,     // 0
-    _WIN_FN_LYR, // 1
+    _WIN_FN_LYR,  // 1
     _CTL_LYR,     // 2
     _NUM_LYR,     // 3
     _NAV_LYR,     // 4
