@@ -1,15 +1,5 @@
 #include "indicator_queue.h"
 
-// this is similar to RGB_MATRIX_INDICATOR_SET_COLOR
-// but takes in a rgb_led_t instead
-#define INDICATOR_Q_MATRIX_SET_COLOR_LED(i, rgb)       \
-   if (i >= led_min && i < led_max) {               \
-       rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);\
-   }
-
-#define INDICATOR_Q_GET_RGB_LED(indicator) \
-   (rgb_led_t) { .r = indicator.r, .g = indicator.g, .b = indicator.b }
-
 rgb_led_t get_complementary_color(rgb_led_t rgb_led, bool darken) {
     uint8_t new_r = 0xFF - rgb_led.r;
     uint8_t new_g = 0xFF - rgb_led.g;
@@ -63,12 +53,12 @@ void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
                 }
             }
 
-            rgb_led_t this_rgb_led =  INDICATOR_Q_GET_RGB_LED(indicator_queue[i]);
             if (indicator_queue[i].times_to_flash % 2) {
-                INDICATOR_Q_MATRIX_SET_COLOR_LED(indicator_queue[i].led_index, this_rgb_led);
+                INDICATOR_Q_MATRIX_SET_COLOR(indicator_queue[i]);
             } else {
-                rgb_led_t alt = get_complementary_color(this_rgb_led, true);
-                INDICATOR_Q_MATRIX_SET_COLOR_LED(indicator_queue[i].led_index, alt);
+                rgb_led_t this_rgb_led =  INDICATOR_Q_GET_RGB_LED(indicator_queue[i]);
+                rgb_led_t alt = get_complementary_color(this_rgb_led, false);
+                INDICATOR_Q_MATRIX_SET_COLOR_CUSTOM(indicator_queue[i], alt.r, alt.g, alt.b);
             }
         }
     }
