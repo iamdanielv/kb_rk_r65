@@ -1,6 +1,6 @@
 #pragma once
 
-#include "quantum.h"
+#include QMK_KEYBOARD_H
 
 extern bool fn_mode_enabled;
 
