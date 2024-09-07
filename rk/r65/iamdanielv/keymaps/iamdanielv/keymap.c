@@ -18,6 +18,7 @@ enum layer_names {
 void blink_arrows(void);
 void blink_NKRO(bool);
 void blink_numbers(bool);
+void highlight_fn_keys(uint8_t led_min, uint8_t led_max);
 
 // ***********************
 // * Keyboard Management *
@@ -258,8 +259,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if ( rgb_matrix_get_sat() >= (255 - RGB_MATRIX_SAT_STEP)) {
                     // this update would put us at max
                     indicator_enqueue(19, 200, 4, INDICATOR_RGB_DARK_RED ); // L - SAI
-                    indicator_enqueue(20, 200, 2, RGB_BLACK ); // K - SAD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
+                    indicator_enqueue(20, 200, 2, RGB_BLACK );              // K - SAD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE );              // blink space too
                 }
                 rgb_matrix_increase_sat_noeeprom();
             }
