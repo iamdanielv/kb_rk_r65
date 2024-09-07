@@ -202,6 +202,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_M_P:
             if (record->event.pressed) {
                 rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+                indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
+                indicator_enqueue(0, 200, 3, RGB_WHITE );   // blink left alt
+                indicator_enqueue(64, 200, 3, RGB_WHITE );  // blink right alt
             }
             return false;
         case RGB_SPI:
