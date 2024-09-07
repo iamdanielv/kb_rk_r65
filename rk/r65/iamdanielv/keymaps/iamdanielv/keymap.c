@@ -278,7 +278,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_VAI:
             if (record->event.pressed) {
                 if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
-                    indicator_enqueue(12, 100, 4, RGB_RED ); // . - VAI
+                    indicator_enqueue(12, 200, 4, RGB_RED );    // . - VAI
+                    indicator_enqueue(11, 200, 2, RGB_BLACK );  // , - VAD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
                     blink_arrows();
                 }
                 rgb_matrix_increase_val_noeeprom();
@@ -287,7 +289,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_VAD:
             if (record->event.pressed) {
                 if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
-                    indicator_enqueue(11, 100, 4, RGB_RED ); // , - VAD
+                    indicator_enqueue(12, 200, 2, RGB_BLACK );  // . - VAI
+                    indicator_enqueue(11, 200, 4, RGB_RED );    // , - VAD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
                     blink_arrows();
                 }
                 rgb_matrix_decrease_val_noeeprom();
