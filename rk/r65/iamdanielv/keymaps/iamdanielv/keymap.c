@@ -212,8 +212,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if ( rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
                     // this update would put us at max
                     blink_arrows();
+                    indicator_enqueue(17, 200, 4, RGB_RED );    // ' - SPI
+                    indicator_enqueue(18, 200, 2, RGB_BLACK );  // ; - SPD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
                 }
-
                 rgb_matrix_increase_speed_noeeprom();
             }
             return false;
@@ -221,6 +223,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (rgb_matrix_get_speed() <= RGB_MATRIX_SPD_STEP) {
                     blink_arrows();
+                    indicator_enqueue(17, 200, 2, RGB_BLACK ); // ' - SPI
+                    indicator_enqueue(18, 200, 4, RGB_RED );   // ; - SPD
+                    indicator_enqueue(65, 200, 3, RGB_WHITE ); // blink space too
                     rgb_matrix_set_speed_noeeprom(RGB_MATRIX_SPD_STEP);
                 }
                 rgb_matrix_decrease_speed_noeeprom();
