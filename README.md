@@ -76,14 +76,14 @@ In order to use via, you may have to upload the [json specification](extras/rk_r
 To prevent accidental KB Bootloader triggers, I have it hidden under a layer.
 
 - To reboot and `enter bootloader mode`:
-  - hold `Fn`, then hold `shift`, then triple tap the `q` key
-  - OR hold `RAlt`, then hold `shift`, then triple tap the `q` key
-  - OR hold `CAPS Lock`, then hold `shift`, then triple tap the `q` key
-  - OR hold `Ralt`, then double tap `PgDn`, then triple tap the `q` key
+  - hold `Fn`, then hold `RShift`, then triple tap the `q` key
+  - OR hold `RAlt`, then hold `RShift`, then triple tap the `q` key
+  - OR hold `CAPS Lock`, then hold `RShift`, then triple tap the `q` key
+  - OR hold `RAlt`, then double tap `PgDn`, then triple tap the `q` key
 - To `clear eeprom`:
-  - hold `Fn`, then hold `shift`, then triple tap the `z` key
-  - OR hold `RAlt`, then hold `shift`, then triple tap the `z` key
-  - OR hold `CAPS Lock`, then hold `shift`, then triple tap the `z` key
+  - hold `Fn`, then hold `RShift`, then triple tap the `z` key
+  - OR hold `RAlt`, then hold `RShift`, then triple tap the `z` key
+  - OR hold `CAPS Lock`, then hold `RShift`, then triple tap the `z` key
   - OR hold `Ralt`, then double tap `PgDn`, then triple tap the `q` key
 
 ## ⭐ Features
@@ -91,10 +91,10 @@ To prevent accidental KB Bootloader triggers, I have it hidden under a layer.
 I use a `control layer` to modify the keyboard settings.
 
 To enable the control layer
-- Momentary - will be deactivated as soon as you release `shift`:
-    - hold `Fn`, then hold `shift`
-    - OR hold `RAlt`, then hold `shift`
-    - OR hold `CAPS Lock`, then hold `shift`
+- Momentary - will be deactivated as soon as you release `Right Shift`:
+    - hold `Fn`, then hold `RShift`
+    - OR hold `RAlt`, then hold `RShift`
+    - OR hold `CAPS Lock`, then hold `RShift`
 - Toggle:
     - hold `Ralt`, then double tap `PgDn`
 
@@ -105,15 +105,18 @@ While on the Control Layer, you have the following available:
 
 - `LCTL` - Swap Number row for Fn Keys (1 is F1 ... + is F12)
 - `N` - Toggle NKRO
-- `M` - Change Background Color HUE
-- `,` - RGB_VAD
-- `.` - RGB_VAI
+- `I` - Change Background Color HUE Down
+- `O` - Change Background Color HUE Up
+- `K` - Change Background Color SAT Down
+- `L` - Change Background Color SAT Up
+- `,` - Change Background Color VAL Down - RGB_VAD
+- `.` - Change Background Color VAL Up - RGB_VAI
 - `;` - RGB_SPD
 - `'` - RGB_SPI
 - `P` - RGB Matrix solid color
 - `[` - RGB_RMOD
 - `]` - RGB_RMD
-- `\` - RGB_TOG -- this will turn off RGB Matrix
+- `\` - RGB_TOG -- this will turn off the colors, but still enable indicators
 
 - ⬅️ - RGB_SPD
 - ➡️ - RGB_SPI
