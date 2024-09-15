@@ -475,7 +475,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             for (int i = led_min; i < led_max; i++) {
                 rgb_matrix_set_color(i, 0, 0, 0);
             }
-            //rgb_matrix_set_color_all(0, 0, 0);
+            // we could also do this, but using the min max
+            // updates a smaller subset at once
+            // rgb_matrix_set_color_all(0, 0, 0);
         }
     }
 
