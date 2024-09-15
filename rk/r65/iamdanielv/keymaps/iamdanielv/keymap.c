@@ -372,7 +372,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef ENCODER_MAP_ENABLE
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [_WIN_LYR]      = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [_WIN_FN_LYR]  = {ENCODER_CCW_CW(_______, _______)},
+    [_WIN_FN_LYR]   = {ENCODER_CCW_CW(_______, _______)},
     [_CTL_LYR]      = {ENCODER_CCW_CW(_______, _______)},
     [_NUM_LYR]      = {ENCODER_CCW_CW(_______, _______)},
     [_NAV_LYR]      = {ENCODER_CCW_CW(_______, _______)},
@@ -455,8 +455,7 @@ void blink_NKRO(bool isEnabling){
     }
 }
 
-void highlight_fn_keys(uint8_t led_min, uint8_t led_max)
-{
+void highlight_fn_keys(uint8_t led_min, uint8_t led_max){
     // get the current hsv value
     HSV current_hsv = rgb_matrix_get_hsv();
     // maximize brightness
