@@ -16,6 +16,7 @@ enum layer_names {
 };
 
 void blink_arrows(void);
+void blink_space(bool);
 void blink_NKRO(bool);
 void blink_numbers(bool);
 void highlight_fn_keys(uint8_t led_min, uint8_t led_max);
@@ -147,9 +148,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
             blink_numbers(fn_mode_enabled);
-            indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
-            indicator_enqueue(0, 200, 3, RGB_BLACK );   // blink left alt
-            indicator_enqueue(64, 200, 3, RGB_BLACK );  // blink right alt
+            blink_space(true);
         }
         return false;
     }
@@ -183,9 +182,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         RGB rgb = hsv_to_rgb(current_hsv);
                         rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
                         rgb_matrix_set_flags_noeeprom(LED_FLAG_ALL);
-                        indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
-                        indicator_enqueue(0, 200,  3, RGB_WHITE );  // blink left alt
-                        indicator_enqueue(64, 200, 3, RGB_WHITE );  // blink right alt
+                        blink_space(true);
                     } break;
                 }
             }
@@ -203,9 +200,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_M_P:
             if (record->event.pressed) {
                 rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-                indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
-                indicator_enqueue(0, 200, 3, RGB_WHITE );   // blink left alt
-                indicator_enqueue(64, 200, 3, RGB_WHITE );  // blink right alt
+                blink_space(true);
             }
             return false;
         case RGB_SPI:
@@ -215,7 +210,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     blink_arrows();
                     indicator_enqueue(17, 200, 4, RGB_RED );    // ' - SPI
                     indicator_enqueue(18, 200, 2, RGB_BLACK );  // ; - SPD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
+                    blink_space(false);
                 }
                 rgb_matrix_increase_speed_noeeprom();
             }
@@ -226,7 +221,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     blink_arrows();
                     indicator_enqueue(17, 200, 2, RGB_BLACK ); // ' - SPI
                     indicator_enqueue(18, 200, 4, RGB_RED );   // ; - SPD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE ); // blink space too
+                    blink_space(false);
                     rgb_matrix_set_speed_noeeprom(RGB_MATRIX_SPD_STEP);
                 }
                 rgb_matrix_decrease_speed_noeeprom();
@@ -238,7 +233,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     // this update would put us at max
                     indicator_enqueue(38, 200, 4, INDICATOR_RGB_DARK_RED ); // O - HUI
                     indicator_enqueue(37, 200, 2, RGB_BLACK );              // I - HUD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE );              // blink space too
+                    blink_space(false);
                 }
                 rgb_matrix_increase_hue_noeeprom();
             }
@@ -249,7 +244,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     // this update would put us at min
                     indicator_enqueue(38, 200, 2, RGB_BLACK );              // O - HUI
                     indicator_enqueue(37, 200, 4, INDICATOR_RGB_DARK_RED ); // I - HUD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE );              // blink space too
+                    blink_space(false);
                 }
                 rgb_matrix_decrease_hue_noeeprom();
             }
@@ -260,7 +255,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     // this update would put us at max
                     indicator_enqueue(19, 200, 4, INDICATOR_RGB_DARK_RED ); // L - SAI
                     indicator_enqueue(20, 200, 2, RGB_BLACK );              // K - SAD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE );              // blink space too
+                    blink_space(false);
                 }
                 rgb_matrix_increase_sat_noeeprom();
             }
@@ -271,7 +266,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     // this update would put us at min
                     indicator_enqueue(19, 200, 2, RGB_BLACK );              // L - SAI
                     indicator_enqueue(20, 200, 4, INDICATOR_RGB_DARK_RED ); // K - SAD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE );              // blink space too
+                    blink_space(false);
                 }
                 rgb_matrix_decrease_sat_noeeprom();
             }
@@ -281,7 +276,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
                     indicator_enqueue(12, 200, 4, RGB_RED );    // . - VAI
                     indicator_enqueue(11, 200, 2, RGB_BLACK );  // , - VAD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
+                    blink_space(false);
                     blink_arrows();
                 }
                 rgb_matrix_increase_val_noeeprom();
@@ -292,7 +287,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
                     indicator_enqueue(12, 200, 2, RGB_BLACK );  // . - VAI
                     indicator_enqueue(11, 200, 4, RGB_RED );    // , - VAD
-                    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
+                    blink_space(false);
                     blink_arrows();
                 }
                 rgb_matrix_decrease_val_noeeprom();
@@ -426,6 +421,14 @@ void blink_arrows(void){
     indicator_enqueue(61, 200, 3, RGB_WHITE );  // down
     indicator_enqueue(15, 200, 3, RGB_WHITE );  // up
     indicator_enqueue(60, 200, 3, RGB_WHITE );  // right
+}
+
+void blink_space(bool extended){
+    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
+    if(extended){
+        indicator_enqueue(0, 200, 3, RGB_BLACK );   // blink left alt
+        indicator_enqueue(64, 200, 3, RGB_BLACK );  // blink right alt
+    }
 }
 
 void blink_NKRO(bool isEnabling){
