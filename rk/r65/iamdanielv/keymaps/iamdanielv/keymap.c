@@ -333,7 +333,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_WIN_FN_LYR] = LAYOUT( // 1
         KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,     KC_F11,   KC_F12,   KC_DEL,    _______,
-        KC_GRV,    _______,   _______,   _______,   _______,   KC_PGUP,  _______,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
+        KC_GRV,    _______,   _______,   C(KC_F),   C(KC_R),   KC_PGUP,  _______,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
         _______,   _______,   _______,   KC_LSFT,   KC_LCTL,   KC_PGDN,  _______,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
         _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  KC_PGDN,   KC_PGUP,  _______,    MO_CTL,             _______,   KC_RCTL,
         _______,   _______,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
