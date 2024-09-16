@@ -7,12 +7,12 @@
 #include "features/fn_mode.h"
 
 enum layer_names {
-    _WIN_LYR,     // 0
-    _WIN_FN_LYR,  // 1
-    _CTL_LYR,     // 2
-    _NUM_LYR,     // 3
-    _NAV_LYR,     // 4
-    _FN_LYR,      // 5
+    _WIN_LYR,    // 0
+    _WIN_FN_LYR, // 1
+    _CTL_LYR,    // 2
+    _NUM_LYR,    // 3
+    _NAV_LYR,    // 4
+    _FN_LYR,     // 5
 };
 
 void blink_arrows(void);
@@ -76,7 +76,7 @@ enum tap_dance_keys {
     TD_CTL_TG // require double tap to enable ctl layer
 };
 
-//#define TAP_HOLD_ENABLE
+// #define TAP_HOLD_ENABLE
 #ifdef TAP_HOLD_ENABLE
 typedef struct {
     uint16_t on_tap;  // key to send on tap
@@ -128,9 +128,7 @@ void td_tap_hold_reset(tap_dance_state_t *state, void *user_data) {
 // *****************************
 // * Custom processing of keys *
 // *****************************
-enum custom_keycodes {
-    KC_SWP_FN = SAFE_RANGE
-};
+enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
 
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
@@ -143,7 +141,6 @@ tap_dance_action_t tap_dance_actions[] = {
 bool fn_mode_enabled = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
@@ -172,14 +169,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 switch (rgb_matrix_get_flags()) {
                     case LED_FLAG_ALL: {
                         rgb_matrix_set_flags_noeeprom(LED_FLAG_INDICATOR);
-                        //rgb_matrix_set_color_all(0, 0, 0);
-                        indicator_enqueue(65, 200, 3, INDICATOR_RGB_DARK_RED );  // blink space too
-                        indicator_enqueue(0, 200, 3, INDICATOR_RGB_DARK_RED );   // blink left alt
-                        indicator_enqueue(64, 200, 3, INDICATOR_RGB_DARK_RED );  // blink right alt
+                        // rgb_matrix_set_color_all(0, 0, 0);
+                        indicator_enqueue(65, 200, 3, INDICATOR_RGB_DARK_RED); // blink space too
+                        indicator_enqueue(0, 200, 3, INDICATOR_RGB_DARK_RED);  // blink left alt
+                        indicator_enqueue(64, 200, 3, INDICATOR_RGB_DARK_RED); // blink right alt
                     } break;
                     default: {
                         HSV current_hsv = rgb_matrix_get_hsv();
-                        RGB rgb = hsv_to_rgb(current_hsv);
+                        RGB rgb         = hsv_to_rgb(current_hsv);
                         rgb_matrix_set_color_all(rgb.r, rgb.g, rgb.b);
                         rgb_matrix_set_flags_noeeprom(LED_FLAG_ALL);
                         blink_space(true);
@@ -205,11 +202,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_SPI:
             if (record->event.pressed) {
-                if ( rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
+                if (rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
                     // this update would put us at max
                     blink_arrows();
-                    indicator_enqueue(17, 200, 4, RGB_RED );    // ' - SPI
-                    indicator_enqueue(18, 200, 2, RGB_BLACK );  // ; - SPD
+                    indicator_enqueue(17, 200, 4, RGB_RED);   // ' - SPI
+                    indicator_enqueue(18, 200, 2, RGB_BLACK); // ; - SPD
                     blink_space(false);
                 }
                 rgb_matrix_increase_speed_noeeprom();
@@ -219,8 +216,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (rgb_matrix_get_speed() <= RGB_MATRIX_SPD_STEP) {
                     blink_arrows();
-                    indicator_enqueue(17, 200, 2, RGB_BLACK ); // ' - SPI
-                    indicator_enqueue(18, 200, 4, RGB_RED );   // ; - SPD
+                    indicator_enqueue(17, 200, 2, RGB_BLACK); // ' - SPI
+                    indicator_enqueue(18, 200, 4, RGB_RED);   // ; - SPD
                     blink_space(false);
                     rgb_matrix_set_speed_noeeprom(RGB_MATRIX_SPD_STEP);
                 }
@@ -229,10 +226,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_HUI:
             if (record->event.pressed) {
-                if ( rgb_matrix_get_hue() >= (255 - RGB_MATRIX_HUE_STEP)) {
+                if (rgb_matrix_get_hue() >= (255 - RGB_MATRIX_HUE_STEP)) {
                     // this update would put us at max
-                    indicator_enqueue(38, 200, 4, INDICATOR_RGB_DARK_RED ); // O - HUI
-                    indicator_enqueue(37, 200, 2, RGB_BLACK );              // I - HUD
+                    indicator_enqueue(38, 200, 4, INDICATOR_RGB_DARK_RED); // O - HUI
+                    indicator_enqueue(37, 200, 2, RGB_BLACK);              // I - HUD
                     blink_space(false);
                 }
                 rgb_matrix_increase_hue_noeeprom();
@@ -240,10 +237,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_HUD:
             if (record->event.pressed) {
-                if ( rgb_matrix_get_hue() <= RGB_MATRIX_HUE_STEP ) {
+                if (rgb_matrix_get_hue() <= RGB_MATRIX_HUE_STEP) {
                     // this update would put us at min
-                    indicator_enqueue(38, 200, 2, RGB_BLACK );              // O - HUI
-                    indicator_enqueue(37, 200, 4, INDICATOR_RGB_DARK_RED ); // I - HUD
+                    indicator_enqueue(38, 200, 2, RGB_BLACK);              // O - HUI
+                    indicator_enqueue(37, 200, 4, INDICATOR_RGB_DARK_RED); // I - HUD
                     blink_space(false);
                 }
                 rgb_matrix_decrease_hue_noeeprom();
@@ -251,10 +248,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_SAI:
             if (record->event.pressed) {
-                if ( rgb_matrix_get_sat() >= (255 - RGB_MATRIX_SAT_STEP)) {
+                if (rgb_matrix_get_sat() >= (255 - RGB_MATRIX_SAT_STEP)) {
                     // this update would put us at max
-                    indicator_enqueue(19, 200, 4, INDICATOR_RGB_DARK_RED ); // L - SAI
-                    indicator_enqueue(20, 200, 2, RGB_BLACK );              // K - SAD
+                    indicator_enqueue(19, 200, 4, INDICATOR_RGB_DARK_RED); // L - SAI
+                    indicator_enqueue(20, 200, 2, RGB_BLACK);              // K - SAD
                     blink_space(false);
                 }
                 rgb_matrix_increase_sat_noeeprom();
@@ -262,10 +259,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RGB_SAD:
             if (record->event.pressed) {
-                if ( rgb_matrix_get_sat() <= RGB_MATRIX_SAT_STEP ) {
+                if (rgb_matrix_get_sat() <= RGB_MATRIX_SAT_STEP) {
                     // this update would put us at min
-                    indicator_enqueue(19, 200, 2, RGB_BLACK );              // L - SAI
-                    indicator_enqueue(20, 200, 4, INDICATOR_RGB_DARK_RED ); // K - SAD
+                    indicator_enqueue(19, 200, 2, RGB_BLACK);              // L - SAI
+                    indicator_enqueue(20, 200, 4, INDICATOR_RGB_DARK_RED); // K - SAD
                     blink_space(false);
                 }
                 rgb_matrix_decrease_sat_noeeprom();
@@ -274,8 +271,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_VAI:
             if (record->event.pressed) {
                 if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
-                    indicator_enqueue(12, 200, 4, RGB_RED );    // . - VAI
-                    indicator_enqueue(11, 200, 2, RGB_BLACK );  // , - VAD
+                    indicator_enqueue(12, 200, 4, RGB_RED);   // . - VAI
+                    indicator_enqueue(11, 200, 2, RGB_BLACK); // , - VAD
                     blink_space(false);
                     blink_arrows();
                 }
@@ -285,8 +282,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case RGB_VAD:
             if (record->event.pressed) {
                 if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
-                    indicator_enqueue(12, 200, 2, RGB_BLACK );  // . - VAI
-                    indicator_enqueue(11, 200, 4, RGB_RED );    // , - VAD
+                    indicator_enqueue(12, 200, 2, RGB_BLACK); // . - VAI
+                    indicator_enqueue(11, 200, 4, RGB_RED);   // , - VAD
                     blink_space(false);
                     blink_arrows();
                 }
@@ -299,7 +296,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
-
 
 // ******************************
 // * Aliases to simplify keymap *
@@ -405,10 +401,10 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 /******************
  * RGB Indicators *
  ******************/
-void blink_numbers(bool isEnabling){
-    for( int i = 55; i >= 44; i--) // 1(55) to EQL(44)
+void blink_numbers(bool isEnabling) {
+    for (int i = 55; i >= 44; i--) // 1(55) to EQL(44)
     {
-        if(isEnabling){
+        if (isEnabling) {
             // enabling, flash white
             indicator_enqueue(i, 200, 3, RGB_WHITE);
         } else {
@@ -418,63 +414,60 @@ void blink_numbers(bool isEnabling){
     }
 }
 
-void blink_arrows(void){
-    indicator_enqueue(62, 200, 3, RGB_WHITE );  // left
-    indicator_enqueue(61, 200, 3, RGB_WHITE );  // down
-    indicator_enqueue(15, 200, 3, RGB_WHITE );  // up
-    indicator_enqueue(60, 200, 3, RGB_WHITE );  // right
+void blink_arrows(void) {
+    indicator_enqueue(62, 200, 3, RGB_WHITE); // left
+    indicator_enqueue(61, 200, 3, RGB_WHITE); // down
+    indicator_enqueue(15, 200, 3, RGB_WHITE); // up
+    indicator_enqueue(60, 200, 3, RGB_WHITE); // right
 }
 
-void blink_space(bool extended){
-    indicator_enqueue(65, 200, 3, RGB_WHITE );  // blink space too
-    if(extended){
-        indicator_enqueue(0, 200, 3, RGB_BLACK );   // blink left alt
-        indicator_enqueue(64, 200, 3, RGB_BLACK );  // blink right alt
+void blink_space(bool extended) {
+    indicator_enqueue(65, 200, 3, RGB_WHITE); // blink space too
+    if (extended) {
+        indicator_enqueue(0, 200, 3, RGB_BLACK);  // blink left alt
+        indicator_enqueue(64, 200, 3, RGB_BLACK); // blink right alt
     }
 }
 
-void blink_NKRO(bool isEnabling){
-    if(isEnabling){
+void blink_NKRO(bool isEnabling) {
+    if (isEnabling) {
         const uint8_t led_indexes[12] = {
-            7, 8, 9, 10, 11, // V B N M ,
-            20, 21, 22, 23, // K J H G
-            35, 36, 37 // Y U I
+            7,  8,  9,  10, 11, // V B N M ,
+            20, 21, 22, 23,     // K J H G
+            35, 36, 37          // Y U I
         };
 
         for (int i = 0; i < 12; i++) {
-            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE );
+            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE);
         }
-    }
-    else {
+    } else {
         const uint8_t led_indexes[4] = {
             8, 10, // B M
-            21, 22  // H J
+            21, 22 // H J
         };
 
         for (int i = 0; i < 4; i++) {
-            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED );
+            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED);
         }
     }
 }
 
-void highlight_fn_keys(uint8_t led_min, uint8_t led_max){
+void highlight_fn_keys(uint8_t led_min, uint8_t led_max) {
     // get the current hsv value
     HSV current_hsv = rgb_matrix_get_hsv();
     // maximize brightness
     current_hsv.v = 255;
 
-    rgb_led_t rgb = hsv_to_rgb(current_hsv);
+    rgb_led_t rgb     = hsv_to_rgb(current_hsv);
     rgb_led_t new_rgb = get_complementary_color(rgb, false);
-    for( int i = 55; i >= 44; i--){ // 55 - 44 are the number keys and - =
+    for (int i = 55; i >= 44; i--) { // 55 - 44 are the number keys and - =
         RGB_MATRIX_INDICATOR_SET_COLOR(i, new_rgb.r, new_rgb.g, new_rgb.b);
     }
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-
     uint8_t current_layer = get_highest_layer(layer_state);
-    if(current_layer == _WIN_LYR)
-    {
+    if (current_layer == _WIN_LYR) {
         if (rgb_matrix_get_flags() == LED_FLAG_INDICATOR) {
             for (int i = led_min; i < led_max; i++) {
                 rgb_matrix_set_color(i, 0, 0, 0);
@@ -497,19 +490,19 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    if(fn_mode_enabled){
+    if (fn_mode_enabled) {
         highlight_fn_keys(led_min, led_max);
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
-        if(!fn_mode_enabled){
+        if (!fn_mode_enabled) {
             // we are not in fn_mode, but this layer also uses fn keys
             highlight_fn_keys(led_min, led_max);
         }
 
         const uint8_t led_indexes[4] = {
-            28, // use caps as indicator
-            63, // use fn as indicator
+            28,    // use caps as indicator
+            63,    // use fn as indicator
             56, 43 // ESC and BSPC
         };
 
@@ -532,16 +525,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0x00, 0x80, 0x80);
         }
 
+        // turn off some of the LEDS to make it easier to see our indicators
         const uint8_t led_off_indexes[15] = {
-            // turn off some of the LEDS to make it easier to see our indicators
-            // A, Home, PgUp
-            27, 57, 58,
-            // Arrow keys
-            60, 61, 62, 15,
-             // TAB, CAPS, LSFT, LG
-            29, 28, 3, 1,
-            // LALT, SPC, RALT, Fn
-            0, 65, 64, 63
+            27, 57, 58,     // A, Home, PgUp
+            60, 61, 62, 15, // Arrow keys
+            29, 28, 3,  1,  // TAB, CAPS, LSFT, LG
+            0,  65, 64, 63  // LALT, SPC, RALT, Fn
         };
         for (int i = 0; i < 15; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
@@ -600,7 +589,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // highlight the aux buttons on right of keyboard
         const uint8_t led_indexes[7] = {
-            64, //highlight the RALT button
+            64,                    // highlight the RALT button
             49, 48, 47, 46, 45, 44 // used for media keys = 6 keys
         };
 
