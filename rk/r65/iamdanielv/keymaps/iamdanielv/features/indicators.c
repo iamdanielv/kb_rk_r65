@@ -1,3 +1,8 @@
+#include "color.h"
+#include "quantum.h"
+#include "rgb_matrix.h"
+#include "action_layer.h"
+
 #include "indicators.h"
 #include "defines.h"
 #include "indicator_queue.h"

@@ -1,4 +1,5 @@
 #pragma once
+#include "process_tap_dance.h"
 #include QMK_KEYBOARD_H
 
 typedef struct {
