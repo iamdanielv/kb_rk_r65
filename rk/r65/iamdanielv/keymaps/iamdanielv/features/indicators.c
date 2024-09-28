@@ -124,20 +124,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
-        if (!fn_mode_enabled) {
-            // we are not in fn_mode, but this layer also uses fn keys
-            highlight_fn_keys(led_min, led_max);
+        // this layer has many functions, so just change the whole color
+        for (int i = led_min; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0xC0, 0x3D, 0x00);
         }
 
-        const uint8_t led_indexes[4] = {
-            28,    // use caps as indicator
-            63,    // use fn as indicator
-            56, 43 // ESC and BSPC
-        };
-
-        for (int i = 0; i < 4; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 255, 255, 0);
-        }
+        // no matter what, this layer also uses fn keys
+        highlight_fn_keys(led_min, led_max);
 
         // highlight right shift as moving to ctl layer
         RGB_MATRIX_INDICATOR_SET_COLOR(14, 0, 255, 255);
