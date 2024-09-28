@@ -183,22 +183,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_NAV_LYR)) {
-        const uint8_t led_indexes[16] = {
-            57, // use home key as indicator
-
-            // 2nd row
-            30, 31, 32, 33, 34, // = 5 keys
-
-            // 3rd row
-            27, 26, 25, 24, 23, // = 5 keys
-
-            // 4th row
-            4, 5, 6, 7, 8 // = 5 keys
-        };
-
-        for (int i = 0; i < 16; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 0, 255);
+        // this layer has many functions, so just change the whole color
+        for (int i = led_min; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0x00, 0x00, 0xFF);
         }
+
+        RGB_MATRIX_INDICATOR_SET_COLOR(57, 0xFF, 0xFF, 0xFF); // use home key as toggle indicator
     }
 
     if (IS_LAYER_ON(_FN_LYR)) {
