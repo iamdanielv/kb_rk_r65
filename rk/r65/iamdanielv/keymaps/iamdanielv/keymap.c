@@ -75,7 +75,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_WIN_FN_LYR] = LAYOUT( // 1
         KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,     KC_F11,   KC_F12,   KC_DEL,    _______,
-        KC_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   _______,  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
+        MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   _______,  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
         _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   _______,  KC_PGDN,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
         _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  MY_BACK,   MY_FWD,   _______,    MO_CTL,             _______,   KC_RCTL,
         _______,   _______,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
@@ -149,6 +149,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 wait_ms(50);
             }
             return false;
+        case MY_GRV:
+            if (record->tap.count > 0) {    // Key is being tapped.
+                if (record->event.pressed) {
+                    // Handle tap press event...
+                    if(record->tap.count == 1){
+                        register_code16(KC_GRV);
+                    } else if(record->tap.count == 2) {
+                        // this is the 2nd tap,
+                        // but we already did something on the 1st tap
+                        // delete the previous key
+                        tap_code(KC_BSPC);
+                        register_code16(KC_TILD);
+                    }
+                } else {
+                    // Handle tap release event...
+                    if(record->tap.count == 1){
+                        unregister_code16(KC_GRV);
+                    } else if(record->tap.count == 2) {
+                        unregister_code16(KC_TILD);
+                    }
+                }
+            } else {                        // Key is being held.
+                if (record->event.pressed) {
+                    // Handle hold press event...
+                    // send backticks to start a code block
+                    SEND_STRING("``````");
+                    // move cursor to the middle of the code block
+                    tap_code(KC_LEFT);
+                    tap_code(KC_LEFT);
+                    tap_code(KC_LEFT);
+                } //else {
+                    // Handle hold release event...
+                //}
+            }
+            return false;  // we handled all cases, stop further processing
         default:
             return true;
     }

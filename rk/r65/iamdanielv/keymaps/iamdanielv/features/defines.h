@@ -23,6 +23,7 @@ enum layer_names {
 #define MY_CONS   LCTL(LSFT(KC_GRV))
 #define MY_BACK   A(KC_LEFT)
 #define MY_FWD    A(KC_RIGHT)
+#define MY_GRV    LT(0, KC_GRV)
 
 #define TG_NAV    TG(_NAV_LYR)
 #define TG_NUM    TG(_NUM_LYR)
