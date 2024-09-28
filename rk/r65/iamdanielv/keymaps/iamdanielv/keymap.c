@@ -62,6 +62,65 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 // clang-format on
 
+// clang-format off
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+    [_WIN_LYR] = LAYOUT( // 0
+        KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,     KC_6,     KC_7,     KC_8,      KC_9,     KC_0,       KC_MINS,  KC_EQL,   KC_BSPC,   KC_MUTE,
+        KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,     KC_Y,     KC_U,     KC_I,      KC_O,     KC_P,       KC_LBRC,  KC_RBRC,  KC_BSLS,   KC_HOME,
+        W_ALT_CAPS,KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
+        KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,   KC_DOT,   KC_SLSH,    KC_RSFT,            KC_UP,     KC_PGDN,
+        KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       FN_RALT,   MO_FN,                KC_LEFT,            KC_DOWN,   KC_RGHT
+    ),
+    [_WIN_FN_LYR] = LAYOUT( // 1
+        KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,     KC_F11,   KC_F12,   KC_DEL,    _______,
+        KC_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   _______,  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
+        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   _______,  KC_PGDN,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
+        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  MY_BACK,   MY_FWD,   _______,    MO_CTL,             _______,   KC_RCTL,
+        _______,   _______,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
+    ),
+    [_CTL_LYR] = LAYOUT( // 2
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
+        _______,   TD_KB_RST, _______,   _______,   _______,   _______,  _______,  _______,  RGB_HUD,   RGB_HUI,  RGB_M_P,    RGB_RMOD, RGB_MOD,  RGB_TOG,   _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  RGB_SAD,   RGB_SAI,  RGB_SPD,    RGB_SPI,            _______,   _______,
+        _______,   TD_KB_CLR, _______,   _______,   _______,   _______,  NK_TOGG,  _______,  RGB_VAD,   RGB_VAI,  _______,    _______,            RGB_VAI,   TG_CTL,
+        KC_SWP_FN, _______,   _______,                         _______,                      _______,   _______,              RGB_SPD,            RGB_VAD,   RGB_SPI
+    ),
+    [_NUM_LYR] = LAYOUT( // 3
+        _______,   _______,   _______,   _______,   _______,   _______,  KC_NUM,   KC_P7,    KC_P8,     KC_P9,   KC_PAST,    _______,  _______,  _______,   _______,
+        _______,   KC_BTN1,   KC_MS_U,   KC_BTN2,   _______,   _______,  XXXXXXX,  KC_P4,    KC_P5,     KC_P6,   KC_PPLS,    _______,  _______,  _______,   _______,
+        _______,   KC_MS_L,   KC_MS_D,   KC_MS_R,   _______,   _______,  XXXXXXX,  KC_P1,    KC_P2,     KC_P3,   KC_PENT,    _______,            _______,   TG_NUM,
+        _______,   _______,   _______,   _______,   _______,   _______,  XXXXXXX,  KC_P0,    KC_PDOT,   KC_PDOT, KC_PSLS,    _______,            _______,   _______,
+        _______,   _______,   _______,                         _______,                      _______,   _______,             _______,            _______,   _______
+    ),
+    [_NAV_LYR] = LAYOUT( // 4
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   _______,
+        _______,   KC_HOME,   KC_UP,     KC_END,    C(KC_R),   KC_PGUP,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   TG_NAV,
+        _______,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  C(KC_F),   KC_PGDN,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
+        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
+        _______,   _______,   _______,                         _______,                      _______,  _______,              _______,            _______,   _______
+    ),
+    [_FN_LYR] = LAYOUT( // 5
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,    KC_VOLD,  KC_VOLU,  KC_DEL,    _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   TG_NAV,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_NUM,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    MO_CTL,             _______,   TD_TG_CTL,
+        _______,   _______,   _______,                         _______,                      KC_RCTL,  _______,              _______,            _______,   _______
+    )
+};
+
+#ifdef ENCODER_MAP_ENABLE
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+    [_WIN_LYR]      = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [_WIN_FN_LYR]   = {ENCODER_CCW_CW(_______, _______)},
+    [_CTL_LYR]      = {ENCODER_CCW_CW(_______, _______)},
+    [_NUM_LYR]      = {ENCODER_CCW_CW(_______, _______)},
+    [_NAV_LYR]      = {ENCODER_CCW_CW(_______, _______)},
+    [_FN_LYR]       = {ENCODER_CCW_CW(_______, _______)}
+};
+#endif
+// clang-format on
+
 bool fn_mode_enabled = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -220,63 +279,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
-
-// clang-format off
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
-    [_WIN_LYR] = LAYOUT( // 0
-        KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,     KC_6,     KC_7,     KC_8,      KC_9,     KC_0,       KC_MINS,  KC_EQL,   KC_BSPC,   KC_MUTE,
-        KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,     KC_Y,     KC_U,     KC_I,      KC_O,     KC_P,       KC_LBRC,  KC_RBRC,  KC_BSLS,   KC_HOME,
-        W_ALT_CAPS,KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
-        KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,   KC_DOT,   KC_SLSH,    KC_RSFT,            KC_UP,     KC_PGDN,
-        KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       FN_RALT,   MO_FN,                KC_LEFT,            KC_DOWN,   KC_RGHT
-    ),
-    [_WIN_FN_LYR] = LAYOUT( // 1
-        KC_GRV,    KC_F1,     KC_F2,     KC_F3,     KC_F4,     KC_F5,    KC_F6,    KC_F7,    KC_F8,     KC_F9,    KC_F10,     KC_F11,   KC_F12,   KC_DEL,    _______,
-        KC_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   _______,  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
-        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   _______,  KC_PGDN,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
-        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  MY_BACK,   MY_FWD,   _______,    MO_CTL,             _______,   KC_RCTL,
-        _______,   _______,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
-    ),
-    [_CTL_LYR] = LAYOUT( // 2
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   TD_KB_RST, _______,   _______,   _______,   _______,  _______,  _______,  RGB_HUD,   RGB_HUI,  RGB_M_P,    RGB_RMOD, RGB_MOD,  RGB_TOG,   _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  RGB_SAD,   RGB_SAI,  RGB_SPD,    RGB_SPI,            _______,   _______,
-        _______,   TD_KB_CLR, _______,   _______,   _______,   _______,  NK_TOGG,  _______,  RGB_VAD,   RGB_VAI,  _______,    _______,            RGB_VAI,   TG_CTL,
-        KC_SWP_FN, _______,   _______,                         _______,                      _______,   _______,              RGB_SPD,            RGB_VAD,   RGB_SPI
-    ),
-    [_NUM_LYR] = LAYOUT( // 3
-        _______,   _______,   _______,   _______,   _______,   _______,  KC_NUM,   KC_P7,    KC_P8,     KC_P9,   KC_PAST,    _______,  _______,  _______,   _______,
-        _______,   KC_BTN1,   KC_MS_U,   KC_BTN2,   _______,   _______,  XXXXXXX,  KC_P4,    KC_P5,     KC_P6,   KC_PPLS,    _______,  _______,  _______,   _______,
-        _______,   KC_MS_L,   KC_MS_D,   KC_MS_R,   _______,   _______,  XXXXXXX,  KC_P1,    KC_P2,     KC_P3,   KC_PENT,    _______,            _______,   TG_NUM,
-        _______,   _______,   _______,   _______,   _______,   _______,  XXXXXXX,  KC_P0,    KC_PDOT,   KC_PDOT, KC_PSLS,    _______,            _______,   _______,
-        _______,   _______,   _______,                         _______,                      _______,   _______,             _______,            _______,   _______
-    ),
-    [_NAV_LYR] = LAYOUT( // 4
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   KC_HOME,   KC_UP,     KC_END,    C(KC_R),   KC_PGUP,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   TG_NAV,
-        _______,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  C(KC_F),   KC_PGDN,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
-        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
-        _______,   _______,   _______,                         _______,                      _______,  _______,              _______,            _______,   _______
-    ),
-    [_FN_LYR] = LAYOUT( // 5
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,    KC_VOLD,  KC_VOLU,  KC_DEL,    _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   TG_NAV,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_NUM,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    MO_CTL,             _______,   TD_TG_CTL,
-        _______,   _______,   _______,                         _______,                      KC_RCTL,  _______,              _______,            _______,   _______
-    )
-};
-
-#ifdef ENCODER_MAP_ENABLE
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [_WIN_LYR]      = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [_WIN_FN_LYR]   = {ENCODER_CCW_CW(_______, _______)},
-    [_CTL_LYR]      = {ENCODER_CCW_CW(_______, _______)},
-    [_NUM_LYR]      = {ENCODER_CCW_CW(_______, _______)},
-    [_NAV_LYR]      = {ENCODER_CCW_CW(_______, _______)},
-    [_FN_LYR]       = {ENCODER_CCW_CW(_______, _______)}
-};
-#endif
-// clang-format on
 
