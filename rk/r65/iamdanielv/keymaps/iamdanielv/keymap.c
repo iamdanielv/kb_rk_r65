@@ -11,7 +11,6 @@
 #include "features/indicators.h"
 #include "features/rgb_keys.h"
 
-
 // ***********************
 // * Keyboard Management *
 // ***********************
@@ -37,7 +36,7 @@ void housekeeping_task_user(void) {
                 gpio_write_pin_high(LED_WIN_LOCK_PIN);
             }
         } // else we are not on the num layer, ignore
-    } // else we have enabled no_gui, skip re-using the LED
+    }     // else we have enabled no_gui, skip re-using the LED
 }
 
 // *************
@@ -48,7 +47,6 @@ enum tap_dance_keys {
     TD_CLEAR, // require 3 taps to clear eeprom
     TD_CTL_TG // require double tap to enable ctl layer
 };
-
 
 // *****************************
 // * Custom processing of keys *
@@ -150,12 +148,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         case MY_GRV:
-            if (record->tap.count > 0) {    // Key is being tapped.
+            if (record->tap.count > 0) { // Key is being tapped
                 if (record->event.pressed) {
                     // Handle tap press event...
-                    if(record->tap.count == 1){
+                    if (record->tap.count == 1) {
                         register_code16(KC_GRV);
-                    } else if(record->tap.count == 2) {
+                    } else if (record->tap.count == 2) {
                         // this is the 2nd tap,
                         // but we already did something on the 1st tap
                         // delete the previous key
@@ -164,13 +162,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     }
                 } else {
                     // Handle tap release event...
-                    if(record->tap.count == 1){
+                    if (record->tap.count == 1) {
                         unregister_code16(KC_GRV);
-                    } else if(record->tap.count == 2) {
+                    } else if (record->tap.count == 2) {
                         unregister_code16(KC_TILD);
                     }
                 }
-            } else {                        // Key is being held.
+            } else { // Key is being held
                 if (record->event.pressed) {
                     // Handle hold press event...
                     // send backticks to start a code block
@@ -179,11 +177,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code(KC_LEFT);
                     tap_code(KC_LEFT);
                     tap_code(KC_LEFT);
-                } //else {
-                    // Handle hold release event...
-                //}
+                }
             }
-            return false;  // we handled all cases, stop further processing
+            return false; // we handled all cases, stop further processing
         default:
             return true;
     }
