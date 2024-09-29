@@ -94,9 +94,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_NAV_LYR] = LAYOUT( // 4
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   KC_HOME,   KC_UP,     KC_END,    C(KC_R),   KC_PGUP,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   TG_NAV,
-        _______,   KC_LEFT,   KC_DOWN,   KC_RIGHT,  C(KC_F),   KC_PGDN,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
-        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
+        MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   _______,  KC_PGUP,  KC_HOME,  KC_UP,    KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    TG_NAV,
+        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   _______,  KC_PGDN,  KC_LEFT,  KC_DOWN,  KC_RIGHT, KC_HOME,    KC_END,             _______,   _______,
+        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  MY_BACK,  MY_FWD,   _______,    _______,            _______,   _______,
         _______,   _______,   _______,                         _______,                      _______,  _______,              _______,            _______,   _______
     ),
     [_FN_LYR] = LAYOUT( // 5
