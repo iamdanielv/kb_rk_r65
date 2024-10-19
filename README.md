@@ -7,9 +7,7 @@ It quickly became one of my favorite keyboards, it's a great size and even has a
 
 Similarly to [my GK61](https://github.com/iamdanielv/kb_gk61), I wanted to program it.
 
-Getting the original source for the firmware has not been easy, but I found [@irfan](https://github.com/irfanjmdn/r65) had started the ball rolling over on Discord.
-
-We have been working to get a working copy of the firmware that is at least feature parity to the shipped firmware. -- We are not exactly there yet, but are very close!
+Getting the original source for the firmware was not easy, but I found [@irfan](https://github.com/irfanjmdn/r65) had started the ball rolling over on Discord.
 
 ## Custom Keyboard Software
 
