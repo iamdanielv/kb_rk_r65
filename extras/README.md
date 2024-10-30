@@ -1,6 +1,6 @@
 ## View the PCB
 
-Download the [RK839.PcbDoc](RK839.PcbDoc) and view it on [Altium](https://www.altium.com/viewer)
+Download the [RK839.PcbDoc](RK839.PcbDoc) and view it on [Altium](https://www.altium365.com/viewer/)
 
 ## Data Sheets
 
