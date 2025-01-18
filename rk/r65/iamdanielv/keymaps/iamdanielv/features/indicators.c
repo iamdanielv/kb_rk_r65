@@ -30,6 +30,65 @@
 /******************
  * RGB Indicators *
  ******************/
+
+ rgb_t get_complementary_color(rgb_t rgb_led, bool darken) {
+    uint8_t new_r = 0xFF - rgb_led.r;
+    uint8_t new_g = 0xFF - rgb_led.g;
+    uint8_t new_b = 0xFF - rgb_led.b;
+
+    if (darken) {
+        // darken the new color by shifting all values down
+        if( new_r > 0x80) { new_r = new_r - 0x80;}
+        if( new_g > 0x80) { new_g = new_g - 0x80;}
+        if( new_b > 0x80) { new_b = new_b - 0x80;}
+    }
+
+    return (rgb_t){.r = new_r, .g = new_g, .b = new_b};
+}
+
+hsv_t get_base_hsv_color_shifted(bool clockwise) {
+    // get the current base hsv value
+    hsv_t base_color = rgb_matrix_get_hsv();
+    base_color.v = 255;
+    if(clockwise){
+        if(base_color.h > 21){
+            base_color.h = base_color.h - 21;
+        } else {
+            base_color.h = 255 - base_color.h;
+        }
+    } else {
+        if(base_color.h < 234){
+            base_color.h = base_color.h + 21;
+        } else {
+            base_color.h = base_color.h - 234;
+        }
+    }
+    return base_color;
+}
+
+hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
+    // get the current base hsv value
+    hsv_t base_color = rgb_matrix_get_hsv();
+
+    // maximize brightness
+    base_color.v = 255;
+    //offset hue by a quarter
+    if(clockwise){
+        if(base_color.h > 64){
+            base_color.h = base_color.h - 64;
+        } else {
+            base_color.h = 255 - base_color.h;
+        }
+    } else {
+        if(base_color.h < 191){
+            base_color.h = base_color.h + 64;
+        } else {
+            base_color.h = base_color.h - 191;
+        }
+    }
+    return base_color;
+}
+
 void blink_numbers(bool isEnabling) {
     for (int i = 55; i >= 44; i--) // 1(55) to EQL(44)
     {

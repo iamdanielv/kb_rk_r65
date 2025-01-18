@@ -1,19 +1,5 @@
 #include "indicator_queue.h"
-
-rgb_led_t get_complementary_color(rgb_led_t rgb_led, bool darken) {
-    uint8_t new_r = 0xFF - rgb_led.r;
-    uint8_t new_g = 0xFF - rgb_led.g;
-    uint8_t new_b = 0xFF - rgb_led.b;
-
-    if (darken) {
-        // darken the new color by shifting all values down
-        if (new_r > 0x80) { new_r = new_r - 0x80; }
-        if (new_g > 0x80) { new_g = new_g - 0x80; }
-        if (new_b > 0x80) { new_b = new_b - 0x80; }
-    }
-
-    return (rgb_led_t){.r = new_r, .g = new_g, .b = new_b};
-}
+#include "indicators.h"
 
 void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_flash, uint8_t r, uint8_t g, uint8_t b) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
@@ -28,6 +14,18 @@ void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_fl
             indicator_queue[i].g              = g;
             indicator_queue[i].b              = b;
             break;
+        }
+    }
+}
+
+void indicator_dequeue(uint8_t led_index){
+    for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
+        if (indicator_queue[i].active &&
+            indicator_queue[i].led_index == led_index) {
+                // we found a match, deactivate it
+                indicator_queue[i].active = false;
+                indicator_queue[i].last_update = 0x00;
+                // break; // we could break out here, but check all of them in case we have duplicates
         }
     }
 }
