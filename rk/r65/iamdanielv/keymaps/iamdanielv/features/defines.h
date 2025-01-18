@@ -15,6 +15,7 @@ enum layer_names {
 #define W_ALT_CAPS LT(_WIN_FN_LYR, KC_CAPS)
 #define FN_RALT LT(_FN_LYR, KC_RALT)
 
+// shortcuts
 #define MY_UNDO   C(KC_Z)
 #define MY_CUT    C(KC_X)
 #define MY_COPY   C(KC_INS)
@@ -23,7 +24,6 @@ enum layer_names {
 #define MY_CONS   LCTL(LSFT(KC_GRV))
 #define MY_BACK   A(KC_LEFT)
 #define MY_FWD    A(KC_RIGHT)
-#define MY_GRV    LT(0, KC_GRV)
 
 #define TG_NAV    TG(_NAV_LYR)
 #define TG_NUM    TG(_NUM_LYR)
@@ -33,3 +33,7 @@ enum layer_names {
 #define TD_TG_CTL TD(TD_CTL_TG)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
+
+// placeholder, this is handled in process_record_user
+#define MY_GRV    LT(0, KC_GRV)
+
