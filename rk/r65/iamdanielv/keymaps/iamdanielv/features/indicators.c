@@ -2,6 +2,7 @@
 #include "quantum.h"
 #include "rgb_matrix.h"
 #include "action_layer.h"
+#include "config.h"
 
 #include "indicators.h"
 #include "defines.h"
@@ -192,15 +193,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         highlight_fn_keys(led_min, led_max);
 
         // highlight right shift as moving to ctl layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(14, 0, 255, 255);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, 0, 255, 255);
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
         const uint8_t led_indexes[4] = {
-            59, // use PgDn as indicator
+            PGDN_KI, // use PgDn as indicator
             39, // P for persistent color
             9,  // N for NKRO
-            2   // lctl for Fn toggle
+            LEFT_CTL_KI   // lctl for Fn toggle
         };
         for (int i = 0; i < 4; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0x00, 0x80, 0x80);
@@ -208,20 +209,20 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // turn off some of the LEDS to make it easier to see our indicators
         const uint8_t led_off_indexes[15] = {
-            27, 57, 58,     // A, Home, PgUp
-            60, 61, 62, 15, // Arrow keys
-            29, 28, 3,  1,  // TAB, CAPS, LSFT, LG
-            0,  65, 64, 63  // LALT, SPC, RALT, Fn
+            A_KI, HOME_KI, PGUP_KI,     // A, Home, PgUp
+            UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI, // Arrow keys
+            TAB_KI, CAPS_KI, LEFT_SFT_KI,  LEFT_WIN_KI,  // TAB, CAPS, LSFT, Left Win
+            LEFT_ALT_KI,  SPACE_KI, RIGHT_ALT_KI, FN_KI  // LALT, SPC, RALT, Fn
         };
         for (int i = 0; i < 15; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
         }
 
         // highlight Q as reset
-        RGB_MATRIX_INDICATOR_SET_COLOR(30, 0xFF, 0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(Q_KI, 0xFF, 0x00, 0x00);
 
         // highlight Z as clear eeprom
-        RGB_MATRIX_INDICATOR_SET_COLOR(4, 0x7A, 0x00, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x7A, 0x00, 0xFF);
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
@@ -252,16 +253,16 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(_FN_LYR)) {
         // highlight the toggle buttons
-        RGB_MATRIX_INDICATOR_SET_COLOR(57, 0, 0, 255);   // NAV = Home
-        RGB_MATRIX_INDICATOR_SET_COLOR(58, 0, 255, 0);   // NUM = PgUp
-        RGB_MATRIX_INDICATOR_SET_COLOR(59, 0, 255, 255); // CTL = PgDn
+        RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI, 0, 0, 255);   // NAV = Home
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, 0, 255, 0);   // NUM = PgUp
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, 0, 255, 255); // CTL = PgDn
 
         // highlight right shift as moving to ctl layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(14, 0, 255, 255);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, 0, 255, 255);
 
         // highlight the aux buttons on right of keyboard
         const uint8_t led_indexes[7] = {
-            64,                    // highlight the RALT button
+            RIGHT_ALT_KI,                    // highlight the RALT button
             49, 48, 47, 46, 45, 44 // used for media keys = 6 keys
         };
 
