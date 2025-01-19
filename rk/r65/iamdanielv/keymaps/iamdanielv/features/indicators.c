@@ -50,7 +50,7 @@
 hsv_t get_base_hsv_color_shifted(bool clockwise) {
     // get the current base hsv value
     hsv_t base_color = rgb_matrix_get_hsv();
-    base_color.v = 255;
+    //base_color.v = 255;
     if(clockwise){
         if(base_color.h > 21){
             base_color.h = base_color.h - 21;
@@ -72,7 +72,7 @@ hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
     hsv_t base_color = rgb_matrix_get_hsv();
 
     // maximize brightness
-    base_color.v = 255;
+    //base_color.v = 255;
     //offset hue by a quarter
     if(clockwise){
         if(base_color.h > 64){
@@ -188,7 +188,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     hsv_t base_color_offset_qrt_cw = get_base_hsv_color_shifted_quarter(true);
     hsv_t base_color_offset = get_base_hsv_color_shifted(false);
     // make the color a little darker
-    base_color_offset.v = base_color_offset.v - 64;
+    // if(base_color_offset.v > 128)
+    //     base_color_offset.v = base_color_offset.v - 64;
 
     rgb_t wfn_lyr_color = hsv_to_rgb(base_color_offset);
     rgb_t accent_lyr_color = hsv_to_rgb(base_color_offset_qrt_cw);
