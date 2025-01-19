@@ -192,8 +192,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // no matter what, this layer also uses fn keys
         highlight_fn_keys(led_min, led_max);
 
-        // highlight right shift as moving to ctl layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, 0, 255, 255);
+        // layer lock key
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF,0x00, 0x00); // left GUI/win
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
