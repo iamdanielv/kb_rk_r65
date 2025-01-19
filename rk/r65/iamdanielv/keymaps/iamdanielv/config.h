@@ -21,6 +21,13 @@
 #define PGUP_KI 58
 #define PGDN_KI 59
 
+#define F_KI 24
+
+#define I_KI 37
+#define J_KI 21
+#define K_KI 20
+#define L_KI 19
+
 #define UP_KI 15
 #define LEFT_KI 62
 #define DOWN_KI 61

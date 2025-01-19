@@ -183,35 +183,55 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         highlight_fn_keys(led_min, led_max);
     }
 
+     // determine the colors to use for each of the layers
+    hsv_t base_color_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
+    hsv_t base_color_offset_qrt_cw = get_base_hsv_color_shifted_quarter(true);
+    hsv_t base_color_offset = get_base_hsv_color_shifted(false);
+    // make the color a little darker
+    base_color_offset.v = base_color_offset.v - 64;
+
+    rgb_t wfn_lyr_color = hsv_to_rgb(base_color_offset);
+    rgb_t accent_lyr_color = hsv_to_rgb(base_color_offset_qrt_cw);
+    rgb_t num_lyr_color = hsv_to_rgb(base_color_offset_qrt_ccw);
+
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
         // this layer has many functions, so just change the whole color
         for (int i = led_min; i <= led_max; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0xC0, 0x3D, 0x00);
+            // RGB_MATRIX_INDICATOR_SET_COLOR(i, 0xC0, 0x3D, 0x00);
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, wfn_lyr_color.r, wfn_lyr_color.g, wfn_lyr_color.b);
         }
 
         // no matter what, this layer also uses fn keys
         highlight_fn_keys(led_min, led_max);
+
+        //highlight the arrow keys
+        RGB_MATRIX_INDICATOR_SET_COLOR(I_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // up - I
+        RGB_MATRIX_INDICATOR_SET_COLOR(J_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // left - J
+        RGB_MATRIX_INDICATOR_SET_COLOR(K_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // down - K
+        RGB_MATRIX_INDICATOR_SET_COLOR(L_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // right - L
+
+        // higlight the f key to show home row
+        RGB_MATRIX_INDICATOR_SET_COLOR(F_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // f key
 
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF,0x00, 0x00); // left GUI/win
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
-        const uint8_t led_indexes[4] = {
-            PGDN_KI, // use PgDn as indicator
+        const uint8_t led_indexes[3] = {
+            LEFT_CTL_KI, // lctl for Fn toggle
             39, // P for persistent color
-            9,  // N for NKRO
-            LEFT_CTL_KI   // lctl for Fn toggle
+            9   // N for NKRO
         };
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0x00, 0x80, 0x80);
         }
 
         // turn off some of the LEDS to make it easier to see our indicators
         const uint8_t led_off_indexes[15] = {
-            A_KI, HOME_KI, PGUP_KI,     // A, Home, PgUp
+            A_KI, HOME_KI, PGUP_KI,  PGDN_KI,   // A, Home, PgUp, PgDN
             UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI, // Arrow keys
-            TAB_KI, CAPS_KI, LEFT_SFT_KI,  LEFT_WIN_KI,  // TAB, CAPS, LSFT, Left Win
+            TAB_KI, CAPS_KI, LEFT_SFT_KI,  // TAB, CAPS, LSFT
             LEFT_ALT_KI,  SPACE_KI, RIGHT_ALT_KI, FN_KI  // LALT, SPC, RALT, Fn
         };
         for (int i = 0; i < 15; i++) {
@@ -223,6 +243,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // highlight Z as clear eeprom
         RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x7A, 0x00, 0xFF);
+
+        // highlight right shift as toggle Win Fn Layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, wfn_lyr_color.r, wfn_lyr_color.g, wfn_lyr_color.b);
+
+        // highlight right alt as toggle Num Layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+
+        // layer lock key
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF,0x00, 0x00); // left GUI/win
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
@@ -238,7 +267,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 20; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 0);
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+            // RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 0);
         }
     }
 
