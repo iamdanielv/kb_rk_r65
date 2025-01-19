@@ -219,24 +219,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
-        const uint8_t led_indexes[3] = {
+        const uint8_t led_indexes[8] = {
             LEFT_CTL_KI, // lctl for Fn toggle
+            FN_KI, // fn key
             39, // P for persistent color
-            9   // N for NKRO
+            9  // N for NKRO
         };
-        for (int i = 0; i < 3; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0x00, 0x80, 0x80);
-        }
-
-        // turn off some of the LEDS to make it easier to see our indicators
-        const uint8_t led_off_indexes[15] = {
-            A_KI, HOME_KI, PGUP_KI,  PGDN_KI,   // A, Home, PgUp, PgDN
-            UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI, // Arrow keys
-            TAB_KI, CAPS_KI, LEFT_SFT_KI,  // TAB, CAPS, LSFT
-            LEFT_ALT_KI,  SPACE_KI, RIGHT_ALT_KI, FN_KI  // LALT, SPC, RALT, Fn
-        };
-        for (int i = 0; i < 15; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
+        for (int i = 0; i < 8; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i],  128, 128, 128);
         }
 
         // highlight Q as reset
@@ -246,13 +236,27 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x7A, 0x00, 0xFF);
 
         // highlight right shift as toggle Win Fn Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, wfn_lyr_color.r, wfn_lyr_color.g, wfn_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
+        // highlight page down as toggle Win Fn Layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
 
         // highlight right alt as toggle Num Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+        // highlight page up as toggle Num Layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
 
         // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF,0x00, 0x00); // left GUI/win
+        RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI,0x80, 0x00, 0x00); // Home/End key
+
+        // turn off the left win and alt key leds to make left ctl stand out more
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0x00,0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_ALT_KI, 0x00,0x00, 0x00);
+
+        // dim the arrow keys
+        RGB_MATRIX_INDICATOR_SET_COLOR(UP_KI, 64,64,64);
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_KI,64,64,64);
+        RGB_MATRIX_INDICATOR_SET_COLOR(DOWN_KI, 64,64,64);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_KI, 64,64,64);
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
