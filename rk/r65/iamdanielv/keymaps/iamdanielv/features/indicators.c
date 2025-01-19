@@ -300,23 +300,25 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_FN_LYR)) {
-        // highlight the toggle buttons
-        RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI, 0, 0, 255);   // NAV = Home
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, 0, 255, 0);   // NUM = PgUp
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, 0, 255, 255); // CTL = PgDn
-
-        // highlight right shift as moving to ctl layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, 0, 255, 255);
 
         // highlight the aux buttons on right of keyboard
-        const uint8_t led_indexes[7] = {
-            RIGHT_ALT_KI,                    // highlight the RALT button
+        const uint8_t led_indexes[6] = {
+            
             49, 48, 47, 46, 45, 44 // used for media keys = 6 keys
         };
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 6; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 128, 128, 128);
         }
+
+        // highlight page down as toggle Win Fn Layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
+
+        // highlight page up as toggle Num Layer
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+
+        // layer lock key
+        RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI,0x80, 0x00, 0x00); // Home/End key
     }
 
     process_indicator_queue(led_min, led_max);
