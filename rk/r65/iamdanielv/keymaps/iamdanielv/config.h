@@ -6,7 +6,6 @@
 #define TAB_KI 29
 #define CAPS_KI 28
 #define Q_KI 30
-#define A_KI 27
 #define Z_KI 4
 #define LEFT_SFT_KI 3
 #define LEFT_CTL_KI 2
@@ -27,6 +26,11 @@
 #define J_KI 21
 #define K_KI 20
 #define L_KI 19
+
+#define W_KI 31
+#define A_KI 27
+#define S_KI 26
+#define D_KI 25
 
 #define UP_KI 15
 #define LEFT_KI 62
