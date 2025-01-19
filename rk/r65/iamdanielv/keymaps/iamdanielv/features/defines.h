@@ -12,8 +12,8 @@ enum layer_names {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define W_ALT_CAPS LT(_WIN_FN_LYR, KC_CAPS)
-#define FN_RALT LT(_FN_LYR, KC_RALT)
+#define W_FN_CAPS LT(_WIN_FN_LYR, KC_CAPS)
+#define FN_RALT   LT(_FN_LYR, KC_RALT)
 
 // shortcuts
 #define MY_UNDO   C(KC_Z)
@@ -27,6 +27,7 @@ enum layer_names {
 
 #define TG_NAV    TG(_NAV_LYR)
 #define TG_NUM    TG(_NUM_LYR)
+#define TG_W_FN   TG(_WIN_FN_LYR)
 #define TG_CTL    TG(_CTL_LYR)
 #define MO_CTL    MO(_CTL_LYR)
 #define MO_FN     MO(_WIN_FN_LYR)
