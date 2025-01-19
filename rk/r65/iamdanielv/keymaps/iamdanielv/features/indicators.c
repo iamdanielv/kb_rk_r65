@@ -216,7 +216,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(F_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // f key
 
         // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 0xFF,0x00, 0x00); // left GUI/win
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 32,0x00, 0x00); // left GUI/win
+
+        // turn off the left ctl and alt key leds to make left win stand out more
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, 0x00,0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_ALT_KI, 0x00,0x00, 0x00);
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
