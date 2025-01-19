@@ -78,12 +78,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   KC_BSPC,  KC_DEL,   MY_BACK,   MY_FWD,   _______,    _______,            _______,   KC_RCTL,
         _______,   QK_LLCK,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
     ),
-    [_CTL_LYR] = LAYOUT( // 2
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   TD_KB_RST, _______,   _______,   _______,   _______,  _______,  _______,  RM_HUED,   RM_HUEU,  RGB_M_P,    RM_PREV,  RM_NEXT,  RM_TOGG,   _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  RM_SATD,   RM_SATU,  RM_SPDD,    RM_SPDU,            _______,   _______,
-        _______,   TD_KB_CLR, _______,   _______,   _______,   _______,  NK_TOGG,  _______,  RM_VALD,   RM_VALU,  _______,    _______,            RM_VALU,   TG_CTL,
-        KC_SWP_FN, _______,   _______,                         _______,                      _______,   _______,              RM_SPDD,            RM_VALD,   RM_SPDU
+    [_CTL_LYR] = LAYOUT(    // 2
+        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,   XXXXXXX,  XXXXXXX,    XXXXXXX,  XXXXXXX,  RM_TOGG,   _______,
+        XXXXXXX,   TD_KB_RST, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_HUED,   RM_HUEU,  RGB_M_P,    RM_PREV,  RM_NEXT,  RM_TOGG,   XXXXXXX,
+        XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_SATD,   RM_SATU,  RM_SPDD,    RM_SPDU,            _______,   RM_HUEU,
+        XXXXXXX,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  NK_TOGG,  XXXXXXX,  RM_VALD,   RM_VALU,  _______,    TG_W_FN,            RM_VALU,   RM_HUED,
+        KC_SWP_FN, QK_LLCK,   XXXXXXX,                         XXXXXXX,                      TG_NUM,    _______,              RM_SPDD,            RM_VALD,   RM_SPDU
     ),
     [_NUM_LYR] = LAYOUT( // 3
         _______,   _______,   _______,   _______,   _______,   _______,  KC_NUM,   KC_P7,    KC_P8,     KC_P9,   KC_PAST,    _______,  _______,  _______,   _______,
