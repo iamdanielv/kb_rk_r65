@@ -285,8 +285,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(S_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // down - S
         RGB_MATRIX_INDICATOR_SET_COLOR(D_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // right - D
 
-        // layer toggle key
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0xFF,0x00, 0x00); // use Right alt as indicator
+        // layer toggle keys
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 32,0x00, 0x00);
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, 32,0x00, 0x00);
     }
 
     if (IS_LAYER_ON(_NAV_LYR)) {
