@@ -167,11 +167,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    if (IS_LAYER_ON(_WIN_FN_LYR) ||
+    if (// IS_LAYER_ON(_WIN_FN_LYR) ||
         // IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
-        IS_LAYER_ON(_NUM_LYR) ||
-        IS_LAYER_ON(_NAV_LYR) ||
-        IS_LAYER_ON(_FN_LYR)) {
+        IS_LAYER_ON(_NUM_LYR) //||
+        //IS_LAYER_ON(_NAV_LYR) ||
+        //IS_LAYER_ON(_FN_LYR)
+    ) {
         // we are in a custom layer, clear all background colors
         // this will make our custom colors stand out more
         for (int i = led_min; i <= led_max; i++) {
