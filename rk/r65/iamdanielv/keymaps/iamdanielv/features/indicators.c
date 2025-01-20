@@ -32,7 +32,7 @@
  * RGB Indicators *
  ******************/
 
- rgb_t get_complementary_color(rgb_t rgb_led, bool darken) {
+ rgb_t get_complementary_rgb(rgb_t rgb_led, bool darken) {
     uint8_t new_r = 0xFF - rgb_led.r;
     uint8_t new_g = 0xFF - rgb_led.g;
     uint8_t new_b = 0xFF - rgb_led.b;
@@ -47,47 +47,44 @@
     return (rgb_t){.r = new_r, .g = new_g, .b = new_b};
 }
 
+hsv_t get_hsv_color_shifted(hsv_t color, uint8_t offset,  bool clockwise){
+    if(clockwise){
+        if(color.h > offset){
+            color.h = color.h - offset;
+        } else {
+            color.h = 255 - color.h;
+        }
+    } else {
+        if(color.h < (255-offset)){
+            color.h = color.h + offset;
+        } else {
+            color.h = color.h - (255-offset);
+        }
+    }
+    return color;
+}
+
+hsv_t get_base_hsv_color_inverse(void) {
+    // get the current base hsv value
+    hsv_t base_color = rgb_matrix_get_hsv();
+
+    //offset hue by a quarter
+    return get_hsv_color_shifted(base_color, 128, false);
+}
+
 hsv_t get_base_hsv_color_shifted(bool clockwise) {
     // get the current base hsv value
     hsv_t base_color = rgb_matrix_get_hsv();
-    //base_color.v = 255;
-    if(clockwise){
-        if(base_color.h > 21){
-            base_color.h = base_color.h - 21;
-        } else {
-            base_color.h = 255 - base_color.h;
-        }
-    } else {
-        if(base_color.h < 234){
-            base_color.h = base_color.h + 21;
-        } else {
-            base_color.h = base_color.h - 234;
-        }
-    }
-    return base_color;
+
+    return get_hsv_color_shifted(base_color, 21, clockwise);
 }
 
 hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
     // get the current base hsv value
     hsv_t base_color = rgb_matrix_get_hsv();
 
-    // maximize brightness
-    //base_color.v = 255;
     //offset hue by a quarter
-    if(clockwise){
-        if(base_color.h > 64){
-            base_color.h = base_color.h - 64;
-        } else {
-            base_color.h = 255 - base_color.h;
-        }
-    } else {
-        if(base_color.h < 191){
-            base_color.h = base_color.h + 64;
-        } else {
-            base_color.h = base_color.h - 191;
-        }
-    }
-    return base_color;
+    return get_hsv_color_shifted(base_color, 64, clockwise);
 }
 
 void blink_numbers(bool isEnabling) {
@@ -141,16 +138,9 @@ void blink_NKRO(bool isEnabling) {
     }
 }
 
-void highlight_fn_keys(uint8_t led_min, uint8_t led_max) {
-    // get the current hsv value
-    HSV current_hsv = rgb_matrix_get_hsv();
-    // maximize brightness
-    current_hsv.v = 255;
-
-    rgb_led_t rgb     = hsv_to_rgb(current_hsv);
-    rgb_led_t new_rgb = get_complementary_color(rgb, false);
+void highlight_fn_keys(rgb_t color, uint8_t led_min, uint8_t led_max) {
     for (int i = 55; i >= 44; i--) { // 55 - 44 are the number keys and - =
-        RGB_MATRIX_INDICATOR_SET_COLOR(i, new_rgb.r, new_rgb.g, new_rgb.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(i, color.r, color.g, color.b);
     }
 }
 
@@ -180,35 +170,34 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
      // determine the colors to use for each of the layers
-    hsv_t base_color_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
-    hsv_t base_color_offset_qrt_cw = get_base_hsv_color_shifted_quarter(true);
-    hsv_t base_color_offset = get_base_hsv_color_shifted(false);
-    // make the color a little darker
-    // if(base_color_offset.v > 128)
-    //     base_color_offset.v = base_color_offset.v - 64;
+    hsv_t base_hsv_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
+    hsv_t base_hsv_offset_qrt_cw = get_base_hsv_color_shifted_quarter(true);
+    hsv_t base_hsv_offset = get_base_hsv_color_shifted(false);
+    hsv_t base_hsv_inverse = get_base_hsv_color_inverse();
 
-    rgb_t wfn_lyr_color = hsv_to_rgb(base_color_offset);
-    rgb_t accent_lyr_color = hsv_to_rgb(base_color_offset_qrt_cw);
-    rgb_t num_lyr_color = hsv_to_rgb(base_color_offset_qrt_ccw);
+    rgb_t wfn_lyr_rgb = hsv_to_rgb(base_hsv_offset);
+    rgb_t accent_lyr_rgb = hsv_to_rgb(base_hsv_offset_qrt_cw);
+    rgb_t num_lyr_rgb = hsv_to_rgb(base_hsv_offset_qrt_ccw);
+    rgb_t fn_swp_rgb = hsv_to_rgb(base_hsv_inverse);
 
     if (IS_LAYER_ON(_WIN_FN_LYR)) {
         // this layer has many functions, so just change the whole color
         for (int i = led_min; i <= led_max; i++) {
             // RGB_MATRIX_INDICATOR_SET_COLOR(i, 0xC0, 0x3D, 0x00);
-            RGB_MATRIX_INDICATOR_SET_COLOR(i, wfn_lyr_color.r, wfn_lyr_color.g, wfn_lyr_color.b);
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, wfn_lyr_rgb.r, wfn_lyr_rgb.g, wfn_lyr_rgb.b);
         }
 
         //highlight the arrow keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(I_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // up - I
-        RGB_MATRIX_INDICATOR_SET_COLOR(J_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // left - J
-        RGB_MATRIX_INDICATOR_SET_COLOR(K_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // down - K
-        RGB_MATRIX_INDICATOR_SET_COLOR(L_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // right - L
+        RGB_MATRIX_INDICATOR_SET_COLOR(I_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // up - I
+        RGB_MATRIX_INDICATOR_SET_COLOR(J_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // left - J
+        RGB_MATRIX_INDICATOR_SET_COLOR(K_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // down - K
+        RGB_MATRIX_INDICATOR_SET_COLOR(L_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // right - L
 
         // higlight the f key to show home row
-        RGB_MATRIX_INDICATOR_SET_COLOR(F_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // f key
+        RGB_MATRIX_INDICATOR_SET_COLOR(F_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // f key
 
         // swap FN key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, fn_swp_rgb.r, fn_swp_rgb.g, fn_swp_rgb.b);
 
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 32,0x00, 0x00); // left GUI/win
@@ -220,7 +209,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // FN Key mode is done after the base win layer and the win fn layer
     // because they can both modify the state of the FN keys
     if (fn_mode_enabled) {
-        highlight_fn_keys(led_min, led_max);
+        highlight_fn_keys(fn_swp_rgb, led_min, led_max);
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
@@ -241,14 +230,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x7A, 0x00, 0xFF);
 
         // highlight right shift as toggle Win Fn Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
         // highlight page down as toggle Win Fn Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
 
         // highlight right alt as toggle Num Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
         // highlight page up as toggle Num Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
 
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI,0x80, 0x00, 0x00); // Home/End key
@@ -275,15 +264,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
 
         for (int i = 0; i < 19; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(num_led_indexes[i], num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+            RGB_MATRIX_INDICATOR_SET_COLOR(num_led_indexes[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
             // RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 0);
         }
 
         //highlight the mouse keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(W_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // up - W
-        RGB_MATRIX_INDICATOR_SET_COLOR(A_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // left - A
-        RGB_MATRIX_INDICATOR_SET_COLOR(S_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // down - S
-        RGB_MATRIX_INDICATOR_SET_COLOR(D_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // right - D
+        RGB_MATRIX_INDICATOR_SET_COLOR(W_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // up - W
+        RGB_MATRIX_INDICATOR_SET_COLOR(A_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // left - A
+        RGB_MATRIX_INDICATOR_SET_COLOR(S_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // down - S
+        RGB_MATRIX_INDICATOR_SET_COLOR(D_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b); // right - D
 
         // layer toggle keys
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 32,0x00, 0x00);
@@ -303,10 +292,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
 
         // highlight page down as toggle Win Fn Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
 
         // highlight page up as toggle Num Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, num_lyr_color.r, num_lyr_color.g, num_lyr_color.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
 
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI,0x80, 0x00, 0x00); // Home/End key
