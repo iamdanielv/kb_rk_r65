@@ -180,10 +180,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    if (fn_mode_enabled) {
-        highlight_fn_keys(led_min, led_max);
-    }
-
      // determine the colors to use for each of the layers
     hsv_t base_color_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
     hsv_t base_color_offset_qrt_cw = get_base_hsv_color_shifted_quarter(true);
@@ -203,9 +199,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, wfn_lyr_color.r, wfn_lyr_color.g, wfn_lyr_color.b);
         }
 
-        // no matter what, this layer also uses fn keys
-        highlight_fn_keys(led_min, led_max);
-
         //highlight the arrow keys
         RGB_MATRIX_INDICATOR_SET_COLOR(I_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // up - I
         RGB_MATRIX_INDICATOR_SET_COLOR(J_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // left - J
@@ -215,12 +208,20 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // higlight the f key to show home row
         RGB_MATRIX_INDICATOR_SET_COLOR(F_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b); // f key
 
+        // swap FN key
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, accent_lyr_color.r, accent_lyr_color.g, accent_lyr_color.b);
+
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_WIN_KI, 32,0x00, 0x00); // left GUI/win
 
-        // turn off the left ctl and alt key leds to make left win stand out more
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, 0x00,0x00, 0x00);
+        // turn off the left key led to make left win stand out more
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_ALT_KI, 0x00,0x00, 0x00);
+    }
+
+    // FN Key mode is done after the base win layer and the win fn layer
+    // because they can both modify the state of the FN keys
+    if (fn_mode_enabled) {
+        highlight_fn_keys(led_min, led_max);
     }
 
     if (IS_LAYER_ON(_CTL_LYR)) {
@@ -303,7 +304,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // highlight the aux buttons on right of keyboard
         const uint8_t led_indexes[6] = {
-            
+
             49, 48, 47, 46, 45, 44 // used for media keys = 6 keys
         };
 
