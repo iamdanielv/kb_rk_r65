@@ -45,8 +45,7 @@ void housekeeping_task_user(void) {
 // *************
 enum tap_dance_keys {
     TD_RESET, // require 3 taps to reset board
-    TD_CLEAR, // require 3 taps to clear eeprom
-    TD_CTL_TG // require double tap to enable ctl layer
+    TD_CLEAR // require 3 taps to clear eeprom
 };
 
 // *****************************
@@ -57,8 +56,7 @@ enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
     [TD_RESET]  = ACTION_TAP_DANCE_FN(safe_reset),
-    [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear),
-    [TD_CTL_TG] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_RCTL, _CTL_LYR)
+    [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear)
 };
 // clang-format on
 

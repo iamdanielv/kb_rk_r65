@@ -67,7 +67,6 @@ hsv_t get_base_hsv_color_inverse(void) {
     // get the current base hsv value
     hsv_t base_color = rgb_matrix_get_hsv();
 
-    //offset hue by a quarter
     return get_hsv_color_shifted(base_color, 128, false);
 }
 
@@ -156,7 +155,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-     // determine the colors to use for each of the layers
+    // determine the colors to use for each of the layers
     hsv_t base_hsv_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
     hsv_t base_hsv_offset_qrt_cw = get_base_hsv_color_shifted_quarter(true);
     hsv_t base_hsv_offset = get_base_hsv_color_shifted(false);
