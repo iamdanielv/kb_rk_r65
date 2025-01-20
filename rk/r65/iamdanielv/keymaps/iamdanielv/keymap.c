@@ -16,7 +16,8 @@
 // ***********************
 void housekeeping_task_user(void) {
     // Note: We can decide what to do with the MAC Led in this function
-    if (IS_LAYER_ON(_CTL_LYR)) {         // if the Ctl layer is active
+    // if the Ctl layer is active or FN key mode is enabled
+    if (IS_LAYER_ON(_CTL_LYR) || fn_mode_enabled) {
         gpio_write_pin_low(LED_MAC_PIN); // low means turn on
     } else {
         gpio_write_pin_high(LED_MAC_PIN); // high means turn off
