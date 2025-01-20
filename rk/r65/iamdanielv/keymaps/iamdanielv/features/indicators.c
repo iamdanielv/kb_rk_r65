@@ -1,4 +1,3 @@
-#include "color.h"
 #include "quantum.h"
 #include "rgb_matrix.h"
 #include "action_layer.h"
@@ -92,26 +91,26 @@ void blink_numbers(bool isEnabling) {
     {
         if (isEnabling) {
             // enabling, flash white
-            indicator_enqueue(i, 200, 3, RGB_WHITE);
+            indicator_enqueue(i, 200, 2, RGB_WHITE);
         } else {
             // disabling, flash red
-            indicator_enqueue(i, 150, 4, RGB_RED);
+            indicator_enqueue(i, 150, 2, RGB_RED);
         }
     }
 }
 
 void blink_arrows(void) {
-    indicator_enqueue(62, 200, 3, RGB_WHITE); // left
-    indicator_enqueue(61, 200, 3, RGB_WHITE); // down
-    indicator_enqueue(15, 200, 3, RGB_WHITE); // up
-    indicator_enqueue(60, 200, 3, RGB_WHITE); // right
+    indicator_enqueue(UP_KI, 200, 2, RGB_WHITE); // up
+    indicator_enqueue(LEFT_KI, 200, 2, RGB_WHITE); // left
+    indicator_enqueue(DOWN_KI, 200, 2, RGB_WHITE); // down
+    indicator_enqueue(RIGHT_KI, 200, 2, RGB_WHITE); // right
 }
 
 void blink_space(bool extended) {
-    indicator_enqueue(65, 200, 3, RGB_WHITE); // blink space too
+    indicator_enqueue(SPACE_KI, 200, 2, RGB_WHITE); // blink space
     if (extended) {
-        indicator_enqueue(0, 200, 3, RGB_BLACK);  // blink left alt
-        indicator_enqueue(64, 200, 3, RGB_BLACK); // blink right alt
+        indicator_enqueue(LEFT_ALT_KI, 200, 2, RGB_BLACK);  // blink left alt
+        indicator_enqueue(RIGHT_ALT_KI, 200, 2, RGB_BLACK); // blink right alt
     }
 }
 
@@ -154,18 +153,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             // we could also do this, but using the min max
             // updates a smaller subset at once
             // rgb_matrix_set_color_all(0, 0, 0);
-        }
-    }
-
-    if (// IS_LAYER_ON(_WIN_FN_LYR) ||
-        // IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
-        IS_LAYER_ON(_NUM_LYR) //||
-        //IS_LAYER_ON(_FN_LYR)
-    ) {
-        // we are in a custom layer, clear all background colors
-        // this will make our custom colors stand out more
-        for (int i = led_min; i <= led_max; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
         }
     }
 
@@ -254,6 +241,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     if (IS_LAYER_ON(_NUM_LYR)) {
+        // clear out all the leds so we only light up the ones we care about
+        // this will make our custom colors stand out more
+        for (int i = led_min; i <= led_max; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0, 0, 0);
+        }
+
         const uint8_t num_led_indexes[19] = {
             // Light up the numpad to make it easier to see
             // 6 is used as numlock and starts the numpad
@@ -262,7 +255,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             21, 20, 19, 18,             // J, K, L, ; = 1, 2, 3, Enter
             10, 11, 12, 13              // M, ,, ., / = 0, dot, dot, slash
         };
-
         for (int i = 0; i < 19; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(num_led_indexes[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
             // RGB_MATRIX_INDICATOR_SET_COLOR(led_indexes[i], 0, 255, 0);
