@@ -93,14 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  KC_P0,    KC_PDOT,   KC_PDOT, KC_PSLS,    _______,            _______,   XXXXXXX,
         XXXXXXX,   XXXXXXX,   XXXXXXX,                         _______,                      TG_NUM,    _______,             _______,            _______,   _______
     ),
-    [_NAV_LYR] = LAYOUT(   // 4
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   _______,
-        MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   _______,  KC_PGUP,  KC_HOME,  KC_UP,    KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    TG_NAV,
-        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   _______,  KC_PGDN,  KC_LEFT,  KC_DOWN,  KC_RIGHT, KC_HOME,    KC_END,             _______,   _______,
-        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   _______,  _______,  MY_BACK,  MY_FWD,   _______,    _______,            _______,   _______,
-        _______,   _______,   _______,                         _______,                      _______,  _______,              _______,            _______,   _______
-    ),
-    [_FN_LYR] = LAYOUT(    // 5
+    [_FN_LYR] = LAYOUT(    // 4
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,    KC_VOLD,  KC_VOLU,  KC_DEL,    TG_CTL,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   QK_LLCK,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_NUM,
@@ -115,7 +108,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [_WIN_FN_LYR]   = {ENCODER_CCW_CW(_______, _______)},
     [_CTL_LYR]      = {ENCODER_CCW_CW(_______, _______)},
     [_NUM_LYR]      = {ENCODER_CCW_CW(_______, _______)},
-    [_NAV_LYR]      = {ENCODER_CCW_CW(_______, _______)},
     [_FN_LYR]       = {ENCODER_CCW_CW(_______, _______)}
 };
 #endif

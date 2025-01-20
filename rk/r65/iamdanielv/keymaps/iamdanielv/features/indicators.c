@@ -170,7 +170,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (// IS_LAYER_ON(_WIN_FN_LYR) ||
         // IS_LAYER_ON(_CTL_LYR) ||  //ignore the CTL layer since we want to see RGB effects on that layer
         IS_LAYER_ON(_NUM_LYR) //||
-        //IS_LAYER_ON(_NAV_LYR) ||
         //IS_LAYER_ON(_FN_LYR)
     ) {
         // we are in a custom layer, clear all background colors
@@ -289,15 +288,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // layer toggle keys
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 32,0x00, 0x00);
         RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, 32,0x00, 0x00);
-    }
-
-    if (IS_LAYER_ON(_NAV_LYR)) {
-        // this layer has many functions, so just change the whole color
-        for (int i = led_min; i <= led_max; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(i, 0x00, 0x00, 0xFF);
-        }
-
-        RGB_MATRIX_INDICATOR_SET_COLOR(57, 0xFF, 0xFF, 0xFF); // use home key as toggle indicator
     }
 
     if (IS_LAYER_ON(_FN_LYR)) {

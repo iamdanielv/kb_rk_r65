@@ -5,8 +5,7 @@ enum layer_names {
     _WIN_FN_LYR, // 1
     _CTL_LYR,    // 2
     _NUM_LYR,    // 3
-    _NAV_LYR,    // 4
-    _FN_LYR,     // 5
+    _FN_LYR,     // 4
 };
 
 // ******************************
@@ -25,7 +24,6 @@ enum layer_names {
 #define MY_BACK   A(KC_LEFT)
 #define MY_FWD    A(KC_RIGHT)
 
-#define TG_NAV    TG(_NAV_LYR)
 #define TG_NUM    TG(_NUM_LYR)
 #define TG_W_FN   TG(_WIN_FN_LYR)
 #define TG_CTL    TG(_CTL_LYR)
