@@ -145,7 +145,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             blink_space(false);
 
             if (IS_LAYER_ON(_WIN_FN_LYR)) {
-                indicator_enqueue(LEFT_WIN_KI, 200, 3, RGB_RED); // blink left win
+                indicator_enqueue(LEFT_WIN_KI, 200, 2, RGB_RED); // blink left win
 
                 //blink the new arrow keys
                 indicator_enqueue(I_KI, 150, 2, RGB_RED); // up - I
