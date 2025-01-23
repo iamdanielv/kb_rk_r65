@@ -92,11 +92,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,   XXXXXXX,   XXXXXXX,                         _______,                      TG_NUM,    _______,             _______,            _______,   _______
     ),
     [_FN_LYR] = LAYOUT(    // 4
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,    KC_VOLD,  KC_VOLU,  KC_DEL,    TG_CTL,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,    KC_VOLD,  KC_VOLU,  _______,   _______,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   QK_LLCK,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_NUM,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_W_FN,
-        _______,   _______,   _______,                         _______,                      _______,  _______,              _______,            _______,   _______
+        _______,   _______,   _______,                         _______,                      TG_FN_LYR,_______,              _______,            _______,   _______
     )
 };
 
@@ -143,13 +143,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             blink_space(false);
 
             if (IS_LAYER_ON(_WIN_FN_LYR)) {
-                indicator_enqueue(LEFT_WIN_KI, 200, 2, RGB_RED); // blink left win
+                indicator_enqueue(LEFT_WIN_KI, 200, 2, INDICATOR_RGB_DARK_RED); // blink left win
 
                 //blink the new arrow keys
-                indicator_enqueue(I_KI, 150, 2, RGB_RED); // up - I
-                indicator_enqueue(J_KI, 150, 2, RGB_RED); // left - J
-                indicator_enqueue(K_KI, 150, 2, RGB_RED); // down - K
-                indicator_enqueue(L_KI, 150, 2, RGB_RED); // right - L
+                indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
+                indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
+                indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
+                indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
             }
             return true;
         case MY_GRV:
