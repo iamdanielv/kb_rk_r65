@@ -126,6 +126,13 @@ void highlight_fn_keys(rgb_t color, uint8_t led_min, uint8_t led_max) {
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+
+    // check for caps lock
+    if (host_keyboard_led_state().caps_lock) {
+        // we can use the LED Indicator for CAPS_LOCK as well
+        RGB_MATRIX_INDICATOR_SET_COLOR(CAPS_KI, 128, 128, 128);
+    }
+
     uint8_t current_layer = get_highest_layer(layer_state);
     if (current_layer == _WIN_LYR) {
         if (rgb_matrix_get_flags() == LED_FLAG_INDICATOR) {
@@ -237,6 +244,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         };
         for (int i = 0; i < 19; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(numpad_keys[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
+        }
+
+        // check for num lock
+        if (host_keyboard_led_state().num_lock) {
+            // we can use the LED Indicator for NUM_LOCK as well
+            RGB_MATRIX_INDICATOR_SET_COLOR(N6_KI, 128, 128, 128);
         }
 
         // highlight the mouse keys
