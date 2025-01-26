@@ -15,7 +15,7 @@
     }
 
 #define INDICATOR_Q_GET_RGB_LED(indicator)                   \
-    (rgb_led_t) {                                            \
+    (rgb_t) {                                            \
         .r = indicator.r, .g = indicator.g, .b = indicator.b \
     }
 

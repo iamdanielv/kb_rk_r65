@@ -53,8 +53,8 @@ void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
             if (indicator_queue[i].times_to_flash % 2) {
                 INDICATOR_Q_MATRIX_SET_COLOR(indicator_queue[i]);
             } else {
-                rgb_led_t this_rgb_led = INDICATOR_Q_GET_RGB_LED(indicator_queue[i]);
-                rgb_led_t alt          = get_complementary_rgb(this_rgb_led, false);
+                rgb_t this_rgb_led = INDICATOR_Q_GET_RGB_LED(indicator_queue[i]);
+                rgb_t alt          = get_complementary_rgb(this_rgb_led, false);
                 INDICATOR_Q_MATRIX_SET_COLOR_CUSTOM(indicator_queue[i], alt.r, alt.g, alt.b);
             }
         }

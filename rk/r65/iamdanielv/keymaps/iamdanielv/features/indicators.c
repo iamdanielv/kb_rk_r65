@@ -28,18 +28,11 @@ rgb_t get_complementary_rgb(rgb_t rgb_led, bool darken) {
 }
 
 hsv_t get_hsv_color_shifted(hsv_t color, uint8_t offset, bool clockwise) {
+    // it's ok if it overflows, the byte will handle it
     if (clockwise) {
-        if (color.h > offset) {
-            color.h = color.h - offset;
-        } else {
-            color.h = 255 - color.h;
-        }
+        color.h = color.h - offset;
     } else {
-        if (color.h < (255 - offset)) {
-            color.h = color.h + offset;
-        } else {
-            color.h = color.h - (255 - offset);
-        }
+        color.h = color.h + offset;
     }
     return color;
 }
