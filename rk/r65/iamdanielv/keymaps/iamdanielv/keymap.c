@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
+#include "features/defines.h"
 #include "quantum.h"
 
 #include "features/defines.h"
@@ -40,13 +41,7 @@ void housekeeping_task_user(void) {
     }     // else we have enabled no_gui, skip re-using the LED
 }
 
-// *************
-// * Tap Dance *
-// *************
-enum tap_dance_keys {
-    TD_RESET, // require 3 taps to reset board
-    TD_CLEAR // require 3 taps to clear eeprom
-};
+bool fn_mode_enabled = false;
 
 // *****************************
 // * Custom processing of keys *
@@ -55,8 +50,14 @@ enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
 
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
+
     [TD_RESET]  = ACTION_TAP_DANCE_FN(safe_reset),
-    [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear)
+    [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear),
+
+    // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap Hold: MO(_NUM_LYR)
+    [TD_CAPS_MO]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_mo_finished, caps_mo_reset),
+    // on Tap: `; on Double Tap: ~; on Hold: ``````
+    [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset)
 };
 // clang-format on
 
@@ -66,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_WIN_LYR] = LAYOUT(    // 0
         KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,     KC_6,     KC_7,     KC_8,      KC_9,     KC_0,       KC_MINS,  KC_EQL,   KC_BSPC,   KC_MUTE,
         KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,     KC_Y,     KC_U,     KC_I,      KC_O,     KC_P,       KC_LBRC,  KC_RBRC,  KC_BSLS,   KC_HOME,
-        W_FN_CAPS, KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
+        CAPS_MO,   KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
         KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,   KC_DOT,   KC_SLSH,    KC_RSFT,            KC_UP,     KC_PGDN,
         KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       FN_RALT,   MO_CTL,               KC_LEFT,            KC_DOWN,   KC_RGHT
     ),
@@ -86,10 +87,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_NUM_LYR] = LAYOUT(    // 3
         _______,   _______,   _______,   _______,   _______,   _______,  KC_NUM,   KC_P7,    KC_P8,     KC_P9,   KC_PAST,    _______,  _______,  _______,   _______,
-        XXXXXXX,   KC_BTN1,   KC_MS_U,   KC_BTN2,   XXXXXXX,   XXXXXXX,  XXXXXXX,  KC_P4,    KC_P5,     KC_P6,   KC_PPLS,    _______,  _______,  _______,   XXXXXXX,
-        XXXXXXX,   KC_MS_L,   KC_MS_D,   KC_MS_R,   XXXXXXX,   XXXXXXX,  XXXXXXX,  KC_P1,    KC_P2,     KC_P3,   KC_PENT,    _______,            _______,   TG_NUM,
-        XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  KC_P0,    KC_PDOT,   KC_PDOT, KC_PSLS,    _______,            _______,   XXXXXXX,
-        XXXXXXX,   XXXXXXX,   XXXXXXX,                         _______,                      TG_NUM,    _______,             _______,            _______,   _______
+        _______,   KC_BTN1,   KC_MS_U,   KC_BTN2,   MSW_UP,    XXXXXXX,  XXXXXXX,  KC_P4,    KC_P5,     KC_P6,   KC_PPLS,    _______,  _______,  _______,   XXXXXXX,
+        _______,   KC_MS_L,   KC_MS_D,   KC_MS_R,   MSW_DN,    XXXXXXX,  XXXXXXX,  KC_P1,    KC_P2,     KC_P3,   KC_PENT,    _______,            _______,   TG_NUM,
+        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  KC_P0,    KC_PDOT,   KC_PDOT, KC_PSLS,    _______,            _______,   XXXXXXX,
+        _______,   _______,   _______,                         _______,                      TG_NUM,    _______,             _______,            _______,   _______
     ),
     [_FN_LYR] = LAYOUT(    // 4
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,    KC_VOLD,  KC_VOLU,  _______,   _______,
@@ -110,8 +111,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 };
 #endif
 // clang-format on
-
-bool fn_mode_enabled = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == KC_SWP_FN) {
@@ -152,39 +151,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
             }
             return true;
-        case MY_GRV:
-            if (record->tap.count > 0) { // Key is being tapped
-                if (record->event.pressed) {
-                    // Handle tap press event...
-                    if (record->tap.count == 1) {
-                        register_code16(KC_GRV);
-                    } else if (record->tap.count == 2) {
-                        // this is the 2nd tap,
-                        // but we already did something on the 1st tap
-                        // delete the previous key
-                        tap_code(KC_BSPC);
-                        register_code16(KC_TILD);
-                    }
-                } else {
-                    // Handle tap release event...
-                    if (record->tap.count == 1) {
-                        unregister_code16(KC_GRV);
-                    } else if (record->tap.count == 2) {
-                        unregister_code16(KC_TILD);
-                    }
-                }
-            } else { // Key is being held
-                if (record->event.pressed) {
-                    // Handle hold press event...
-                    // send backticks to start a code block
-                    SEND_STRING("``````");
-                    // move cursor to the middle of the code block
-                    tap_code(KC_LEFT);
-                    tap_code(KC_LEFT);
-                    tap_code(KC_LEFT);
-                }
-            }
-            return false; // we handled all cases, stop further processing
         default:
             return true;
     }

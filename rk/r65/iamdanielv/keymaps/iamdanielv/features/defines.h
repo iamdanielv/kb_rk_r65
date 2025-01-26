@@ -123,8 +123,9 @@ enum layer_names {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define W_FN_CAPS LT(_WIN_FN_LYR, KC_CAPS)
+#define CAPS_MO TD(TD_CAPS_MO)
 #define FN_RALT   LT(_FN_LYR, KC_RALT)
+#define MY_GRV TD(TD_GRV)
 
 // shortcuts
 #define MY_UNDO   C(KC_Z)
@@ -135,6 +136,8 @@ enum layer_names {
 #define MY_CONS   LCTL(LSFT(KC_GRV))
 #define MY_BACK   A(KC_LEFT)
 #define MY_FWD    A(KC_RIGHT)
+#define MSW_UP    KC_MS_WH_UP
+#define MSW_DN    KC_MS_WH_DOWN
 
 #define TG_NUM    TG(_NUM_LYR)
 #define TG_W_FN   TG(_WIN_FN_LYR)
@@ -143,7 +146,4 @@ enum layer_names {
 #define MO_CTL    MO(_CTL_LYR)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
-
-// placeholder, this is handled in process_record_user
-#define MY_GRV    LT(0, KC_GRV)
 
