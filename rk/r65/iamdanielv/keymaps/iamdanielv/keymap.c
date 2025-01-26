@@ -18,7 +18,7 @@
 void housekeeping_task_user(void) {
     // Note: We can decide what to do with the MAC Led in this function
     // if the Ctl layer is active or FN key mode is enabled
-    if (IS_LAYER_ON(_CTL_LYR) || fn_mode_enabled) {
+    if (IS_LAYER_ON(KBCTL_LYR) || fn_mode_enabled) {
         gpio_write_pin_low(LED_MAC_PIN); // low means turn on
     } else {
         gpio_write_pin_high(LED_MAC_PIN); // high means turn off
@@ -27,7 +27,7 @@ void housekeeping_task_user(void) {
     if (!keymap_config.no_gui) {
         // we have NOT enabled the no_gui,
         // we can re-use the Win Lock LED as NumLock indicator
-        if (IS_LAYER_ON(_NUM_LYR)) { // if the Num layer is active
+        if (IS_LAYER_ON(NUM_LYR)) { // if the Num layer is active
             // get the current LED state
             led_t led_state = host_keyboard_led_state();
             if (led_state.num_lock) {
@@ -51,11 +51,11 @@ enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
 // clang-format off
 tap_dance_action_t tap_dance_actions[] = {
 
-    [TD_RESET]  = ACTION_TAP_DANCE_FN(safe_reset),
-    [TD_CLEAR]  = ACTION_TAP_DANCE_FN(safe_clear),
+    [TD_RESET]     = ACTION_TAP_DANCE_FN(safe_reset),
+    [TD_CLEAR]     = ACTION_TAP_DANCE_FN(safe_clear),
 
-    // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap Hold: MO(_NUM_LYR)
-    [TD_CAPS_MO]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_mo_finished, caps_mo_reset),
+    // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap Hold: MO(NUM_LYR)
+    [TD_MO_CAPS]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mo_caps_finished, mo_caps_reset),
     // on Tap: `; on Double Tap: ~; on Hold: ``````
     [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset)
 };
@@ -64,50 +64,60 @@ tap_dance_action_t tap_dance_actions[] = {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    [_WIN_LYR] = LAYOUT(    // 0
+    [BASE_LYR] = LAYOUT(
         KC_ESC,    KC_1,      KC_2,      KC_3,      KC_4,      KC_5,     KC_6,     KC_7,     KC_8,      KC_9,     KC_0,       KC_MINS,  KC_EQL,   KC_BSPC,   KC_MUTE,
         KC_TAB,    KC_Q,      KC_W,      KC_E,      KC_R,      KC_T,     KC_Y,     KC_U,     KC_I,      KC_O,     KC_P,       KC_LBRC,  KC_RBRC,  KC_BSLS,   KC_HOME,
-        CAPS_MO,   KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
+        MO_CAPS,   KC_A,      KC_S,      KC_D,      KC_F,      KC_G,     KC_H,     KC_J,     KC_K,      KC_L,     KC_SCLN,    KC_QUOT,            KC_ENT,    KC_PGUP,
         KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,   KC_DOT,   KC_SLSH,    KC_RSFT,            KC_UP,     KC_PGDN,
-        KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       FN_RALT,   MO_CTL,               KC_LEFT,            KC_DOWN,   KC_RGHT
+        KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       MO_RALT,   MO_KBCTL,             KC_LEFT,            KC_DOWN,   KC_RGHT
     ),
-    [_WIN_FN_LYR] = LAYOUT( // 1
+    [EXT_LYR] = LAYOUT(
         KC_GRV,    _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  KC_DEL,    _______,
         MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
         _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),  KC_PGDN,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
         _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   KC_BSPC,  KC_DEL,   MY_BACK,   MY_FWD,   _______,    _______,            _______,   KC_RCTL,
         KC_SWP_FN, QK_LLCK,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
     ),
-    [_CTL_LYR] = LAYOUT(    // 2
+    [KBCTL_LYR] = LAYOUT(
         _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,   XXXXXXX,  XXXXXXX,    XXXXXXX,  XXXXXXX,  RM_TOGG,   _______,
-        XXXXXXX,   TD_KB_RST, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_HUED,   RM_HUEU,  RGB_M_P,    RM_PREV,  RM_NEXT,  RM_TOGG,   QK_LLCK,
-        XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_SATD,   RM_SATU,  RM_SPDD,    RM_SPDU,            _______,   TG_NUM,
-        XXXXXXX,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  NK_TOGG,  XXXXXXX,  RM_VALD,   RM_VALU,  _______,    TG_W_FN,            RM_VALU,   TG_W_FN,
-        KC_SWP_FN, XXXXXXX,   XXXXXXX,                         XXXXXXX,                      TG_NUM,    _______,              RM_SPDD,            RM_VALD,   RM_SPDU
+        _______,   TD_KB_RST, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_HUED,   RM_HUEU,  RGB_M_P,    RM_PREV,  RM_NEXT,  RM_TOGG,   QK_LLCK,
+        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_SATD,   RM_SATU,  RM_SPDD,    RM_SPDU,            _______,   TG_NUM,
+        _______,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  NK_TOGG,  XXXXXXX,  RM_VALD,   RM_VALU,  _______,    TG_EXT,             RM_VALU,   TG_EXT,
+        KC_SWP_FN, _______,   _______,                         _______,                      TG_NUM,    _______,              RM_SPDD,            RM_VALD,   RM_SPDU
     ),
-    [_NUM_LYR] = LAYOUT(    // 3
+    [NUM_LYR] = LAYOUT(
         _______,   _______,   _______,   _______,   _______,   _______,  KC_NUM,   KC_P7,    KC_P8,     KC_P9,   KC_PAST,    _______,  _______,  _______,   _______,
         _______,   KC_BTN1,   KC_MS_U,   KC_BTN2,   MSW_UP,    XXXXXXX,  XXXXXXX,  KC_P4,    KC_P5,     KC_P6,   KC_PPLS,    _______,  _______,  _______,   XXXXXXX,
         _______,   KC_MS_L,   KC_MS_D,   KC_MS_R,   MSW_DN,    XXXXXXX,  XXXXXXX,  KC_P1,    KC_P2,     KC_P3,   KC_PENT,    _______,            _______,   TG_NUM,
         _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  KC_P0,    KC_PDOT,   KC_PDOT, KC_PSLS,    _______,            _______,   XXXXXXX,
         _______,   _______,   _______,                         _______,                      TG_NUM,    _______,             _______,            _______,   _______
     ),
-    [_FN_LYR] = LAYOUT(    // 4
+    [MEDIA_LYR] = LAYOUT(
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,    KC_VOLD,  KC_VOLU,  _______,   _______,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   QK_LLCK,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_NUM,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_W_FN,
-        _______,   _______,   _______,                         _______,                      TG_FN_LYR,_______,              _______,            _______,   _______
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_EXT,
+        _______,   _______,   _______,                         _______,                      TG_MEDIA, _______,              _______,            _______,   _______
+    ),
+    // this is a spare layer that can be modified using VIA
+    // good in case wanting to try something without having to re-flash keyboard
+    [SPARE] = LAYOUT(
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
+        _______,   _______,   _______,                         _______,                      _______,  _______,              _______,            _______,   _______
     )
 };
 
 #ifdef ENCODER_MAP_ENABLE
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [_WIN_LYR]      = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [_WIN_FN_LYR]   = {ENCODER_CCW_CW(_______, _______)},
-    [_CTL_LYR]      = {ENCODER_CCW_CW(_______, _______)},
-    [_NUM_LYR]      = {ENCODER_CCW_CW(_______, _______)},
-    [_FN_LYR]       = {ENCODER_CCW_CW(_______, _______)}
+    [BASE_LYR]      = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [EXT_LYR]       = {ENCODER_CCW_CW(_______, _______)},
+    [KBCTL_LYR]     = {ENCODER_CCW_CW(_______, _______)},
+    [NUM_LYR]       = {ENCODER_CCW_CW(_______, _______)},
+    [MEDIA_LYR]     = {ENCODER_CCW_CW(_______, _______)},
+    [SPARE]         = {ENCODER_CCW_CW(_______, _______)},
 };
 #endif
 // clang-format on
@@ -141,7 +151,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // when we lock a layer, flash the space bar area
             blink_space(false);
 
-            if (IS_LAYER_ON(_WIN_FN_LYR)) {
+            if (IS_LAYER_ON(EXT_LYR)) {
                 indicator_enqueue(LEFT_WIN_KI, 200, 2, INDICATOR_RGB_DARK_RED); // blink left win
 
                 //blink the new arrow keys

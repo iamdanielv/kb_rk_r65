@@ -6,7 +6,7 @@
 enum tap_hold_keys {
     TD_RESET,   // require >= 3 taps to reset board
     TD_CLEAR,   // require >= 3 taps to clear eeprom
-    TD_CAPS_MO, // Tap: caps lock; Hold: MO(EXT_LYR); Double Tap Hold: MO(_NUM_LYR)
+    TD_MO_CAPS, // Tap: caps lock; Hold: MO(EXT_LYR); Double Tap Hold: MO(NUM_LYR)
     TD_GRV      // Tap: `; Double Tap: ~; Hold: ``````
 };
 
@@ -26,8 +26,8 @@ typedef enum {
 
 td_state_t cur_dance(tap_dance_state_t *state);
 
-void caps_mo_finished(tap_dance_state_t *state, void *user_data);
-void caps_mo_reset(tap_dance_state_t *state, void *user_data);
+void mo_caps_finished(tap_dance_state_t *state, void *user_data);
+void mo_caps_reset(tap_dance_state_t *state, void *user_data);
 
 void grv_finished(tap_dance_state_t *state, void *user_data);
 void grv_reset(tap_dance_state_t *state, void *user_data);

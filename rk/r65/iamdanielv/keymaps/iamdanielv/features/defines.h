@@ -4,11 +4,12 @@
 #pragma once
 
 enum layer_names {
-    _WIN_LYR,    // 0
-    _WIN_FN_LYR, // 1
-    _CTL_LYR,    // 2
-    _NUM_LYR,    // 3
-    _FN_LYR,     // 4
+    BASE_LYR,    // 0
+    EXT_LYR,     // 1
+    KBCTL_LYR,   // 2
+    NUM_LYR,     // 3
+    MEDIA_LYR,   // 4
+    SPARE        // 5
 };
 
 // clang-format off
@@ -123,9 +124,9 @@ enum layer_names {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
-#define CAPS_MO TD(TD_CAPS_MO)
-#define FN_RALT   LT(_FN_LYR, KC_RALT)
-#define MY_GRV TD(TD_GRV)
+#define MO_CAPS   TD(TD_MO_CAPS)
+#define MO_RALT   LT(MEDIA_LYR, KC_RALT)
+#define MY_GRV    TD(TD_GRV)
 
 // shortcuts
 #define MY_UNDO   C(KC_Z)
@@ -139,11 +140,10 @@ enum layer_names {
 #define MSW_UP    KC_MS_WH_UP
 #define MSW_DN    KC_MS_WH_DOWN
 
-#define TG_NUM    TG(_NUM_LYR)
-#define TG_W_FN   TG(_WIN_FN_LYR)
-#define TG_CTL    TG(_CTL_LYR)
-#define TG_FN_LYR TG(_FN_LYR)
-#define MO_CTL    MO(_CTL_LYR)
+#define TG_NUM    TG(NUM_LYR)
+#define TG_EXT    TG(EXT_LYR)
+#define TG_KBCTL  TG(KBCTL_LYR)
+#define TG_MEDIA  TG(MEDIA_LYR)
+#define MO_KBCTL  MO(KBCTL_LYR)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
-

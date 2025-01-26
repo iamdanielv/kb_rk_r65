@@ -125,7 +125,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     uint8_t current_layer = get_highest_layer(layer_state);
-    if (current_layer == _WIN_LYR) {
+    if (current_layer == BASE_LYR) {
         if (rgb_matrix_get_flags() == LED_FLAG_INDICATOR) {
             for (int i = led_min; i < led_max; i++) {
                 rgb_matrix_set_color(i, 0, 0, 0);
@@ -147,7 +147,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     rgb_t num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_ccw);
     rgb_t fn_swp_rgb     = hsv_to_rgb(base_hsv_inverse);
 
-    if (IS_LAYER_ON(_WIN_FN_LYR)) {
+    if (IS_LAYER_ON(EXT_LYR)) {
         // this layer has many functions, so just change the whole color
         for (int i = led_min; i <= led_max; i++) {
             // RGB_MATRIX_INDICATOR_SET_COLOR(i, 0xC0, 0x3D, 0x00);
@@ -179,7 +179,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         highlight_fn_keys(fn_swp_rgb, led_min, led_max);
     }
 
-    if (IS_LAYER_ON(_CTL_LYR)) {
+    if (IS_LAYER_ON(KBCTL_LYR)) {
         // keys specific to this layer
         RGB_MATRIX_INDICATOR_SET_COLOR(P_KI, 128, 128, 128);  // P for persistent color
         RGB_MATRIX_INDICATOR_SET_COLOR(N_KI, 128, 128, 128);  // N for NKRO
@@ -218,7 +218,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_KI, 32, 32, 32);
     }
 
-    if (IS_LAYER_ON(_NUM_LYR)) {
+    if (IS_LAYER_ON(NUM_LYR)) {
         // clear out all the leds so we only light up the ones we care about
         // this will make our custom colors stand out more
         for (int i = led_min; i <= led_max; i++) {
@@ -254,7 +254,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, 32, 0x00, 0x00);
     }
 
-    if (IS_LAYER_ON(_FN_LYR)) {
+    if (IS_LAYER_ON(MEDIA_LYR)) {
         const uint8_t media_keys[6] = {
             // KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU
             FN7_KI, FN8_KI, FN9_KI, FN10_KI, FN11_KI, FN12_KI};

@@ -24,7 +24,7 @@ void safe_clear(tap_dance_state_t *state, void *user_data) {
 static td_state_t td_state[] = {
     [TD_RESET]   = TD_NONE,
     [TD_CLEAR]   = TD_NONE,
-    [TD_CAPS_MO] = TD_NONE,
+    [TD_MO_CAPS] = TD_NONE,
     [TD_GRV]     = TD_NONE
 };
 
@@ -81,14 +81,14 @@ td_state_t cur_dance(tap_dance_state_t *state) {
     // we already handled any counts greater than 2 and just clamp it at double tap
 }
 
-void caps_mo_finished(tap_dance_state_t *state, void *user_data) {
-    td_state[TD_CAPS_MO] = cur_dance(state);
-    switch (td_state[TD_CAPS_MO]) {
+void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
+    td_state[TD_MO_CAPS] = cur_dance(state);
+    switch (td_state[TD_MO_CAPS]) {
         case TD_SINGLE_HOLD:
-            layer_on(_WIN_FN_LYR);
+            layer_on(EXT_LYR);
             break;
         case TD_DOUBLE_HOLD:
-            layer_on(_NUM_LYR);
+            layer_on(NUM_LYR);
             break;
         // the default case for the caps lock key should be caps lock
         // we only really modify single and double hold
@@ -102,19 +102,19 @@ void caps_mo_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void caps_mo_reset(tap_dance_state_t *state, void *user_data) {
-    switch (td_state[TD_CAPS_MO]) {
+void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
+    switch (td_state[TD_MO_CAPS]) {
         case TD_SINGLE_HOLD:
-            if(!is_layer_locked(_WIN_FN_LYR)) {
+            if(!is_layer_locked(EXT_LYR)) {
                 // only turn off the layer if it hasn't been locked
-                layer_off(_WIN_FN_LYR);
+                layer_off(EXT_LYR);
             }
             break;
         case TD_DOUBLE_HOLD:
-            // the _NUM_LYR is not lockable
+            // the NUM_LYR is not lockable
             // is is only used with a toggle
             // so it's ok to turn it off on release
-            layer_off(_NUM_LYR);
+            layer_off(NUM_LYR);
             break;
         // the default case for the caps lock key should be caps lock
         // we only really modify single and double hold
@@ -127,7 +127,7 @@ void caps_mo_reset(tap_dance_state_t *state, void *user_data) {
             unregister_code16(KC_CAPS);
             break;
     }
-    td_state[TD_CAPS_MO] = TD_NONE;
+    td_state[TD_MO_CAPS] = TD_NONE;
 }
 
 void grv_finished(tap_dance_state_t *state, void *user_data) {
