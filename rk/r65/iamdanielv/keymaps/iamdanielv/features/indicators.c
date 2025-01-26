@@ -52,7 +52,6 @@ hsv_t get_base_hsv_color_inverse(void) {
 }
 
 hsv_t get_base_hsv_color_shifted(bool clockwise) {
-    // get the current base hsv value
     hsv_t base_color = rgb_matrix_get_hsv();
 
     return get_hsv_color_shifted(base_color, 21, clockwise);
@@ -65,7 +64,6 @@ hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
     // offset hue by a quarter
     return get_hsv_color_shifted(base_color, 64, clockwise);
 }
-
 
 const uint8_t numbers_keys[] = {N1_KI, N2_KI, N3_KI, N4_KI, N5_KI, N6_KI, N7_KI, N8_KI, N9_KI, N0_KI, MINS_KI, EQL_KI};
 

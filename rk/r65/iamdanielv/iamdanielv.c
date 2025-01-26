@@ -46,4 +46,3 @@ void housekeeping_task_kb(void) {
         gpio_write_pin_high(LED_WIN_LOCK_PIN);
     }
 }
-
