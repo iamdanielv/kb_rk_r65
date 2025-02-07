@@ -100,10 +100,10 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                     indicator_enqueue(L_KI, 200, 4, INDICATOR_RGB_DARK_RED); // L - UP
                     indicator_enqueue(K_KI, 200, 2, RGB_BLACK);              // K - DOWN
                     blink_space(false);
+                } else {
+                    indicator_enqueue(L_KI, 150, 1, RGB_WHITE); // L - UP
                 }
                 rgb_matrix_increase_sat_noeeprom();
-            } else {
-                indicator_enqueue(L_KI, 150, 1, RGB_WHITE); // L - DOWN
             }
             return false;
         case RM_SATD:
@@ -113,10 +113,10 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                     indicator_enqueue(L_KI, 200, 2, RGB_BLACK);              // L - UP
                     indicator_enqueue(K_KI, 200, 4, INDICATOR_RGB_DARK_RED); // K - DOWN
                     blink_space(false);
+                } else {
+                    indicator_enqueue(K_KI, 150, 1, RGB_WHITE); // K - DOWN
                 }
                 rgb_matrix_decrease_sat_noeeprom();
-            } else {
-                indicator_enqueue(K_KI, 150, 1, RGB_WHITE); // K - SAD
             }
             return false;
         case RM_VALU:
@@ -126,10 +126,10 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                     indicator_enqueue(COMM_KI, 200, 2, RGB_BLACK);             // , - DOWN
                     blink_space(false);
                     blink_arrows();
+                } else {
+                    indicator_enqueue(DOT_KI, 150, 1, RGB_WHITE); // . - UP
                 }
                 rgb_matrix_increase_val_noeeprom();
-            } else {
-                indicator_enqueue(DOT_KI, 150, 1, RGB_WHITE); // . - VAI
             }
             return false;
         case RM_VALD:
@@ -139,10 +139,10 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
                     indicator_enqueue(COMM_KI, 200, 4, INDICATOR_RGB_DARK_RED); // , - DOWN
                     blink_space(false);
                     blink_arrows();
+                } else {
+                    indicator_enqueue(COMM_KI, 150, 1, RGB_WHITE); // , - DOWN
                 }
                 rgb_matrix_decrease_val_noeeprom();
-            } else {
-                indicator_enqueue(COMM_KI, 150, 1, RGB_WHITE); // , - DOWN
             }
             return false;
     }

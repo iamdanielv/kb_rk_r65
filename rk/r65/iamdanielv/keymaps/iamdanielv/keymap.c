@@ -72,8 +72,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       MO_RALT,   MO_KBCTL,             KC_LEFT,            KC_DOWN,   KC_RGHT
     ),
     [EXT_LYR] = LAYOUT(
-        KC_GRV,    _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  KC_DEL,    _______,
-        MY_GRV,    MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
+        MY_GRV,    _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  KC_DEL,    _______,
+        _______,   MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
         _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),  KC_PGDN,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
         _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   KC_BSPC,  KC_DEL,   MY_BACK,   MY_FWD,   _______,    _______,            _______,   KC_RCTL,
         KC_SWP_FN, QK_LLCK,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
@@ -98,15 +98,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_NUM,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_EXT,
         _______,   _______,   _______,                         _______,                      TG_MEDIA, _______,              _______,            _______,   _______
-    ),
-    // this is a spare layer that can be modified using VIA
-    // good in case wanting to try something without having to re-flash keyboard
-    [SPARE] = LAYOUT(
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
-        _______,   _______,   _______,                         _______,                      _______,  _______,              _______,            _______,   _______
     )
 };
 
@@ -117,7 +108,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [KBCTL_LYR]     = {ENCODER_CCW_CW(_______, _______)},
     [NUM_LYR]       = {ENCODER_CCW_CW(_______, _______)},
     [MEDIA_LYR]     = {ENCODER_CCW_CW(_______, _______)},
-    [SPARE]         = {ENCODER_CCW_CW(_______, _______)},
 };
 #endif
 // clang-format on
@@ -136,6 +126,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_rgb_keys(keycode, record)) { return false; }
 
     switch (keycode) {
+        case KC_BSPC: {
+            // based on: https://getreuer.info/posts/keyboards/macros3/index.html
+            // shift + backspace is delete
+            // both shift held is shift + delete
+            static uint16_t registered_key = KC_NO;
+            if (record->event.pressed) {  // On key press.
+                const uint8_t mods = get_mods();
+                #ifndef NO_ACTION_ONESHOT
+                uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
+                #else
+                        uint8_t shift_mods = mods & MOD_MASK_SHIFT;
+                #endif  // NO_ACTION_ONESHOT
+                if (shift_mods) {  // At least one shift key is held.
+                    registered_key = KC_DEL;
+                    // If one shift is held, clear it from the mods. But if both
+                    // shifts are held, leave as is to send Shift + Del.
+                    if (shift_mods != MOD_MASK_SHIFT) {
+                    #ifndef NO_ACTION_ONESHOT
+                        del_oneshot_mods(MOD_MASK_SHIFT);
+                    #endif  // NO_ACTION_ONESHOT
+                        unregister_mods(MOD_MASK_SHIFT);
+                    }
+                } else {
+                    registered_key = KC_BSPC;
+                }
+
+                register_code(registered_key);
+                set_mods(mods);
+            } else {  // On key release.
+                wait_ms(50); // wait a little bit, so programs don't filter the press
+                unregister_code(registered_key);
+            }
+        }
+        return false;
+
         case QK_MAGIC_TOGGLE_NKRO:
             if (record->event.pressed) {
                 clear_keyboard(); // clear first buffer to prevent stuck keys
@@ -154,7 +179,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (IS_LAYER_ON(EXT_LYR)) {
                 indicator_enqueue(LEFT_WIN_KI, 200, 2, INDICATOR_RGB_DARK_RED); // blink left win
 
-                //blink the new arrow keys
+                // blink the new arrow keys
                 indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
                 indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
                 indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
