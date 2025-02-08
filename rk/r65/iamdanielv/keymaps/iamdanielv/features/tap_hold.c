@@ -30,10 +30,13 @@ static td_state_t td_state[] = {
     [TD_GRV]     = TD_NONE
 };
 
-// *******************************************
-// * This is based on example 4 from         *
-// *  https://docs.qmk.fm/features/tap_dance *
-// *******************************************
+// **********************************************************
+// * This is based on example 4 from:                       *
+// *  https://docs.qmk.fm/features/tap_dance                *
+// * Changed the single tap single hold so that if it's     *
+// * tapped once only look at it's current pressed state    *
+// * to determine if it's a tap or hold.                    *
+// **********************************************************
 
 /* Return an integer that corresponds to what kind of tap dance should be executed.
  *
@@ -64,10 +67,14 @@ static td_state_t td_state[] = {
  */
 td_state_t cur_dance(tap_dance_state_t *state) {
     if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
-        // Key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
-        else
+        if (!state->pressed){
+            // key is not pressed, assume it is a tap, wether interrupted or not
+            return TD_SINGLE_TAP;
+        }
+        else{
+            // key is still held. Means you want to send a 'HOLD'.
             return TD_SINGLE_HOLD;
+        }
     } else if (state->count >= 2) {
         // TD_DOUBLE_SINGLE_TAP is to distinguish between typing "pepper", and actually wanting a double tap
         // action when hitting 'pp'. Suggested use case for this return value is when you want to send two
