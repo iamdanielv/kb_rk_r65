@@ -55,7 +55,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_RESET]     = ACTION_TAP_DANCE_FN(safe_reset),
     [TD_CLEAR]     = ACTION_TAP_DANCE_FN(safe_clear),
 
-    // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap Hold: MO(NUM_LYR)
+    // Tap: CAPS_LOCK; Hold: MO(EXT_LYR); Double Tap: TO(HRM_LYR); Double Hold: MO(NUM_LYR)
     [TD_MO_CAPS]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mo_caps_finished, mo_caps_reset),
     // on Tap: Esc; on Double Tap: `; on Hold: ``````
     [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset)
