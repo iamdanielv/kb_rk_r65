@@ -151,6 +151,17 @@ enum layer_names {
 // *******************************
 #define CTLS_C C_S_T(KC_C) // tap: C ; hold: ctl and shift
 
+// Keycodes using the LT(0,KC) trick
+#define CTLH_T    LT(0, KC_T) // tap: t; hold: ctl and h
+#define CTLR_R    LT(0, KC_R) // tap: r; hold: ctl and r
+#define CTLG_G    LT(0, KC_G) // tap: G ; hold: ctl and g
+#define LSFT_LLCK LT(0, KC_LSFT) // double tap: Layer lock ; hold: left shift
+#define HM_SCLN   LT(0, KC_SCLN) // tap: ; ; hold: Home key
+#define END_QUOT  LT(0, KC_QUOT) // tap: ' ; hold: End key
+#define ALFT_COMM LT(0, KC_COMM) // tap: , ; hold: alt and left arrow
+#define ARGT_DOT  LT(0, KC_DOT) // tap: . ; hold: alt and right arrow
+#define MY_ENT    LT(0, KC_ENT) // tap: Enter ; hold: Shift
+
 #define MO_CAPS   TD(TD_MO_CAPS)
 #define MO_RALT   LT(MEDIA_LYR, KC_RALT)
 #define MY_GRV    TD(TD_GRV)

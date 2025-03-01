@@ -74,38 +74,38 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [HRM_BASE_LYR] = LAYOUT(
         MY_GRV,    _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
-        _______,   GUI_A,     ALT_S,     SFT_D,     CTL_F,     _______,  _______,  CTL_J,    SFT_K,     ALT_L,    GUI_SCLN,   _______,            _______,   _______,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,            _______,   _______,
+        _______,   _______,   _______,   _______,   CTLR_R,    CTLH_T,   _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
+        _______,   GUI_A,     ALT_S,     SFT_D,     CTL_F,     CTLG_G,   _______,  CTL_J,    SFT_K,     ALT_L,    HM_SCLN,    END_QUOT,           MY_ENT,    _______,
+        LSFT_LLCK, _______,   _______,   CTLS_C,    _______,   _______,  _______,  _______,  ALFT_COMM, ARGT_DOT, _______,    _______,            _______,   _______,
         _______,   _______,   _______,                         _______,                      _______,   _______,              _______,            _______,   _______
     ),
     [EXT_LYR] = LAYOUT(
         KC_GRV,    _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
         _______,   MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
-        _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),  KC_PGDN,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
-        _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   KC_BSPC,  KC_DEL,   MY_BACK,   MY_FWD,   _______,    _______,            _______,   KC_RCTL,
-        KC_SWP_FN, QK_LLCK,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
+        _______,   KC_LGUI,   KC_LALT,   KC_LSFT,   KC_LCTL,   C(KC_G),  KC_PGDN,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
+        LSFT_LLCK, MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   KC_BSPC,  KC_DEL,   MY_BACK,   MY_FWD,   _______,    _______,            _______,   KC_RCTL,
+        KC_SWP_FN, _______,   _______,                         _______,                      KC_RCTL,   _______,              _______,            _______,   _______
     ),
     [KBCTL_LYR] = LAYOUT(
         _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,   XXXXXXX,  XXXXXXX,    XXXXXXX,  XXXXXXX,  RM_TOGG,   _______,
         _______,   TD_KB_RST, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_HUED,   RM_HUEU,  RGB_M_P,    RM_PREV,  RM_NEXT,  RM_TOGG,   QK_LLCK,
         _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_SATD,   RM_SATU,  RM_SPDD,    RM_SPDU,            _______,   TG_NUM,
-        _______,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  NK_TOGG,  XXXXXXX,  RM_VALD,   RM_VALU,  TG_EXT,     TG_HRM,             RM_VALU,   TG_EXT,
+        LSFT_LLCK, TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  NK_TOGG,  XXXXXXX,  RM_VALD,   RM_VALU,  TG_EXT,     TG_HRM,             RM_VALU,   TG_EXT,
         KC_SWP_FN, _______,   _______,                         _______,                      TG_NUM,    _______,              RM_SPDD,            RM_VALD,   RM_SPDU
     ),
     [NUM_LYR] = LAYOUT(
         _______,   _______,   _______,   _______,   _______,   _______,  KC_NUM,   KC_P7,    KC_P8,     KC_P9,   KC_PAST,    _______,  _______,  _______,   _______,
         _______,   KC_BTN1,   KC_MS_U,   KC_BTN2,   MSW_UP,    XXXXXXX,  XXXXXXX,  KC_P4,    KC_P5,     KC_P6,   KC_PPLS,    _______,  _______,  _______,   XXXXXXX,
-        _______,   KC_MS_L,   KC_MS_D,   KC_MS_R,   MSW_DN,    XXXXXXX,  XXXXXXX,  KC_P1,    KC_P2,     KC_P3,   KC_PENT,    _______,            _______,   TG_NUM,
-        _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  KC_P0,    KC_PDOT,   KC_PDOT, KC_PSLS,    _______,            _______,   XXXXXXX,
-        _______,   _______,   _______,                         _______,                      TG_NUM,    _______,             _______,            _______,   _______
+        _______,   KC_MS_L,   KC_MS_D,   KC_MS_R,   MSW_DN,    XXXXXXX,  XXXXXXX,  KC_P1,    KC_P2,     KC_P3,   KC_PENT,    _______,            _______,   QK_LLCK,
+        LSFT_LLCK, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  KC_P0,    KC_PDOT,   KC_PDOT, KC_PSLS,    _______,            _______,   XXXXXXX,
+        _______,   _______,   _______,                         _______,                      QK_LLCK,   _______,             _______,            _______,   _______
     ),
     [MEDIA_LYR] = LAYOUT(
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,    KC_VOLD,  KC_VOLU,  _______,   _______,
         _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,   QK_LLCK,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_NUM,
-        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   TG_EXT,
-        _______,   _______,   _______,                         _______,                      TG_MEDIA, _______,              _______,            _______,   _______
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,  _______,  _______,    _______,            _______,   _______,
+        _______,   _______,   _______,                         _______,                      QK_LLCK,  _______,              _______,            _______,   _______
     )
 };
 
@@ -130,6 +130,8 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 // function definitions for key handlers
 inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_lt_0(uint16_t keycode, keyrecord_t *record) __attribute__((always_inline));
+
 
 // **********************************************************************
 // * process_record_user is the main function that handles key presses  *
@@ -162,6 +164,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_fn_mode(keycode, record)) { return false; }
     if (!process_rgb_keys(keycode, record)) { return false; }
     if (!dv_process_layer_lock(keycode, record, QK_LLCK)) { return false; }
+    if (!handle_lt_0( keycode,  record)) { return false; }
 
     switch (keycode) {
         case KC_BSPC:
@@ -221,4 +224,148 @@ bool handle_nkro_toggle(keyrecord_t *record) {
         wait_ms(50);
     }
     return false;
+}
+
+bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
+    // check if this is a Layer tap key, return true means we need to keep processing
+    //if (!(keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) return true;
+
+    // check if this is on layer 0
+    // we re-use these keys since they are effectively no ops
+    // but give us the tap and hold feature for free
+    // return true means we are not processing here and the pipeline should ocntinue
+    //if (QK_LAYER_TAP_GET_LAYER(keycode) != 0) return true;
+
+    switch (keycode){
+        case HM_SCLN:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key press
+                    tap_code16(KC_HOME);
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case END_QUOT:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key press
+                    tap_code16(KC_END);
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case ALFT_COMM:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key hold
+                    tap_code16(A(KC_LEFT));
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case ARGT_DOT:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key hold
+                    tap_code16(A(KC_RIGHT));
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case CTLH_T:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key press
+                    tap_code16(C(KC_H));
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case CTLR_R:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key press
+                    tap_code16(C(KC_R));
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case CTLG_G:
+            if (record->tap.count == 0) {
+                if (record->event.pressed) {
+                    // we react on key press
+                    tap_code16(C(KC_G));
+                }
+                // we handled the key here, so no need for further processing
+                return false;
+            }
+            // else we want processing of the key to continue normally
+                return true;
+            break;
+        case MY_ENT:
+            // act as enter on tap, Shift on hold
+            // By doing it this way, we can react immediately on key press
+            if (record->event.pressed) {
+                // we are registering a key
+                if (record->tap.count) {
+                    register_code16(KC_ENT);
+                } else {
+                    register_code16(KC_RSFT);
+                }
+            } else {
+                // we are releasing a key
+                if (record->tap.count) {
+                    wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
+                    unregister_code16(KC_ENT);
+                } else {
+                    unregister_code16(KC_RSFT);
+                }
+            }
+            return false;
+            break;
+        case LSFT_LLCK:
+            if (record->event.pressed) {
+                // we are registering a key
+                if (record->tap.count > 1) {
+                    blink_space(true);
+                    indicator_enqueue(LEFT_SFT_KI, 150, 2, INDICATOR_RGB_DARK_RED);
+                    // require at least 2 taps in order to push layer lock
+                    uint8_t current_layer = layer_switch_get_layer(record->event.key);
+                    dv_layer_lock_invert(current_layer);
+                } else {
+                    register_code16(KC_LSFT);
+                }
+            } else {
+                // we are releasing a key
+                if (record->tap.count > 1) {
+                    // nothing to do since the layer lock is handled on press
+                } else {
+                    unregister_code16(KC_LSFT);
+                }
+            }
+            return false;
+            break;
+        default:
+            // we want all other keys to be processed normally
+            return true;
+    }
 }
