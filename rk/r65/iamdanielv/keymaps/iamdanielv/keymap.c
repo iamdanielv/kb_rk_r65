@@ -71,8 +71,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,   KC_Z,      KC_X,      KC_C,      KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,   KC_DOT,   KC_SLSH,    KC_RSFT,            KC_UP,     KC_PGDN,
         KC_LCTL,   KC_LGUI,   KC_LALT,                         KC_SPC,                       MO_RALT,   MO_KBCTL,             KC_LEFT,            KC_DOWN,   KC_RGHT
     ),
-    [EXT_LYR] = LAYOUT(
+    [HRM_BASE_LYR] = LAYOUT(
         MY_GRV,    _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
+        _______,   GUI_A,     ALT_S,     SFT_D,     CTL_F,     _______,  _______,  CTL_J,    SFT_K,     ALT_L,    GUI_SCLN,   _______,            _______,   _______,
+        _______,   _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,            _______,   _______,
+        _______,   _______,   _______,                         _______,                      _______,   _______,              _______,            _______,   _______
+    ),
+    [EXT_LYR] = LAYOUT(
+        KC_GRV,    _______,   _______,   _______,   _______,   _______,  _______,  _______,  _______,   _______,  _______,    _______,  _______,  _______,   _______,
         _______,   MY_CONS,   MY_TASK,   C(KC_F),   C(KC_R),   C(KC_H),  KC_PGUP,  KC_HOME,  KC_UP,     KC_END,   KC_PSCR,    KC_SCRL,  KC_PAUS,  KC_INS,    KC_END,
         _______,   KC_LALT,   KC_LGUI,   KC_LSFT,   KC_LCTL,   C(KC_G),  KC_PGDN,  KC_LEFT,  KC_DOWN,   KC_RIGHT, KC_HOME,    KC_END,             _______,   KC_SCRL,
         _______,   MY_UNDO,   MY_CUT,    MY_COPY,   MY_PASTE,  KC_SPC,   KC_BSPC,  KC_DEL,   MY_BACK,   MY_FWD,   _______,    _______,            _______,   KC_RCTL,
@@ -82,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,   XXXXXXX,  XXXXXXX,    XXXXXXX,  XXXXXXX,  RM_TOGG,   _______,
         _______,   TD_KB_RST, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_HUED,   RM_HUEU,  RGB_M_P,    RM_PREV,  RM_NEXT,  RM_TOGG,   QK_LLCK,
         _______,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  RM_SATD,   RM_SATU,  RM_SPDD,    RM_SPDU,            _______,   TG_NUM,
-        _______,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  NK_TOGG,  XXXXXXX,  RM_VALD,   RM_VALU,  _______,    TG_EXT,             RM_VALU,   TG_EXT,
+        _______,   TD_KB_CLR, XXXXXXX,   XXXXXXX,   XXXXXXX,   XXXXXXX,  NK_TOGG,  XXXXXXX,  RM_VALD,   RM_VALU,  TG_EXT,     TG_HRM,             RM_VALU,   TG_EXT,
         KC_SWP_FN, _______,   _______,                         _______,                      TG_NUM,    _______,              RM_SPDD,            RM_VALD,   RM_SPDU
     ),
     [NUM_LYR] = LAYOUT(
@@ -104,6 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef ENCODER_MAP_ENABLE
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [BASE_LYR]      = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [HRM_BASE_LYR]  = {ENCODER_CCW_CW(_______, _______)},
     [EXT_LYR]       = {ENCODER_CCW_CW(_______, _______)},
     [KBCTL_LYR]     = {ENCODER_CCW_CW(_______, _______)},
     [NUM_LYR]       = {ENCODER_CCW_CW(_______, _______)},

@@ -4,11 +4,12 @@
 #pragma once
 
 enum layer_names {
-    BASE_LYR,    // 0
-    EXT_LYR,     // 1
-    KBCTL_LYR,   // 2
-    NUM_LYR,     // 3
-    MEDIA_LYR    // 4
+    BASE_LYR,       // 0 - regular qwerty
+    HRM_BASE_LYR,   // 1 - home row mods qwerty
+    EXT_LYR,        // 2 - similar to extend
+    KBCTL_LYR,      // 3 - keyboard control layer
+    NUM_LYR,        // 4 - numpad
+    MEDIA_LYR       // 5 - media keys
 };
 
 // clang-format off
@@ -123,6 +124,29 @@ enum layer_names {
 // ******************************
 // * Aliases to simplify keymap *
 // ******************************
+
+// *****************
+// * Home Row Mods *
+// *****************
+// based on: https://precondition.github.io/home-row-mods#getting-started-with-home-row-mods-on-qmk
+
+// Left-hand home row mods
+#define GUI_A LGUI_T(KC_A)
+#define ALT_S LALT_T(KC_S)
+#define SFT_D LSFT_T(KC_D)
+#define CTL_F LCTL_T(KC_F)
+
+// Right-hand home row mods
+#define CTL_J RCTL_T(KC_J)
+#define SFT_K RSFT_T(KC_K)
+#define ALT_L RALT_T(KC_L)
+#define GUI_SCLN RGUI_T(KC_SCLN)
+
+// *******************************
+// * More keycodes for HRM Layer *
+// *******************************
+#define CTLS_C C_S_T(KC_C) // tap: C ; hold: ctl and shift
+
 #define MO_CAPS   TD(TD_MO_CAPS)
 #define MO_RALT   LT(MEDIA_LYR, KC_RALT)
 #define MY_GRV    TD(TD_GRV)
