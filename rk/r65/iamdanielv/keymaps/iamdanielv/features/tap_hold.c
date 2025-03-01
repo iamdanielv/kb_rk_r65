@@ -156,15 +156,16 @@ void grv_finished(tap_dance_state_t *state, void *user_data) {
             // the tap dance was interrupted,
             // handle it the same as if it was a double tap
         case TD_DOUBLE_TAP:
-            register_code16(KC_ESC);
+            register_code16(KC_GRV);
             break;
         case TD_SINGLE_TAP:
-            register_code16(KC_GRV);
+            register_code16(KC_ESC);
             break;
         case TD_DOUBLE_HOLD:
             // fall through to single hold
         case TD_SINGLE_HOLD:
             // type 6 ` then 3 lefts to put user in the middle
+            // this is good for code blocks in markdown
             SEND_STRING("``````");
             tap_code(KC_LEFT);
             tap_code(KC_LEFT);
@@ -182,11 +183,11 @@ void grv_reset(tap_dance_state_t *state, void *user_data) {
             // handle it the same as if it was a double tap
         case TD_DOUBLE_TAP:
             wait_ms(TAP_CODE_DELAY);
-            unregister_code16(KC_ESC);
+            unregister_code16(KC_GRV);
             break;
         case TD_SINGLE_TAP:
             wait_ms(TAP_CODE_DELAY);
-            unregister_code16(KC_GRV);
+            unregister_code16(KC_ESC);
             break;
         // case TD_DOUBLE_HOLD:
         // case TD_SINGLE_HOLD:

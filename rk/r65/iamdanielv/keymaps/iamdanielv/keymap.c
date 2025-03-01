@@ -57,7 +57,7 @@ tap_dance_action_t tap_dance_actions[] = {
 
     // on Tap: caps lock; on Hold: MO(EXT_LYR); on Double Tap Hold: MO(NUM_LYR)
     [TD_MO_CAPS]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mo_caps_finished, mo_caps_reset),
-    // on Tap: `; on Double Tap: ~; on Hold: ``````
+    // on Tap: Esc; on Double Tap: `; on Hold: ``````
     [TD_GRV]       = ACTION_TAP_DANCE_FN_ADVANCED(NULL, grv_finished, grv_reset)
 };
 // clang-format on
