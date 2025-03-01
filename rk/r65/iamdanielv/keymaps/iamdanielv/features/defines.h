@@ -4,12 +4,12 @@
 #pragma once
 
 enum layer_names {
-    BASE_LYR,       // 0 - regular qwerty
-    HRM_BASE_LYR,   // 1 - home row mods qwerty
-    EXT_LYR,        // 2 - similar to extend
-    KBCTL_LYR,      // 3 - keyboard control layer
-    NUM_LYR,        // 4 - numpad
-    MEDIA_LYR       // 5 - media keys
+    BASE_LYR,     // 0 - regular qwerty
+    HRM_BASE_LYR, // 1 - home row mods qwerty
+    EXT_LYR,      // 2 - similar to extend
+    KBCTL_LYR,    // 3 - keyboard control layer
+    NUM_LYR,      // 4 - numpad
+    MEDIA_LYR     // 5 - media keys
 };
 
 // clang-format off
@@ -179,3 +179,7 @@ enum layer_names {
 #define MO_KBCTL  MO(KBCTL_LYR)
 #define TD_KB_RST TD(TD_RESET)
 #define TD_KB_CLR TD(TD_CLEAR)
+
+// by default, use a regular key layout without home row mods
+// the KB_CTL_LYR can toggle the home row mod enabled layer
+#define TG_HRM TG(HRM_BASE_LYR)
