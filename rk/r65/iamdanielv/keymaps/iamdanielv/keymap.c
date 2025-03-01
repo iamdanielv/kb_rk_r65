@@ -121,6 +121,20 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 #endif
 // clang-format on
 
+// **********************************************************************
+// * we want the ability to break out the key handlers but we also want *
+// * to inline, this will allow us to do that                           *
+// * inline void myInlinedFunction() __attribute__((always_inline));    *
+// **********************************************************************
+
+// function definitions for key handlers
+inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
+
+// **********************************************************************
+// * process_record_user is the main function that handles key presses  *
+// * and is the entry point for all key processing                      *
+// **********************************************************************
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
@@ -150,55 +164,61 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!dv_process_layer_lock(keycode, record, QK_LLCK)) { return false; }
 
     switch (keycode) {
-        case KC_BSPC: {
-            // based on: https://getreuer.info/posts/keyboards/macros3/index.html
-            // shift + backspace is delete
-            // both shift held is shift + delete
-            static uint16_t registered_key = KC_NO;
-            if (record->event.pressed) {  // On key press.
-                const uint8_t mods = get_mods();
-                #ifndef NO_ACTION_ONESHOT
-                uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
-                #else
-                        uint8_t shift_mods = mods & MOD_MASK_SHIFT;
-                #endif  // NO_ACTION_ONESHOT
-                if (shift_mods) {  // At least one shift key is held.
-                    registered_key = KC_DEL;
-                    // If one shift is held, clear it from the mods. But if both
-                    // shifts are held, leave as is to send Shift + Del.
-                    if (shift_mods != MOD_MASK_SHIFT) {
-                    #ifndef NO_ACTION_ONESHOT
-                        del_oneshot_mods(MOD_MASK_SHIFT);
-                    #endif  // NO_ACTION_ONESHOT
-                        unregister_mods(MOD_MASK_SHIFT);
-                    }
-                } else {
-                    registered_key = KC_BSPC;
-                }
-
-                register_code(registered_key);
-                set_mods(mods);
-            } else {  // On key release.
-                wait_ms(50); // wait a little bit, so programs don't filter the press
-                unregister_code(registered_key);
-            }
-        }
-        return false;
-
+        case KC_BSPC:
+            return handle_backspace(record);
         case QK_MAGIC_TOGGLE_NKRO:
-            if (record->event.pressed) {
-                clear_keyboard(); // clear first buffer to prevent stuck keys
-                wait_ms(50);
-                keymap_config.nkro = !keymap_config.nkro;
-                blink_NKRO(keymap_config.nkro);
-                wait_ms(50);
-                clear_keyboard(); // clear first buffer to prevent stuck keys
-                wait_ms(50);
-            }
-            return false;
+            return handle_nkro_toggle(record);
         default:
+            // everything else should be handled normally
             return true;
     }
 
     return true;
+}
+
+bool handle_backspace(keyrecord_t *record) {
+    // based on: https://getreuer.info/posts/keyboards/macros3/index.html
+    // shift + backspace is delete
+    // both shift held is shift + delete
+    static uint16_t registered_key = KC_NO;
+    if (record->event.pressed) {  // On key press.
+        const uint8_t mods = get_mods();
+        #ifndef NO_ACTION_ONESHOT
+        uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
+        #else
+                uint8_t shift_mods = mods & MOD_MASK_SHIFT;
+        #endif  // NO_ACTION_ONESHOT
+        if (shift_mods) {  // At least one shift key is held.
+            registered_key = KC_DEL;
+            // If one shift is held, clear it from the mods. But if both
+            // shifts are held, leave as is to send Shift + Del.
+            if (shift_mods != MOD_MASK_SHIFT) {
+            #ifndef NO_ACTION_ONESHOT
+                del_oneshot_mods(MOD_MASK_SHIFT);
+            #endif  // NO_ACTION_ONESHOT
+                unregister_mods(MOD_MASK_SHIFT);
+            }
+        } else {
+            registered_key = KC_BSPC;
+        }
+        register_code(registered_key);
+        set_mods(mods);
+    } else {  // On key release.
+        wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
+        unregister_code(registered_key);
+    }
+    return false;
+}
+
+bool handle_nkro_toggle(keyrecord_t *record) {
+    if (record->event.pressed) {
+        clear_keyboard(); // clear first buffer to prevent stuck keys
+        wait_ms(50);
+        keymap_config.nkro = !keymap_config.nkro;
+        blink_NKRO(keymap_config.nkro);
+        wait_ms(50);
+        clear_keyboard(); // clear first buffer to prevent stuck keys
+        wait_ms(50);
+    }
+    return false;
 }
