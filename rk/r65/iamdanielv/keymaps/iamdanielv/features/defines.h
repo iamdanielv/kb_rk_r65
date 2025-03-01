@@ -34,6 +34,10 @@ enum layer_names {
 // ***************
 // * Key Indexes *
 // ***************
+
+#define ESC_KI 56
+#define BSPC_KI 43
+
 // Modifiers
 #define GRV_KI 56
 #define TAB_KI 29
@@ -151,7 +155,9 @@ enum layer_names {
 #define MO_RALT   LT(MEDIA_LYR, KC_RALT)
 #define MY_GRV    TD(TD_GRV)
 
-// shortcuts
+// *************
+// * Shortcuts *
+// *************
 #define MY_UNDO   C(KC_Z)
 #define MY_CUT    C(KC_X)
 #define MY_COPY   C(KC_INS)
@@ -163,6 +169,9 @@ enum layer_names {
 #define MSW_UP    KC_MS_WH_UP
 #define MSW_DN    KC_MS_WH_DOWN
 
+// ***********
+// * Toggles *
+// ***********
 #define TG_NUM    TG(NUM_LYR)
 #define TG_EXT    TG(EXT_LYR)
 #define TG_KBCTL  TG(KBCTL_LYR)
