@@ -5,6 +5,7 @@
 #include "features/defines.h"
 #include "quantum.h"
 
+#include "features/dv_layer_lock.h"
 #include "features/defines.h"
 #include "features/indicator_queue.h"
 #include "features/fn_mode.h"
@@ -130,8 +131,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
+    if (keycode == QK_LLCK){
+        // when we lock or unlock a layer, flash the space bar area
+        blink_space(true);
+
+        if (IS_LAYER_ON(EXT_LYR)) {
+            // blink the new arrow keys
+            indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
+            indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
+            indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
+            indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
+        }
+        // we only handled the flashing of the indicators, so keep processing the key code
+    }
+
     if (!process_fn_mode(keycode, record)) { return false; }
     if (!process_rgb_keys(keycode, record)) { return false; }
+    if (!dv_process_layer_lock(keycode, record, QK_LLCK)) { return false; }
 
     switch (keycode) {
         case KC_BSPC: {
@@ -180,24 +196,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 wait_ms(50);
             }
             return false;
-        case QK_LLCK:
-            // when we lock a layer, flash the space bar area
-            blink_space(false);
-
-            if (IS_LAYER_ON(EXT_LYR)) {
-                indicator_enqueue(LEFT_WIN_KI, 200, 2, INDICATOR_RGB_DARK_RED); // blink left win
-
-                // blink the new arrow keys
-                indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
-                indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
-                indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
-                indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
-            }
-            return true;
         default:
             return true;
     }
 
     return true;
 }
-

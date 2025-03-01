@@ -1,6 +1,7 @@
 #include "tap_hold.h"
 #include "action_layer.h"
 #include "defines.h"
+#include "dv_layer_lock.h"
 #include "quantum.h"
 
 /**
@@ -123,7 +124,7 @@ void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
 void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_MO_CAPS]) {
         case TD_SINGLE_HOLD:
-            if(!is_layer_locked(EXT_LYR)) {
+            if(!dv_is_layer_locked(EXT_LYR)) {
                 // only turn off the layer if it hasn't been locked
                 layer_off(EXT_LYR);
             }
