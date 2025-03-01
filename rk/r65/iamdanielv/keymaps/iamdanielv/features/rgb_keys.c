@@ -1,9 +1,7 @@
-#include "action.h"
-#include "defines.h"
 #include "indicators.h"
+#include "defines.h"
 #include "rgb_keys.h"
 #include "indicator_queue.h"
-#include "rgb_matrix.h"
 
 bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
