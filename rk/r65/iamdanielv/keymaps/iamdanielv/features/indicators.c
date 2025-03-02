@@ -1,5 +1,6 @@
 #include "defines.h"
 #include "indicators.h"
+#include "dv_layer_lock.h"
 #include "indicator_queue.h"
 #include "fn_mode.h"
 #include "color.h"
@@ -158,7 +159,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(dual_role_indexes[i], dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
         }
 
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        if(dv_is_layer_locked(HRM_BASE_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     if (IS_LAYER_ON(EXT_LYR)) {
@@ -179,7 +183,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // swap FN key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
 
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI, 0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        if(dv_is_layer_locked(EXT_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     // FN Key mode is done after the base win layer and the win fn layer
@@ -190,13 +197,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     if (IS_LAYER_ON(KBCTL_LYR)) {
         // keys specific to this layer
-        const uint8_t accent_key_indexes[3] = {
+        const uint8_t accent_key_indexes[7] = {
             P_KI, // P for persistent color
             N_KI, // N for NKRO
-            FN_KI // fn key
-    };
-        for (int i = 0; i < 3; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i],  0xFF, 0xFF, 0xFF);
+            FN_KI, // fn key
+            // arrows
+            UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI
+        };
+        for (int i = 0; i < 7; i++) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i],  0x80, 0x80, 0x80);
         }
 
         const uint8_t led_off_indexes[4] = {// turn off some of the LEDS to make it easier to see our indicators
@@ -225,17 +234,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(Q_KI, 0xFF, 0x00, 0x00);
 
         // highlight Z as clear eeprom
-        RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x7A, 0x00, 0xFF);
+        RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x55, 0x00, 0x55);
 
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI,  0xAA, 0x22, 0x00); // Home/End key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI , 0xAA, 0x22, 0x00); // Left Shift
-
-        // dim the arrow keys
-        RGB_MATRIX_INDICATOR_SET_COLOR(UP_KI, 32, 32, 32);
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_KI, 32, 32, 32);
-        RGB_MATRIX_INDICATOR_SET_COLOR(DOWN_KI, 32, 32, 32);
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_KI, 32, 32, 32);
+        if(dv_is_layer_locked(KBCTL_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     if (IS_LAYER_ON(NUM_LYR)) {
@@ -272,30 +278,27 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // layer toggle keys
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0xAA, 0x22, 0x00);
         RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, 0xAA, 0x22, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI ,  0xAA, 0x22, 0x00); // Left Shift
+        if(dv_is_layer_locked(NUM_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     if (IS_LAYER_ON(MEDIA_LYR)) {
-        const uint8_t media_keys[6] = {
+        const uint8_t media_keys[7] = {
             // KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU
-            FN7_KI, FN8_KI, FN9_KI, FN10_KI, FN11_KI, FN12_KI};
+            FN7_KI, FN8_KI, FN9_KI, FN10_KI, FN11_KI, FN12_KI, RIGHT_ALT_KI};
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 7; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(media_keys[i], 128, 128, 128);
         }
 
-        // highlight the RALT button
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 128, 128, 128);
-
-        // highlight page down as toggle EXT Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
-
-        // highlight page up as toggle Num Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
-
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI, 0xAA, 0x22, 0x00); // Home/End key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI , 0xAA, 0x22, 0x00); // Left Shift
+        if(dv_is_layer_locked(MEDIA_LYR)) {
+            // only highlight the shift key if this layer is locked
+            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
+        }
     }
 
     process_indicator_queue(led_min, led_max);
