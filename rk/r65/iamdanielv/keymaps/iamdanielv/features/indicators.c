@@ -171,17 +171,19 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             RGB_MATRIX_INDICATOR_SET_COLOR(i, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
         }
 
-        const uint8_t accent_key_indexes[5] = {
+        // this layer has all fn keys so highlight them to show that they are not numbers
+        highlight_fn_keys(dual_role_rgb, led_min, led_max);
+
+        const uint8_t accent_key_indexes[9] = {
             // arrow keys
             I_KI, J_KI, K_KI, L_KI,
             // home row on left hand
-            F_KI };
-        for (int i = 0; i < 5; i++) {
+            F_KI,
+            // arrows now act as volume control and back and forward buttons
+            UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI };
+        for (int i = 0; i < 9; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i], accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
         }
-
-        // swap FN key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
 
         if(dv_is_layer_locked(EXT_LYR)) {
             // only highlight the shift key if this layer is locked
