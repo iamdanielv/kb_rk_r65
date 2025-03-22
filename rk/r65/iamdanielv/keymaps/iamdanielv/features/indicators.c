@@ -205,7 +205,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI
         };
         for (int i = 0; i < 7; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i],  0x80, 0x80, 0x80);
+            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i],  0xFF, 0xFF, 0xFF);
         }
 
         const uint8_t led_off_indexes[4] = {// turn off some of the LEDS to make it easier to see our indicators
@@ -290,7 +290,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             FN7_KI, FN8_KI, FN9_KI, FN10_KI, FN11_KI, FN12_KI, RIGHT_ALT_KI};
 
         for (int i = 0; i < 7; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(media_keys[i], 128, 128, 128);
+            RGB_MATRIX_INDICATOR_SET_COLOR(media_keys[i], 0xFF, 0xFF, 0xFF);
         }
 
         // layer lock key
