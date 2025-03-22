@@ -163,7 +163,7 @@ enum layer_names {
 #define MY_ENT    LT(0, KC_ENT) // tap: Enter ; hold: Shift
 
 #define MO_CAPS   TD(TD_MO_CAPS)
-#define MO_RALT   LT(MEDIA_LYR, KC_RALT)
+#define MO_RALT   TD(TD_RALT)
 #define MY_GRV    TD(TD_GRV)
 
 // *************

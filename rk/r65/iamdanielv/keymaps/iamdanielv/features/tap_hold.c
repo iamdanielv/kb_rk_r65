@@ -37,7 +37,8 @@ static td_state_t td_state[] = {
     [TD_RESET]   = TD_NONE,
     [TD_CLEAR]   = TD_NONE,
     [TD_MO_CAPS] = TD_NONE,
-    [TD_GRV]     = TD_NONE
+    [TD_GRV]     = TD_NONE,
+    [TD_RALT]    = TD_NONE
 };
 
 // **********************************************************
@@ -195,4 +196,48 @@ void grv_reset(tap_dance_state_t *state, void *user_data) {
             break;
     }
     td_state[TD_GRV] = TD_NONE;
+}
+
+void ralt_finished(tap_dance_state_t *state, void *user_data) {
+    td_state[TD_RALT] = cur_dance(state);
+    switch (td_state[TD_RALT]) {
+        case TD_SINGLE_HOLD:
+            layer_on(MEDIA_LYR);
+            break;
+        case TD_SINGLE_TAP: // treat a single tap as a double hold
+        case TD_DOUBLE_HOLD:
+            register_code16(KC_RALT);
+            break;
+        case TD_DOUBLE_TAP:
+        case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
+            dv_layer_lock_invert(MEDIA_LYR);
+            break;
+        default:
+            // do nothing
+            break;
+    }
+}
+
+void ralt_reset(tap_dance_state_t *state, void *user_data) {
+    switch (td_state[TD_RALT]) {
+        case TD_SINGLE_HOLD:
+            if(!dv_is_layer_locked(MEDIA_LYR)) {
+                // only turn off the layer if it hasn't been locked
+                layer_off(MEDIA_LYR);
+            }
+            break;
+        case TD_SINGLE_TAP: // treat a single tap as a double hold
+        case TD_DOUBLE_HOLD:
+            wait_ms(TAP_CODE_DELAY);
+            unregister_code16(KC_RALT);
+            break;
+        case TD_DOUBLE_TAP:
+        case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
+            //this was handled in the finished function, nothing to do here
+            break;
+        default:
+            // do nothing
+            break;
+    }
+    td_state[TD_RALT] = TD_NONE;
 }
