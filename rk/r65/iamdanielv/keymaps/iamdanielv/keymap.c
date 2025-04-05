@@ -132,6 +132,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_lt_0(uint16_t keycode, keyrecord_t *record) __attribute__((always_inline));
+inline bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) __attribute__((always_inline));
 
 
 // **********************************************************************
@@ -227,6 +228,21 @@ bool handle_nkro_toggle(keyrecord_t *record) {
     return false;
 }
 
+bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) {
+    if (record->tap.count == 0) {
+        if (record->event.pressed) {
+            // we simplify the logic here to just do a tap,
+            // but really the user is holding the key
+            // side effect is that we don't support auto key repeat
+            tap_code16(hold_keycode);
+        }
+        // we handled the key here, so no need for further processing
+        return false;
+    }
+    // else we want processing of the key to continue normally
+        return true;
+}
+
 bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
     // check if this is a Layer tap key, return true means we need to keep processing
     //if (!(keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) return true;
@@ -239,88 +255,25 @@ bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
 
     switch (keycode){
         case HM_SCLN:
-            if (record->tap.count == 0) {
-                if (record->event.pressed) {
-                    // we react on key press
-                    tap_code16(KC_HOME);
-                }
-                // we handled the key here, so no need for further processing
-                return false;
-            }
-            // else we want processing of the key to continue normally
-                return true;
+            return handle_lt_0_tap_hold(KC_HOME, record);
             break;
         case END_QUOT:
-            if (record->tap.count == 0) {
-                if (record->event.pressed) {
-                    // we react on key press
-                    tap_code16(KC_END);
-                }
-                // we handled the key here, so no need for further processing
-                return false;
-            }
-            // else we want processing of the key to continue normally
-                return true;
+            return handle_lt_0_tap_hold(KC_END, record);
             break;
         case ALFT_COMM:
-            if (record->tap.count == 0) {
-                if (record->event.pressed) {
-                    // we react on key hold
-                    tap_code16(A(KC_LEFT));
-                }
-                // we handled the key here, so no need for further processing
-                return false;
-            }
-            // else we want processing of the key to continue normally
-                return true;
+            return handle_lt_0_tap_hold(A(KC_LEFT), record);
             break;
         case ARGT_DOT:
-            if (record->tap.count == 0) {
-                if (record->event.pressed) {
-                    // we react on key hold
-                    tap_code16(A(KC_RIGHT));
-                }
-                // we handled the key here, so no need for further processing
-                return false;
-            }
-            // else we want processing of the key to continue normally
-                return true;
+            return handle_lt_0_tap_hold(A(KC_RIGHT), record);
             break;
         case CTLH_T:
-            if (record->tap.count == 0) {
-                if (record->event.pressed) {
-                    // we react on key press
-                    tap_code16(C(KC_H));
-                }
-                // we handled the key here, so no need for further processing
-                return false;
-            }
-            // else we want processing of the key to continue normally
-                return true;
+            return handle_lt_0_tap_hold(C(KC_H), record);
             break;
         case CTLR_R:
-            if (record->tap.count == 0) {
-                if (record->event.pressed) {
-                    // we react on key press
-                    tap_code16(C(KC_R));
-                }
-                // we handled the key here, so no need for further processing
-                return false;
-            }
-            // else we want processing of the key to continue normally
-                return true;
+            return handle_lt_0_tap_hold(C(KC_R), record);
             break;
         case CTLG_G:
-            if (record->tap.count == 0) {
-                if (record->event.pressed) {
-                    // we react on key press
-                    tap_code16(C(KC_G));
-                }
-                // we handled the key here, so no need for further processing
-                return false;
-            }
-            // else we want processing of the key to continue normally
-                return true;
+            return handle_lt_0_tap_hold(C(KC_G), record);
             break;
         case MY_ENT:
             // act as enter on tap, Shift on hold
