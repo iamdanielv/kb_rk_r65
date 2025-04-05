@@ -132,8 +132,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_lt_0(uint16_t keycode, keyrecord_t *record) __attribute__((always_inline));
-inline bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) __attribute__((always_inline));
-
 
 // **********************************************************************
 // * process_record_user is the main function that handles key presses  *
