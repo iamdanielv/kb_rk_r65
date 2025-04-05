@@ -245,13 +245,13 @@ bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) {
 
 bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
     // check if this is a Layer tap key, return true means we need to keep processing
-    //if (!(keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) return true;
+    if (!(keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) return true;
 
     // check if this is on layer 0
     // we re-use these keys since they are effectively no ops
     // but give us the tap and hold feature for free
     // return true means we are not processing here and the pipeline should ocntinue
-    //if (QK_LAYER_TAP_GET_LAYER(keycode) != 0) return true;
+    if (QK_LAYER_TAP_GET_LAYER(keycode) != 0) return true;
 
     switch (keycode){
         case HM_SCLN:
