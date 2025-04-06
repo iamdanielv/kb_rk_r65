@@ -162,10 +162,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
 
         // highlight the dual role keys
-        const uint8_t dual_role_indexes[10] = {
-            ESC_KI, C_KI, R_KI, T_KI, G_KI,
+        const uint8_t dual_role_indexes[9] = {
+            C_KI, R_KI, T_KI, G_KI,
             SCLN_KI, QUOT_KI, ENTER_KI,COMM_KI, DOT_KI};
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             RGB_MATRIX_INDICATOR_SET_COLOR(dual_role_indexes[i], dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
         }
 
