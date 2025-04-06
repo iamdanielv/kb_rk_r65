@@ -130,17 +130,27 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
 
-    // determine the colors to use for each of the layers
-    // hsv_t base_hsv_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
-    hsv_t base_hsv_offset_qrt_cw   = get_base_hsv_color_shifted_quarter(true);
-    hsv_t base_hsv_offset          = get_base_hsv_color_shifted(false);
-    hsv_t base_hsv_inverse         = get_base_hsv_color_inverse();
-    hsv_t base_hsv_inverse_shifted = get_hsv_color_shifted(base_hsv_inverse, 31, false);
+    static rgb_t ext_lyr_rgb;
+    static rgb_t accent_lyr_rgb;
+    static rgb_t num_lyr_rgb;
+    static rgb_t dual_role_rgb;
 
-    rgb_t ext_lyr_rgb    = hsv_to_rgb(base_hsv_offset);
-    rgb_t accent_lyr_rgb = hsv_to_rgb(base_hsv_inverse_shifted);
-    rgb_t num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_cw);
-    rgb_t dual_role_rgb  = hsv_to_rgb(base_hsv_inverse);
+    if (recalculate_rgb) {
+        // determine the colors to use for each of the layers
+        // hsv_t base_hsv_offset_qrt_ccw = get_base_hsv_color_shifted_quarter(false);
+        hsv_t base_hsv_offset_qrt_cw   = get_base_hsv_color_shifted_quarter(true);
+        hsv_t base_hsv_offset          = get_base_hsv_color_shifted(false);
+        hsv_t base_hsv_inverse         = get_base_hsv_color_inverse();
+        hsv_t base_hsv_inverse_shifted = get_hsv_color_shifted(base_hsv_inverse, 31, false);
+
+        // recalculate the colors
+        ext_lyr_rgb    = hsv_to_rgb(base_hsv_offset);
+        accent_lyr_rgb = hsv_to_rgb(base_hsv_inverse_shifted);
+        num_lyr_rgb    = hsv_to_rgb(base_hsv_offset_qrt_cw);
+        dual_role_rgb  = hsv_to_rgb(base_hsv_inverse);
+
+        recalculate_rgb = false;
+    }
 
     if (IS_LAYER_ON(HRM_BASE_LYR)) {
         // highlight the home row

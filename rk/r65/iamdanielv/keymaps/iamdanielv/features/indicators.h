@@ -21,3 +21,5 @@ void blink_space(bool);
 void blink_NKRO(bool);
 void blink_numbers(bool);
 void highlight_fn_keys(rgb_t color, uint8_t led_min, uint8_t led_max);
+
+extern bool recalculate_rgb;

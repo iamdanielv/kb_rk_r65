@@ -43,6 +43,7 @@ void housekeeping_task_user(void) {
 }
 
 bool fn_mode_enabled = false;
+bool recalculate_rgb = true;
 
 // *****************************
 // * Custom processing of keys *

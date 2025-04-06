@@ -67,6 +67,8 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RM_HUEU:
             if (record->event.pressed) {
+                recalculate_rgb = true;
+
                 if (rgb_matrix_get_hue() >= (255 - RGB_MATRIX_HUE_STEP)) {
                     // this update would put us at max
                     indicator_enqueue(O_KI, 200, 4, INDICATOR_RGB_DARK_RED); // O - UP
@@ -80,6 +82,8 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RM_HUED:
             if (record->event.pressed) {
+                recalculate_rgb = true;
+
                 if (rgb_matrix_get_hue() <= RGB_MATRIX_HUE_STEP) {
                     // this update would put us at min
                     indicator_enqueue(O_KI, 200, 2, RGB_BLACK);              // O - UP
@@ -93,6 +97,8 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RM_SATU:
             if (record->event.pressed) {
+                recalculate_rgb = true;
+
                 if (rgb_matrix_get_sat() >= (255 - RGB_MATRIX_SAT_STEP)) {
                     // this update would put us at max
                     indicator_enqueue(L_KI, 200, 4, INDICATOR_RGB_DARK_RED); // L - UP
@@ -106,6 +112,8 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RM_SATD:
             if (record->event.pressed) {
+                recalculate_rgb = true;
+
                 if (rgb_matrix_get_sat() <= RGB_MATRIX_SAT_STEP) {
                     // this update would put us at min
                     indicator_enqueue(L_KI, 200, 2, RGB_BLACK);              // L - UP
@@ -119,6 +127,8 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RM_VALU:
             if (record->event.pressed) {
+                recalculate_rgb = true;
+
                 if (rgb_matrix_get_val() >= (RGB_MATRIX_MAXIMUM_BRIGHTNESS - RGB_MATRIX_VAL_STEP)) {
                     indicator_enqueue(DOT_KI, 200, 4, INDICATOR_RGB_DARK_RED); // . - UP
                     indicator_enqueue(COMM_KI, 200, 2, RGB_BLACK);             // , - DOWN
@@ -132,6 +142,8 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
             return false;
         case RM_VALD:
             if (record->event.pressed) {
+                recalculate_rgb = true;
+
                 if (rgb_matrix_get_val() <= RGB_MATRIX_VAL_STEP) {
                     indicator_enqueue(DOT_KI, 200, 2, RGB_BLACK);               // . - UP
                     indicator_enqueue(COMM_KI, 200, 4, INDICATOR_RGB_DARK_RED); // , - DOWN
