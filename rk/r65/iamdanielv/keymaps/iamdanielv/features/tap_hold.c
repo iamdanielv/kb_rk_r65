@@ -78,11 +78,10 @@ static td_state_t td_state[] = {
  */
 td_state_t cur_dance(tap_dance_state_t *state) {
     if (state->count == 1) {
-        if (!state->pressed){
+        if (!state->pressed) {
             // key is not pressed, assume it is a tap, wether interrupted or not
             return TD_SINGLE_TAP;
-        }
-        else{
+        } else {
             // key is still held. Means you want to send a 'HOLD'.
             return TD_SINGLE_HOLD;
         }
@@ -125,20 +124,20 @@ void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
 void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_MO_CAPS]) {
         case TD_SINGLE_HOLD:
-            if(!dv_is_layer_locked(EXT_LYR)) {
+            if (!dv_is_layer_locked(EXT_LYR)) {
                 // only turn off the layer if it hasn't been locked
                 layer_off(EXT_LYR);
             }
             break;
         case TD_DOUBLE_HOLD:
-            if(!dv_is_layer_locked(NUM_LYR)) {
+            if (!dv_is_layer_locked(NUM_LYR)) {
                 // only turn off the layer if it hasn't been locked
                 layer_off(NUM_LYR);
             }
             break;
         case TD_DOUBLE_TAP:
         case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
-            //this was handled in the finished function, nothing to do here
+            // this was handled in the finished function, nothing to do here
             break;
         case TD_SINGLE_TAP:
         default:
@@ -221,7 +220,7 @@ void ralt_finished(tap_dance_state_t *state, void *user_data) {
 void ralt_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_RALT]) {
         case TD_SINGLE_HOLD:
-            if(!dv_is_layer_locked(MEDIA_LYR)) {
+            if (!dv_is_layer_locked(MEDIA_LYR)) {
                 // only turn off the layer if it hasn't been locked
                 layer_off(MEDIA_LYR);
             }
@@ -233,11 +232,107 @@ void ralt_reset(tap_dance_state_t *state, void *user_data) {
             break;
         case TD_DOUBLE_TAP:
         case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
-            //this was handled in the finished function, nothing to do here
+            // this was handled in the finished function, nothing to do here
             break;
         default:
             // do nothing
             break;
     }
     td_state[TD_RALT] = TD_NONE;
+}
+
+bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) {
+    if (record->tap.count == 0) {
+        if (record->event.pressed) {
+            // we simplify the logic here to just do a tap,
+            // but really the user is holding the key
+            // side effect is that we don't support auto key repeat
+            tap_code16(hold_keycode);
+        }
+        // we handled the key here, so no need for further processing
+        return false;
+    }
+    // else we want processing of the key to continue normally
+    return true;
+}
+
+bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
+    // check if this is a Layer tap key, return true means we need to keep processing
+    if (!(keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) return true;
+
+    // check if this is on layer 0
+    // we re-use these keys since they are effectively no ops
+    // but give us the tap and hold feature for free
+    // return true means we are not processing here and the pipeline should ocntinue
+    if (QK_LAYER_TAP_GET_LAYER(keycode) != 0) return true;
+
+    switch (keycode) {
+        case HM_SCLN:
+            return handle_lt_0_tap_hold(KC_HOME, record);
+            break;
+        case END_QUOT:
+            return handle_lt_0_tap_hold(KC_END, record);
+            break;
+        case ALFT_COMM:
+            return handle_lt_0_tap_hold(A(KC_LEFT), record);
+            break;
+        case ARGT_DOT:
+            return handle_lt_0_tap_hold(A(KC_RIGHT), record);
+            break;
+        case CTLH_T:
+            return handle_lt_0_tap_hold(C(KC_H), record);
+            break;
+        case CTLR_R:
+            return handle_lt_0_tap_hold(C(KC_R), record);
+            break;
+        case CTLG_G:
+            return handle_lt_0_tap_hold(C(KC_G), record);
+            break;
+        case MY_ENT:
+            // act as enter on tap, Shift on hold
+            // By doing it this way, we can react immediately on key press
+            if (record->event.pressed) {
+                // we are registering a key
+                if (record->tap.count) {
+                    register_code16(KC_ENT);
+                } else {
+                    register_code16(KC_RSFT);
+                }
+            } else {
+                // we are releasing a key
+                if (record->tap.count) {
+                    wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
+                    unregister_code16(KC_ENT);
+                } else {
+                    unregister_code16(KC_RSFT);
+                }
+            }
+            return false;
+            break;
+        case LSFT_LLCK:
+            if (record->event.pressed) {
+                // we are registering a key
+                if (record->tap.count > 1) {
+                    blink_space(true);
+                    indicator_enqueue(LEFT_SFT_KI, 150, 2, INDICATOR_RGB_DARK_RED);
+                    // require at least 2 taps in order to push layer lock
+                    uint8_t current_layer = layer_switch_get_layer(record->event.key);
+                    dv_layer_lock_invert(current_layer);
+                } else {
+                    register_code16(KC_LSFT);
+                }
+            } else {
+                // we are releasing a key
+                if (record->tap.count > 1) {
+                    // nothing to do since the layer lock is handled on press
+                } else {
+                    unregister_code16(KC_LSFT);
+                }
+            }
+            return false;
+            break;
+        default:
+            // we want all other keys to be processed normally
+            return true;
+    }
 }

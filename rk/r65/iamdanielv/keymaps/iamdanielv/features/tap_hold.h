@@ -3,6 +3,9 @@
 #include "process_tap_dance.h"
 #include QMK_KEYBOARD_H
 
+#include "indicator_queue.h"
+#include "indicators.h"
+
 enum tap_hold_keys {
     TD_RESET,   // require >= 3 taps to reset board
     TD_CLEAR,   // require >= 3 taps to clear eeprom
@@ -35,3 +38,5 @@ void grv_reset(tap_dance_state_t *state, void *user_data);
 
 void ralt_finished(tap_dance_state_t *state, void *user_data);
 void ralt_reset(tap_dance_state_t *state, void *user_data);
+
+bool handle_lt_0(uint16_t keycode, keyrecord_t *record);
