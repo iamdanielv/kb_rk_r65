@@ -111,6 +111,13 @@ void highlight_fn_keys(rgb_t color, uint8_t led_min, uint8_t led_max) {
     }
 }
 
+void set_keys_color(rgb_t color, uint8_t led_min, uint8_t led_max, const uint8_t key_indexes[], int num_keys)
+{
+    for (int i = 0; i < num_keys; i++) {
+        RGB_MATRIX_INDICATOR_SET_COLOR(key_indexes[i], color.r, color.g, color.b);
+    }
+}
+
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // check for caps lock
     if (host_keyboard_led_state().caps_lock) {
@@ -157,17 +164,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         const uint8_t accent_key_indexes[7] = {
             A_KI, S_KI, D_KI, F_KI,
             J_KI, K_KI, L_KI};
-        for (int i = 0; i < 7; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i], accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        }
+        set_keys_color(accent_lyr_rgb, led_min, led_max, accent_key_indexes, 7 );
 
         // highlight the dual role keys
         const uint8_t dual_role_indexes[9] = {
             C_KI, R_KI, T_KI, G_KI,
             SCLN_KI, QUOT_KI, ENTER_KI,COMM_KI, DOT_KI};
-        for (int i = 0; i < 9; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(dual_role_indexes[i], dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
-        }
+        set_keys_color(dual_role_rgb, led_min, led_max, dual_role_indexes, 9 );
 
         if(dv_is_layer_locked(HRM_BASE_LYR)) {
             // only highlight the shift key if this layer is locked
@@ -191,9 +194,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             F_KI,
             // arrows now act as volume control and back and forward buttons
             UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI };
-        for (int i = 0; i < 9; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i], accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
-        }
+        set_keys_color(accent_lyr_rgb, led_min, led_max, accent_key_indexes, 9 );
 
         if(dv_is_layer_locked(EXT_LYR)) {
             // only highlight the shift key if this layer is locked
@@ -216,15 +217,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             // arrows
             UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI
         };
-        for (int i = 0; i < 7; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(accent_key_indexes[i],  0xFF, 0xFF, 0xFF);
-        }
+        set_keys_color((rgb_t){0xFF, 0xFF, 0xFF}, led_min, led_max, accent_key_indexes, 7 );
 
         const uint8_t led_off_indexes[4] = {// turn off some of the LEDS to make it easier to see our indicators
                                             A_KI, TAB_KI, CAPS_KI, LEFT_SFT_KI};
-        for (int i = 0; i < 4; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(led_off_indexes[i], 0x00, 0x00, 0x00);
-        }
+        set_keys_color((rgb_t){0x00, 0x00, 0x00}, led_min, led_max, led_off_indexes, 4 );
 
         // swap FN key
         RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
@@ -271,9 +268,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             J_KI,  K_KI,    L_KI,   SCLN_KI,                  // J, K, L, ; = 1, 2, 3, Enter
             M_KI,  COMM_KI, DOT_KI, SLSH_KI                   // M, ,, ., / = 0, dot, dot, slash
         };
-        for (int i = 0; i < 19; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(numpad_keys[i], num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
-        }
+        set_keys_color(num_lyr_rgb, led_min, led_max, numpad_keys, 19);
 
         // check for num lock
         if (host_keyboard_led_state().num_lock) {
@@ -301,9 +296,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             // KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU
             FN7_KI, FN8_KI, FN9_KI, FN10_KI, FN11_KI, FN12_KI, RIGHT_ALT_KI};
 
-        for (int i = 0; i < 7; i++) {
-            RGB_MATRIX_INDICATOR_SET_COLOR(media_keys[i], 0xFF, 0xFF, 0xFF);
-        }
+        set_keys_color((rgb_t){0xFF, 0xFF, 0xF}, led_min, led_max, media_keys, 7);
 
         // layer lock key
         RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI, 0xAA, 0x22, 0x00); // Home/End key
