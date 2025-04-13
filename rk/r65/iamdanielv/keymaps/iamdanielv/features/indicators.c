@@ -115,7 +115,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // check for caps lock
     if (host_keyboard_led_state().caps_lock) {
         // we can use the LED Indicator for CAPS_LOCK as well
-        RGB_MATRIX_INDICATOR_SET_COLOR(CAPS_KI, 128, 128, 128);
+        RGB_MATRIX_INDICATOR_SET_COLOR(CAPS_KI, 255, 255, 255);
     }
 
     uint8_t current_layer = get_highest_layer(layer_state);
