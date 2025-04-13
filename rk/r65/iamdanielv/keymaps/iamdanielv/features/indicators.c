@@ -164,7 +164,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         const uint8_t accent_key_indexes[7] = {
             A_KI, S_KI, D_KI, F_KI,
             J_KI, K_KI, L_KI};
-        set_keys_color(accent_lyr_rgb, led_min, led_max, accent_key_indexes, 7 );
+        set_keys_color(ext_lyr_rgb, led_min, led_max, accent_key_indexes, 7 );
 
         // highlight the dual role keys
         const uint8_t dual_role_indexes[9] = {
