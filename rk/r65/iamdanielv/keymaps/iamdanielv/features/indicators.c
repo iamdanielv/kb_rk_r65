@@ -42,7 +42,7 @@ hsv_t get_base_hsv_color_inverse(void) {
 hsv_t get_base_hsv_color_shifted(bool clockwise) {
     hsv_t base_color = rgb_matrix_get_hsv();
 
-    return get_hsv_color_shifted(base_color, 21, clockwise);
+    return get_hsv_color_shifted(base_color, 32, clockwise);
 }
 
 hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
