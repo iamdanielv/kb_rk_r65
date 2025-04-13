@@ -1,3 +1,6 @@
+// Copyright 2025 DV (@iamdanielv)
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #include "tap_hold.h"
 #include "action_layer.h"
 #include "defines.h"

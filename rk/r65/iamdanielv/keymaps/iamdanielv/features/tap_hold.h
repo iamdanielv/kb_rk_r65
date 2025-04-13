@@ -1,3 +1,6 @@
+// Copyright 2025 DV (@iamdanielv)
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #pragma once
 
 #include "process_tap_dance.h"
