@@ -212,7 +212,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // FN Key mode is done after the base win layer and the win fn layer
     // because they can both modify the state of the FN keys
     if (fn_mode_enabled) {
-        highlight_fn_keys(dual_role_rgb, led_min, led_max);
+        highlight_fn_keys(accent_lyr_rgb, led_min, led_max);
     }
 
     if (IS_LAYER_ON(KBCTL_LYR)) {
@@ -231,10 +231,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         set_keys_color((rgb_t){0x00, 0x00, 0x00}, led_min, led_max, led_off_indexes, 4 );
 
         // swap FN key
-        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_CTL_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
 
         // highlight right shift as toggle HRM Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
+        RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, dual_role_rgb.r, dual_role_rgb.g, dual_role_rgb.b);
 
         // highlight Slash as EXT layer toggle
         RGB_MATRIX_INDICATOR_SET_COLOR(SLSH_KI, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
@@ -290,7 +290,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         const uint8_t media_keys[7] = {
             // KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU
             FN7_KI, FN8_KI, FN9_KI, FN10_KI, FN11_KI, FN12_KI, RIGHT_ALT_KI};
-        set_keys_color((rgb_t){0xFF, 0xFF, 0xF}, led_min, led_max, media_keys, 7);
+        set_keys_color((rgb_t){0xFF, 0xFF, 0xF0}, led_min, led_max, media_keys, 7);
 
         // layer lock key
         set_layer_lock_color_indicator(MEDIA_LYR, LEFT_WIN_KI, (rgb_t){0xFF, 0xFF, 0xF0}, led_min, led_max);
