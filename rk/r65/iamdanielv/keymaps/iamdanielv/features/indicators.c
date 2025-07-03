@@ -36,13 +36,13 @@ hsv_t get_base_hsv_color_inverse(void) {
     // get the current base hsv value
     hsv_t base_color = rgb_matrix_get_hsv();
 
-    return get_hsv_color_shifted(base_color, 128, false);
+    return get_hsv_color_shifted(base_color, HUE_OFFSET_INVERSE, false);
 }
 
 hsv_t get_base_hsv_color_shifted(bool clockwise) {
     hsv_t base_color = rgb_matrix_get_hsv();
 
-    return get_hsv_color_shifted(base_color, 32, clockwise);
+    return get_hsv_color_shifted(base_color, HUE_OFFSET_SHIFTED, clockwise);
 }
 
 hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
@@ -50,7 +50,7 @@ hsv_t get_base_hsv_color_shifted_quarter(bool clockwise) {
     hsv_t base_color = rgb_matrix_get_hsv();
 
     // offset hue by a quarter
-    return get_hsv_color_shifted(base_color, 64, clockwise);
+    return get_hsv_color_shifted(base_color, HUE_OFFSET_QUARTER, clockwise);
 }
 
 const uint8_t numbers_keys[] = {N1_KI, N2_KI, N3_KI, N4_KI, N5_KI, N6_KI, N7_KI, N8_KI, N9_KI, N0_KI, MINS_KI, EQL_KI};
@@ -59,26 +59,28 @@ void blink_numbers(bool isEnabling) {
     for (int num = 0; num < 12; num++) {
         if (isEnabling) {
             // enabling, flash white
-            indicator_enqueue(numbers_keys[num], 200, 2, RGB_WHITE);
+            indicator_enqueue(numbers_keys[num], INDICATOR_INTERVAL_NORMAL, INDICATOR_FLASHES_SHORT, RGB_WHITE);
         } else {
             // disabling, flash red
-            indicator_enqueue(numbers_keys[num], 150, 2, RGB_RED);
+            indicator_enqueue(numbers_keys[num], INDICATOR_INTERVAL_FAST, INDICATOR_FLASHES_SHORT, RGB_RED);
         }
     }
 }
 
+// Blinks the arrow keys (up, left, down, right) with white color
 void blink_arrows(void) {
-    indicator_enqueue(UP_KI, 200, 2, RGB_WHITE);    // up
-    indicator_enqueue(LEFT_KI, 200, 2, RGB_WHITE);  // left
-    indicator_enqueue(DOWN_KI, 200, 2, RGB_WHITE);  // down
-    indicator_enqueue(RIGHT_KI, 200, 2, RGB_WHITE); // right
+    indicator_enqueue(UP_KI, INDICATOR_INTERVAL_NORMAL, INDICATOR_FLASHES_SHORT, RGB_WHITE);    // up
+    indicator_enqueue(LEFT_KI, INDICATOR_INTERVAL_NORMAL, INDICATOR_FLASHES_SHORT, RGB_WHITE);  // left
+    indicator_enqueue(DOWN_KI, INDICATOR_INTERVAL_NORMAL, INDICATOR_FLASHES_SHORT, RGB_WHITE);  // down
+    indicator_enqueue(RIGHT_KI, INDICATOR_INTERVAL_NORMAL, INDICATOR_FLASHES_SHORT, RGB_WHITE); // right
 }
 
+// Blinks the space key, and optionally the left and right Alt keys, with white and black colors respectively
 void blink_space(bool extended) {
-    indicator_enqueue(SPACE_KI, 200, 2, RGB_WHITE); // blink space
+    indicator_enqueue(SPACE_KI, INDICATOR_INTERVAL_NORMAL, INDICATOR_FLASHES_SHORT, RGB_WHITE); // blink space
     if (extended) {
-        indicator_enqueue(LEFT_ALT_KI, 200, 2, RGB_BLACK);  // blink left alt
-        indicator_enqueue(RIGHT_ALT_KI, 200, 2, RGB_BLACK); // blink right alt
+        indicator_enqueue(LEFT_ALT_KI, INDICATOR_INTERVAL_NORMAL, INDICATOR_FLASHES_SHORT, RGB_BLACK);  // blink left alt
+        indicator_enqueue(RIGHT_ALT_KI, INDICATOR_INTERVAL_NORMAL, INDICATOR_FLASHES_SHORT, RGB_BLACK); // blink right alt
     }
 }
 
@@ -91,7 +93,7 @@ void blink_NKRO(bool isEnabling) {
         };
 
         for (int i = 0; i < 12; i++) {
-            indicator_enqueue(led_indexes[i], 200, 3, RGB_WHITE);
+            indicator_enqueue(led_indexes[i], INDICATOR_FLASHES_SHORT, INDICATOR_INTERVAL_FAST, RGB_WHITE);
         }
     } else {
         const uint8_t led_indexes[4] = {
@@ -100,7 +102,7 @@ void blink_NKRO(bool isEnabling) {
         };
 
         for (int i = 0; i < 4; i++) {
-            indicator_enqueue(led_indexes[i], 150, 3, RGB_RED);
+            indicator_enqueue(led_indexes[i], INDICATOR_INTERVAL_FAST, INDICATOR_FLASHES_LONG, RGB_RED);
         }
     }
 }
@@ -118,7 +120,7 @@ void set_keys_color(rgb_t color, uint8_t led_min, uint8_t led_max, const uint8_t
     }
 }
 
-static void set_layer_lock_color_indicator(uint8_t layer, uint8_t led_index, rgb_t color, uint8_t led_min, uint8_t led_max) {
+void set_layer_lock_color_indicator(uint8_t layer, uint8_t led_index, rgb_t color, uint8_t led_min, uint8_t led_max) {
     if (dv_is_layer_locked(layer)) {
 
         // no matter what, always use the left shift as an indicator for layer lock
