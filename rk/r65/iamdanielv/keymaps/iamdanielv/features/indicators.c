@@ -118,6 +118,19 @@ void set_keys_color(rgb_t color, uint8_t led_min, uint8_t led_max, const uint8_t
     }
 }
 
+static void set_layer_lock_color_indicator(uint8_t layer, uint8_t led_index, rgb_t color, uint8_t led_min, uint8_t led_max) {
+    if (dv_is_layer_locked(layer)) {
+
+        // no matter what, always use the left shift as an indicator for layer lock
+        RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI, 0xAA, 0x22, 0x00);
+
+        // the passed in index is used to show the given color
+        if (led_index >= led_min && led_index < led_max) {
+            rgb_matrix_set_color(led_index, color.r, color.g, color.b);
+        }
+    }
+}
+
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // check for caps lock
     if (host_keyboard_led_state().caps_lock) {
@@ -172,10 +185,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             SCLN_KI, QUOT_KI, ENTER_KI,COMM_KI, DOT_KI};
         set_keys_color(dual_role_rgb, led_min, led_max, dual_role_indexes, 9 );
 
-        if(dv_is_layer_locked(HRM_BASE_LYR)) {
-            // only highlight the shift key if this layer is locked
-            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
-        }
+        set_layer_lock_color_indicator(HRM_BASE_LYR, LEFT_WIN_KI, dual_role_rgb, led_min, led_max);
     }
 
     if (IS_LAYER_ON(EXT_LYR)) {
@@ -185,7 +195,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
 
         // this layer has all fn keys so highlight them to show that they are not numbers
-        highlight_fn_keys(dual_role_rgb, led_min, led_max);
+        highlight_fn_keys(accent_lyr_rgb, led_min, led_max);
 
         const uint8_t accent_key_indexes[9] = {
             // arrow keys
@@ -196,10 +206,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             UP_KI, LEFT_KI, DOWN_KI, RIGHT_KI };
         set_keys_color(accent_lyr_rgb, led_min, led_max, accent_key_indexes, 9 );
 
-        if(dv_is_layer_locked(EXT_LYR)) {
-            // only highlight the shift key if this layer is locked
-            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
-        }
+        set_layer_lock_color_indicator(EXT_LYR, LEFT_WIN_KI, ext_lyr_rgb, led_min, led_max);
     }
 
     // FN Key mode is done after the base win layer and the win fn layer
@@ -242,10 +249,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x55, 0x00, 0x55);
 
         // layer lock key
-        if(dv_is_layer_locked(KBCTL_LYR)) {
-            // only highlight the shift key if this layer is locked
-            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
-        }
+        set_layer_lock_color_indicator(KBCTL_LYR, LEFT_WIN_KI, (rgb_t){0xFF, 0xFF, 0xFF}, led_min, led_max);
     }
 
     if (IS_LAYER_ON(NUM_LYR)) {
@@ -279,10 +283,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // layer toggle keys
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0xAA, 0x22, 0x00);
-        if(dv_is_layer_locked(NUM_LYR)) {
-            // only highlight the shift key if this layer is locked
-            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
-        }
+        set_layer_lock_color_indicator(NUM_LYR, LEFT_WIN_KI, num_lyr_rgb, led_min, led_max);
     }
 
     if (IS_LAYER_ON(MEDIA_LYR)) {
@@ -292,10 +293,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         set_keys_color((rgb_t){0xFF, 0xFF, 0xF}, led_min, led_max, media_keys, 7);
 
         // layer lock key
-        if(dv_is_layer_locked(MEDIA_LYR)) {
-            // only highlight the shift key if this layer is locked
-            RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
-        }
+        set_layer_lock_color_indicator(MEDIA_LYR, LEFT_WIN_KI, (rgb_t){0xFF, 0xFF, 0xF0}, led_min, led_max);
     }
 
     process_indicator_queue(led_min, led_max);
