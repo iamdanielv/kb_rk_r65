@@ -6,7 +6,6 @@
 #include "quantum.h"
 
 #include "features/dv_layer_lock.h"
-#include "features/defines.h"
 #include "features/indicator_queue.h"
 #include "features/fn_mode.h"
 #include "features/tap_hold.h"
