@@ -229,15 +229,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // highlight right shift as toggle HRM Layer
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_SFT_KI, accent_lyr_rgb.r, accent_lyr_rgb.g, accent_lyr_rgb.b);
 
-        // highlight page down as toggle EXT Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGDN_KI, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
         // highlight Slash as EXT layer toggle
         RGB_MATRIX_INDICATOR_SET_COLOR(SLSH_KI, ext_lyr_rgb.r, ext_lyr_rgb.g, ext_lyr_rgb.b);
 
         // highlight right alt as toggle Num Layer
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
-        // highlight page up as toggle Num Layer
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, num_lyr_rgb.r, num_lyr_rgb.g, num_lyr_rgb.b);
 
         // highlight Q as reset
         RGB_MATRIX_INDICATOR_SET_COLOR(Q_KI, 0xFF, 0x00, 0x00);
@@ -246,7 +242,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         RGB_MATRIX_INDICATOR_SET_COLOR(Z_KI, 0x55, 0x00, 0x55);
 
         // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI,  0xAA, 0x22, 0x00); // Home/End key
         if(dv_is_layer_locked(KBCTL_LYR)) {
             // only highlight the shift key if this layer is locked
             RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
@@ -284,7 +279,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
         // layer toggle keys
         RGB_MATRIX_INDICATOR_SET_COLOR(RIGHT_ALT_KI, 0xAA, 0x22, 0x00);
-        RGB_MATRIX_INDICATOR_SET_COLOR(PGUP_KI, 0xAA, 0x22, 0x00);
         if(dv_is_layer_locked(NUM_LYR)) {
             // only highlight the shift key if this layer is locked
             RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
@@ -295,11 +289,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         const uint8_t media_keys[7] = {
             // KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU
             FN7_KI, FN8_KI, FN9_KI, FN10_KI, FN11_KI, FN12_KI, RIGHT_ALT_KI};
-
         set_keys_color((rgb_t){0xFF, 0xFF, 0xF}, led_min, led_max, media_keys, 7);
 
         // layer lock key
-        RGB_MATRIX_INDICATOR_SET_COLOR(HOME_KI, 0xAA, 0x22, 0x00); // Home/End key
         if(dv_is_layer_locked(MEDIA_LYR)) {
             // only highlight the shift key if this layer is locked
             RGB_MATRIX_INDICATOR_SET_COLOR(LEFT_SFT_KI,0xAA, 0x22, 0x00); // left shift on hold, layer lock on double tap
