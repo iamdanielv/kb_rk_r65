@@ -3,28 +3,21 @@
 #include "color.h"
 #include QMK_KEYBOARD_H
 
-#define INDICATOR_RGB_DARK_RED      0x80, 0x00, 0x00
-#define INDICATOR_RGB_DARK_GREEN    0x00, 0x80, 0x00
-#define INDICATOR_RGB_DARK_BLUE     0x00, 0x00, 0x80
-#define INDICATOR_RGB_PASTEL_RED    0xCC, 0x66, 0x99
-#define INDICATOR_RGB_PASTEL_GREEN  0x66, 0x99, 0x66
-#define INDICATOR_RGB_LAYER_LOCK    0xAA, 0x22, 0x00
-#define INDICATOR_RGB_KBCTL_CLEAR   0x55, 0x00, 0x55
-#define INDICATOR_RGB_MEDIA_KEYS    0xFF, 0xFF, 0xF0
-#define INDICATOR_RGB_PASTEL_BLUE   0x66, 0x99, 0xCC
-
-// Blinking constants
-#define INDICATOR_INTERVAL_FAST   150
-#define INDICATOR_INTERVAL_NORMAL 200
-#define INDICATOR_FLASHES_SHORT   2
-#define INDICATOR_FLASHES_LONG    3
-#define INDICATOR_FLASHES_EXTRA_LONG    4
+#define RGB_DRK_RED     0x80, 0x00, 0x00   // Dark Red
+#define RGB_DRK_GREEN   0x00, 0x80, 0x00   // Dark Green
+#define RGB_DRK_BLUE    0x00, 0x00, 0x80   // Dark Blue
+#define RGB_PSTL_RED    0xCC, 0x66, 0x99   // Pastel Red
+#define RGB_PSTL_GREEN  0x66, 0x99, 0x66   // Pastel Green
+#define RGB_PSTL_BLUE   0x66, 0x99, 0xCC   // Pastel Blue
+#define RGB_LAYER_LOCK  0xAA, 0x22, 0x00   // Layer Lock
+#define RGB_KBCTL_CLEAR 0x55, 0x00, 0x55   // KBCTL Clear
+#define RGB_MEDIA_KEYS  0xFF, 0xFF, 0xF0   // Media Keys
 
 // Color calculation offsets
-#define HUE_OFFSET_INVERSE 128
-#define HUE_OFFSET_SHIFTED 32
-#define HUE_OFFSET_QUARTER 64
-#define HUE_OFFSET_ACCENT 31
+#define HUE_INVERSE 128
+#define HUE_SHIFTED 32
+#define HUE_QUARTER 64
+#define HUE_ACCENT 31
 
 /**
  * @brief Calculates the complementary RGB color.

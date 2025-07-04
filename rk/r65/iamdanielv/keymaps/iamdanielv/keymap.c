@@ -152,10 +152,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         if (IS_LAYER_ON(EXT_LYR)) {
             // blink the new arrow keys
-            indicator_enqueue(I_KI, 150, 2, INDICATOR_RGB_DARK_RED); // up - I
-            indicator_enqueue(J_KI, 150, 2, INDICATOR_RGB_DARK_RED); // left - J
-            indicator_enqueue(K_KI, 150, 2, INDICATOR_RGB_DARK_RED); // down - K
-            indicator_enqueue(L_KI, 150, 2, INDICATOR_RGB_DARK_RED); // right - L
+            indicator_enqueue(I_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // up - I
+            indicator_enqueue(J_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // left - J
+            indicator_enqueue(K_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // down - K
+            indicator_enqueue(L_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_RED); // right - L
         }
         // we only handled the flashing of the indicators, so keep processing the key code
     }

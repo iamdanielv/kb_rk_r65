@@ -1,24 +1,35 @@
 #pragma once
 
+#include <stdbool.h>
+#include <stdint.h>
 #include QMK_KEYBOARD_H
 
 // This macro sets the color of an indicator if its led_index is within the valid range
-#define INDICATOR_Q_MATRIX_SET_COLOR(indicator)                                           \
-    if ((indicator).led_index >= led_min && (indicator).led_index < led_max) {            \
+#define INDICATOR_Q_MATRIX_SET_COLOR(indicator)                                                   \
+    if ((indicator).led_index >= led_min && (indicator).led_index < led_max) {                    \
         rgb_matrix_set_color((indicator).led_index, (indicator).r, (indicator).g, (indicator).b); \
     }
 
 // This macro sets a custom color for an indicator if its led_index is within the valid range
-#define INDICATOR_Q_MATRIX_SET_COLOR_CUSTOM(indicator, r, g, b)            \
+#define INDICATOR_Q_MATRIX_SET_COLOR_CUSTOM(indicator, r, g, b)                \
     if ((indicator).led_index >= led_min && (indicator).led_index < led_max) { \
-        rgb_matrix_set_color((indicator).led_index, (r), (g), (b));                \
+        rgb_matrix_set_color((indicator).led_index, (r), (g), (b));            \
     }
 
 // This macro retrieves the RGB values of an indicator as an rgb_t struct
-#define INDICATOR_Q_GET_RGB_LED(indicator)                   \
-    (rgb_t) {                                            \
+#define INDICATOR_Q_GET_RGB_LED(indicator)                         \
+    (rgb_t) {                                                      \
         .r = (indicator).r, .g = (indicator).g, .b = (indicator).b \
     }
+
+// Blinking constants
+#define INDCTR_INTVL_FAST   150
+#define INDCTR_INTVL_NORMAL 200
+#define INDCTR_FLSH_SINGLE  1
+#define INDCTR_FLSH_DOUBLE  2
+#define INDCTR_FLSH_TRIPLE  3
+#define INDCTR_FLSH_QUAD    4
+
 
 #define INDICATOR_QUEUE_MAX 20
 
