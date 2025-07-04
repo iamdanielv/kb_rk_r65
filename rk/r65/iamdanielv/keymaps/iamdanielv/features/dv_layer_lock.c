@@ -12,7 +12,6 @@
 // I prepended all function names with 'dv' to make sure I am calling the updated
 // functions and not the original ones.
 
-
 // Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +36,6 @@
 
 #include "defines.h"
 #include "dv_layer_lock.h"
-
 
 // DV - removed this message, since I am testing some modifications to the original library
 // #pragma message "Layer Lock is now a core QMK feature! To use it, update your QMK set up and see https://docs.qmk.fm/features/layer_lock"

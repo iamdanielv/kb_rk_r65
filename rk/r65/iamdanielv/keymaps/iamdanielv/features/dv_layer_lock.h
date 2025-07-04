@@ -12,7 +12,6 @@
 // I prepended all function names with 'dv' to make sure I am calling the updated
 // functions and not the original ones.
 
-
 // Copyright 2022-2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
