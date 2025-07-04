@@ -79,6 +79,16 @@ static td_state_t td_state[] = {
  * For the third point, there does exist the 'TD_DOUBLE_SINGLE_TAP', however this is not fully tested
  *
  */
+/**
+ * @brief Determines the current tap dance state.
+ *
+ * This function analyzes the tap dance state (count, pressed, interrupted) to
+ * return an appropriate `td_state_t` value indicating the type of tap dance
+ * that should be executed (e.g., single tap, single hold, double tap).
+ *
+ * @param state Pointer to the `tap_dance_state_t` structure.
+ * @return A `td_state_t` value representing the current tap dance state.
+ */
 td_state_t cur_dance(tap_dance_state_t *state) {
     if (state->count == 1) {
         if (!state->pressed) {
@@ -103,6 +113,16 @@ td_state_t cur_dance(tap_dance_state_t *state) {
     // we already handled any counts greater than 2 and just clamp it at double tap
 }
 
+/**
+ * @brief Handles the finished state of the `TD_MO_CAPS` tap dance.
+ *
+ * This function is called when the `TD_MO_CAPS` tap dance sequence is completed.
+ * It determines the action to take based on the tap dance state, such as
+ * activating layers or registering keycodes.
+ *
+ * @param state Pointer to the `tap_dance_state_t` structure.
+ * @param user_data User-defined data (not used in this function).
+ */
 void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
     td_state[TD_MO_CAPS] = cur_dance(state);
     switch (td_state[TD_MO_CAPS]) {
@@ -124,6 +144,16 @@ void mo_caps_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+/**
+ * @brief Resets the state of the `TD_MO_CAPS` tap dance.
+ *
+ * This function is called to reset the `TD_MO_CAPS` tap dance state after it
+ * has been processed. It handles deactivating layers or unregistering keycodes
+ * as necessary.
+ *
+ * @param state Pointer to the `tap_dance_state_t` structure.
+ * @param user_data User-defined data (not used in this function).
+ */
 void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_MO_CAPS]) {
         case TD_SINGLE_HOLD:
@@ -151,6 +181,16 @@ void mo_caps_reset(tap_dance_state_t *state, void *user_data) {
     td_state[TD_MO_CAPS] = TD_NONE;
 }
 
+/**
+ * @brief Handles the finished state of the `TD_GRV` tap dance.
+ *
+ * This function is called when the `TD_GRV` tap dance sequence is completed.
+ * It determines the action to take based on the tap dance state, such as
+ * registering keycodes or sending a string.
+ *
+ * @param state Pointer to the `tap_dance_state_t` structure.
+ * @param user_data User-defined data (not used in this function).
+ */
 void grv_finished(tap_dance_state_t *state, void *user_data) {
     td_state[TD_GRV] = cur_dance(state);
     switch (td_state[TD_GRV]) {
@@ -178,6 +218,15 @@ void grv_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+/**
+ * @brief Resets the state of the `TD_GRV` tap dance.
+ *
+ * This function is called to reset the `TD_GRV` tap dance state after it
+ * has been processed. It handles unregistering keycodes as necessary.
+ *
+ * @param state Pointer to the `tap_dance_state_t` structure.
+ * @param user_data User-defined data (not used in this function).
+ */
 void grv_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_GRV]) {
         case TD_DOUBLE_SINGLE_TAP:
@@ -200,6 +249,16 @@ void grv_reset(tap_dance_state_t *state, void *user_data) {
     td_state[TD_GRV] = TD_NONE;
 }
 
+/**
+ * @brief Handles the finished state of the `TD_RALT` tap dance.
+ *
+ * This function is called when the `TD_RALT` tap dance sequence is completed.
+ * It determines the action to take based on the tap dance state, such as
+ * activating layers or registering keycodes.
+ *
+ * @param state Pointer to the `tap_dance_state_t` structure.
+ * @param user_data User-defined data (not used in this function).
+ */
 void ralt_finished(tap_dance_state_t *state, void *user_data) {
     td_state[TD_RALT] = cur_dance(state);
     switch (td_state[TD_RALT]) {
@@ -220,6 +279,16 @@ void ralt_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+/**
+ * @brief Resets the state of the `TD_RALT` tap dance.
+ *
+ * This function is called to reset the `TD_RALT` tap dance state after it
+ * has been processed. It handles deactivating layers or unregistering keycodes
+ * as necessary.
+ *
+ * @param state Pointer to the `tap_dance_state_t` structure.
+ * @param user_data User-defined data (not used in this function).
+ */
 void ralt_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state[TD_RALT]) {
         case TD_SINGLE_HOLD:
@@ -244,6 +313,17 @@ void ralt_reset(tap_dance_state_t *state, void *user_data) {
     td_state[TD_RALT] = TD_NONE;
 }
 
+/**
+ * @brief Handles tap and hold behavior for `LT(0, KC)` keycodes.
+ *
+ * This function is a helper for `handle_lt_0` to manage the tap and hold
+ * behavior of `LT(0, KC)` keycodes, where the key acts as a tap when pressed
+ * and released quickly, and as a hold when held down.
+ *
+ * @param hold_keycode The keycode to register when the key is held.
+ * @param record The keyrecord structure containing information about the key event.
+ * @return True if the key was handled, false otherwise.
+ */
 bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) {
     if (record->tap.count == 0) {
         if (record->event.pressed) {
@@ -259,6 +339,17 @@ bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) {
     return true;
 }
 
+/**
+ * @brief Handles `LT(0, KC)` keycodes.
+ *
+ * This function processes `LT(0, KC)` keycodes, which are used for tap and hold
+ * functionality on layer 0. It determines whether the key was tapped or held
+ * and calls the appropriate handler.
+ *
+ * @param keycode The keycode that was pressed or released.
+ * @param record The keyrecord structure containing information about the key event.
+ * @return True if the keycode was handled, false otherwise.
+ */
 bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
     // check if this is a Layer tap key, return true means we need to keep processing
     if (!(keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) return true;

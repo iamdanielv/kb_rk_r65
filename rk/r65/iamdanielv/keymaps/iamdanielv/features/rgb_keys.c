@@ -3,6 +3,16 @@
 #include "rgb_keys.h"
 #include "indicator_queue.h"
 
+/**
+ * @brief Processes RGB keycodes.
+ *
+ * This function handles various RGB matrix related keycodes, such as toggling
+ * RGB modes, changing speed, hue, saturation, and value.
+ *
+ * @param keycode The keycode that was pressed or released.
+ * @param record The keyrecord structure containing information about the key event.
+ * @return True if processing should continue, false if the keycode was handled here
+ */
 bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case RM_TOGG:

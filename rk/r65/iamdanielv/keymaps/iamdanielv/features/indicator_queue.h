@@ -41,7 +41,7 @@ indicator_t indicator_queue[INDICATOR_QUEUE_MAX];
  *
  * @param led_index Index of the LED to control.
  * @param interval Time interval between flashes.
- * @param times_to_flash Number of times to flash the LED.
+ * @param times_to_flash Number of times to flash the LED (visible flashes). Internally, this is doubled to account for on/off cycles.
  * @param r Red color value.
  * @param g Green color value.
  * @param b Blue color value.
