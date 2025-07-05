@@ -88,4 +88,16 @@ void blink_numbers(bool);
  */
 void highlight_fn_keys(rgb_t color, uint8_t led_min, uint8_t led_max);
 
+
+/**
+ * @brief Sets the indicator LED to the color of a layer
+ *
+ * @param layer The layer to check
+ * @param led_index The index of the LED to set
+ * @param color The color to set the LED to
+ * @param led_min The minimum LED index, used by RGB_MATRIX_INDICATOR_SET_COLOR
+ * @param led_max The maximum LED index, used by RGB_MATRIX_INDICATOR_SET_COLOR
+ */
+void set_layer_color_indicator(uint8_t layer, uint8_t led_index, rgb_t color, uint8_t led_min, uint8_t led_max);
+
 extern bool recalculate_rgb;
