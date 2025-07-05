@@ -4,19 +4,25 @@
 #include <stdint.h>
 #include QMK_KEYBOARD_H
 
-// This macro sets the color of an indicator if its led_index is within the valid range
+/**
+ * @brief This macro sets the color of an indicator if its led_index is within the valid range
+ */
 #define INDICATOR_Q_MATRIX_SET_COLOR(indicator)                                                   \
     if ((indicator).led_index >= led_min && (indicator).led_index < led_max) {                    \
         rgb_matrix_set_color((indicator).led_index, (indicator).r, (indicator).g, (indicator).b); \
     }
 
-// This macro sets a custom color for an indicator if its led_index is within the valid range
+/**
+ * @brief This macro sets a custom color for an indicator if its led_index is within the valid range
+ */
 #define INDICATOR_Q_MATRIX_SET_COLOR_CUSTOM(indicator, r, g, b)                \
     if ((indicator).led_index >= led_min && (indicator).led_index < led_max) { \
         rgb_matrix_set_color((indicator).led_index, (r), (g), (b));            \
     }
 
-// This macro retrieves the RGB values of an indicator as an rgb_t struct
+/**
+ * @brief This macro retrieves the RGB values of an indicator as an rgb_t struct
+ */
 #define INDICATOR_Q_GET_RGB_LED(indicator)                         \
     (rgb_t) {                                                      \
         .r = (indicator).r, .g = (indicator).g, .b = (indicator).b \
@@ -66,3 +72,10 @@ void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_fl
  * @param led_max Maximum LED index to process.
  */
 void process_indicator_queue(uint8_t led_min, uint8_t led_max);
+
+/**
+ * @brief Dequeue an indicator from the indicator queue.
+ *
+ * @param led_index Index of the LED to dequeue.
+ */
+void indicator_dequeue(uint8_t led_index);

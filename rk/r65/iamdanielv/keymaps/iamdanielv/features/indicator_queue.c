@@ -3,7 +3,16 @@
 
 #define TIMER_DEFAULT_VALUE 0x00
 
-// Enqueue an indicator to the queue
+/**
+ * @brief Enqueue an indicator to the indicator queue.
+ *
+ * @param led_index Index of the LED to control.
+ * @param interval Time interval between flashes.
+ * @param times_to_flash Number of times to flash the LED (visible flashes). Internally, this is doubled to account for on/off cycles.
+ * @param r Red color value.
+ * @param g Green color value.
+ * @param b Blue color value.
+ */
 void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_flash, uint8_t r, uint8_t g, uint8_t b) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
         if (!indicator_queue[i].active) {
@@ -21,7 +30,11 @@ void indicator_enqueue(uint8_t led_index, uint32_t interval, uint8_t times_to_fl
     }
 }
 
-// Dequeue an indicator from the queue
+/**
+ * @brief Dequeue an indicator from the indicator queue.
+ *
+ * @param led_index Index of the LED to dequeue.
+ */
 void indicator_dequeue(uint8_t led_index) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
         if (indicator_queue[i].active && indicator_queue[i].led_index == led_index) {
@@ -33,7 +46,12 @@ void indicator_dequeue(uint8_t led_index) {
     }
 }
 
-// Process the indicator queue
+/**
+ * @brief Process the indicator queue and update the LEDs.
+ *
+ * @param led_min Minimum LED index to process.
+ * @param led_max Maximum LED index to process.
+ */
 void process_indicator_queue(uint8_t led_min, uint8_t led_max) {
     for (int i = 0; i < INDICATOR_QUEUE_MAX; i++) {
         if (indicator_queue[i].active) {
