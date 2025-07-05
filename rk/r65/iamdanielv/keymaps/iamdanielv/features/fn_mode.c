@@ -10,16 +10,45 @@
 const uint16_t PROGMEM number_to_function[] = {
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
     // Shifted versions
-    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU
+    LGUI(KC_TAB),   LCS(KC_GRV),  LCS(KC_ESC),   C(KC_H),   KC_F5,   KC_F6,   KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU
 };
 
 // Helper to register/unregister the remapped keycode
 static void register_remapped_key(uint8_t index, bool pressed) {
     uint16_t key_to_register = pgm_read_word(&number_to_function[index]);
     if (pressed) {
-        register_code(key_to_register);
+        const uint8_t mods = get_mods();
+#ifndef NO_ACTION_ONESHOT
+        uint8_t shift_mods = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT;
+#else
+        uint8_t shift_mods = mods & MOD_MASK_SHIFT;
+#endif // NO_ACTION_ONESHOT
+        if (shift_mods) { // At least one shift key is held.
+            // If one shift is held, clear it from the mods. But if both
+            // shifts are held, leave as is to send Shift + Key code.
+            if (shift_mods != MOD_MASK_SHIFT) {
+#ifndef NO_ACTION_ONESHOT
+                del_oneshot_mods(MOD_MASK_SHIFT);
+#endif // NO_ACTION_ONESHOT
+                unregister_mods(MOD_MASK_SHIFT);
+            }
+        }
+        if(index >= 12 && index <=15) {
+            // we don't want the shifted keys in these indexes to auto repeat
+            // since they act weird on repeat
+            tap_code16(key_to_register);
+        } else {
+            register_code16(key_to_register);
+        }
+        set_mods(mods);
     } else {
-        unregister_code(key_to_register);
+        if(index >= 12 && index <=15) {
+            // these were handled on key press with a tap
+            // nothing to do here
+            return;
+        }
+        wait_ms(TAP_CODE_DELAY); // wait a little bit, so programs don't filter the press
+        unregister_code16(key_to_register);
     }
 }
 
