@@ -14,4 +14,7 @@
  */
 bool process_rgb_keys(uint16_t keycode, keyrecord_t *record);
 
+/**
+ * @brief Flag to indicate if RGB values need to be recalculated.
+ */
 extern bool recalculate_rgb;
