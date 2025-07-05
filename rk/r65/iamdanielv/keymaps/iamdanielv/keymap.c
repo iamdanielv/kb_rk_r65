@@ -12,22 +12,26 @@
 #include "features/indicators.h"
 #include "features/rgb_keys.h"
 
-// ***********************
-// * Keyboard Management *
-// ***********************
+/**
+ * @brief Manages keyboard-related tasks, including LED indicators.
+ *
+ * This function is responsible for controlling the MAC LED based on the active layer
+ * (KBCTL_LYR) or if FN key mode is enabled. It also re-uses the Win Lock LED as a
+ * NumLock indicator if `keymap_config.no_gui` is not enabled and the NUM_LYR is active.
+ */
 void housekeeping_task_user(void) {
     // Note: We can decide what to do with the MAC Led in this function
     // if the Ctl layer is active or FN key mode is enabled
     if (IS_LAYER_ON(KBCTL_LYR) || fn_mode_enabled) {
-        gpio_write_pin_low(LED_MAC_PIN); // low means turn on
+        gpio_write_pin_low(LED_MAC_PIN); /**< low means turn on */
     } else {
-        gpio_write_pin_high(LED_MAC_PIN); // high means turn off
+        gpio_write_pin_high(LED_MAC_PIN); /**< high means turn off */
     }
 
     if (!keymap_config.no_gui) {
         // we have NOT enabled the no_gui,
         // we can re-use the Win Lock LED as NumLock indicator
-        if (IS_LAYER_ON(NUM_LYR)) { // if the Num layer is active
+        if (IS_LAYER_ON(NUM_LYR)) { /**< if the Num layer is active */
             // get the current LED state
             led_t led_state = host_keyboard_led_state();
             if (led_state.num_lock) {
@@ -37,19 +41,32 @@ void housekeeping_task_user(void) {
                 // Num/Win lock should be off
                 gpio_write_pin_high(LED_WIN_LOCK_PIN);
             }
-        } // else we are not on the num layer, ignore
-    } // else we have enabled no_gui, skip re-using the LED
+        } /**< else we are not on the num layer, ignore */
+    } /**< else we have enabled no_gui, skip re-using the LED */
 }
 
 bool fn_mode_enabled = false;
 bool recalculate_rgb = true;
 
-// *****************************
-// * Custom processing of keys *
-// *****************************
+/**
+ * @brief Custom processing of keycodes and tap dance actions
+ */
+/**
+ * @brief Defines custom keycode for swapping FN mode.
+ */
 enum custom_keycodes { KC_SWP_FN = SAFE_RANGE };
 
 // clang-format off
+/**
+ * @brief Tap dance actions definitions.
+ *
+ * This array defines various tap dance actions, including:
+ * - `TD_RESET`: Resets the keyboard safely.
+ * - `TD_CLEAR`: Clears the keyboard safely.
+ * - `TD_MO_CAPS`: Tap for CAPS_LOCK, Hold for MO(EXT_LYR), Double Tap for TO(HRM_LYR), Double Hold for MO(NUM_LYR).
+ * - `TD_GRV`: Tap for Esc, Double Tap for `, Hold for ```````.
+ * - `TD_RALT`: Custom tap dance for right alt.
+ */
 tap_dance_action_t tap_dance_actions[] = {
 
     [TD_RESET]     = ACTION_TAP_DANCE_FN(safe_reset),
@@ -64,6 +81,16 @@ tap_dance_action_t tap_dance_actions[] = {
 // clang-format on
 
 // clang-format off
+/**
+ * @brief Defines the keymaps for different layers of the keyboard
+ *
+ * - `BASE_LYR`: The default QWERTY layer
+ * - `HRM_BASE_LYR`: Home Row Mods base layer
+ * - `EXT_LYR`: Extended layer
+ * - `KBCTL_LYR`: Keyboard control layer
+ * - `NUM_LYR`: Number pad layer
+ * - `MEDIA_LYR`: Media control layer
+ */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [BASE_LYR] = LAYOUT(
@@ -122,20 +149,28 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 #endif
 // clang-format on
 
-// **********************************************************************
-// * we want the ability to break out the key handlers but we also want *
-// * to inline, this will allow us to do that                           *
-// * inline void myInlinedFunction() __attribute__((always_inline));    *
-// **********************************************************************
+/**
+ * @brief Inlined function declarations for key handlers.
+ *
+ * These functions are declared as `inline` to allow the compiler to potentially
+ * insert their code directly at the point of call, optimizing performance.
+ * sample: inline void myInlinedFunction() __attribute__((always_inline));
+ */
 
 // function definitions for key handlers
 inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
 
-// **********************************************************************
-// * process_record_user is the main function that handles key presses  *
-// * and is the entry point for all key processing                      *
-// **********************************************************************
+/**
+ * @brief Main function to process key presses.
+ *
+ * This function is the entry point for all key processing. It handles custom keycodes
+ * like `KC_SWP_FN` and `QK_LLCK`, and then dispatches to other handlers for further processing.
+ *
+ * @param keycode The keycode of the pressed or released key.
+ * @param record Pointer to the keyrecord_t structure containing key event details.
+ * @return True if the key event should be processed by the next handler in the chain, false otherwise.
+ */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
@@ -178,8 +213,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
+/**
+ * @brief Handles the backspace key, converting it to Delete when Shift is held.
+ *
+ * This function modifies the behavior of the backspace key. If a single Shift key
+ * is held down, the backspace key sends `KC_DEL`. If both Shift keys are held down,
+ * the backspace key sends `S(KC_DEL)` (Shift + Delete).
+ * This is based on: https://getreuer.info/posts/keyboards/macros3/index.html
+ *
+ * @param record Pointer to the keyrecord_t structure containing key event details.
+ * @return False to indicate that the key event has been fully handled and should not be processed further.
+ */
 bool handle_backspace(keyrecord_t *record) {
-    // based on: https://getreuer.info/posts/keyboards/macros3/index.html
     // shift + backspace is delete
     // both shift held is shift + delete
     static uint16_t registered_key = KC_NO;
@@ -212,14 +257,23 @@ bool handle_backspace(keyrecord_t *record) {
     return false;
 }
 
+/**
+ * @brief Handles the NKRO (N-Key Rollover) toggle.
+ *
+ * This function is called when the NKRO toggle key is pressed. It clears the keyboard buffer,
+ * toggles the `keymap_config.nkro` setting, blinks the NKRO indicator, and clears the buffer again.
+ *
+ * @param record Pointer to the keyrecord_t structure containing key event details.
+ * @return False to indicate that the key event has been fully handled and should not be processed further.
+ */
 bool handle_nkro_toggle(keyrecord_t *record) {
     if (record->event.pressed) {
-        clear_keyboard(); // clear first buffer to prevent stuck keys
+        clear_keyboard(); /**< clear first buffer to prevent stuck keys */
         wait_ms(50);
         keymap_config.nkro = !keymap_config.nkro;
         blink_NKRO(keymap_config.nkro);
         wait_ms(50);
-        clear_keyboard(); // clear first buffer to prevent stuck keys
+        clear_keyboard(); /**< clear first buffer to prevent stuck keys */
         wait_ms(50);
     }
     return false;
