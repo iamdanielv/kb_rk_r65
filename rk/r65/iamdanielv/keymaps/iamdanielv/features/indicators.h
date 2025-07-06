@@ -126,7 +126,7 @@ void set_layer_color_indicator(uint8_t layer, uint8_t led_index, rgb_t color, ui
  *
  * @param led_min The minimum LED index to consider.
  * @param led_max The maximum LED index to consider.
- * @return True if the indicators were processed, false otherwise.
+ * @return True if the pipeline should continue processing, false if processing should stop.
  */
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max);
 

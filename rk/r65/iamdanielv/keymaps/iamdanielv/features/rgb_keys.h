@@ -10,7 +10,7 @@
  *
  * @param keycode The keycode that was pressed or released.
  * @param record The keyrecord structure containing information about the key event.
- * @return True if processing should continue, false if the keycode was handled here
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool process_rgb_keys(uint16_t keycode, keyrecord_t *record);
 

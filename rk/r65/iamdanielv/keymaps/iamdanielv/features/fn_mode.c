@@ -80,7 +80,7 @@ static void register_remapped_key(uint8_t index, bool pressed) {
  *
  * @param keycode The keycode that was pressed or released.
  * @param record The keyrecord structure containing information about the key event.
- * @return True if processing should continue, false if the keycode was handled.
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 static bool process_fn_mode_enabled(uint16_t keycode, keyrecord_t *record) {
     if ((keycode >= KC_1 && keycode <= KC_0) || keycode == KC_MINS || keycode == KC_EQL) {
@@ -110,7 +110,7 @@ static bool process_fn_mode_enabled(uint16_t keycode, keyrecord_t *record) {
  *
  * @param keycode The keycode that was pressed or released.
  * @param record The keyrecord structure containing information about the key event.
- * @return True if processing should continue, false if the keycode was handled.
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 static bool process_fn_mode_disabled(uint16_t keycode, keyrecord_t *record) {
     if (!(get_mods() & MOD_MASK_SHIFT)) {
@@ -140,7 +140,7 @@ static bool process_fn_mode_disabled(uint16_t keycode, keyrecord_t *record) {
  *
  * @param keycode The keycode that was pressed or released.
  * @param record The keyrecord structure containing information about the key event.
- * @return True if processing should continue, false if the keycode was handled.
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool process_fn_mode(uint16_t keycode, keyrecord_t *record) {
     if (fn_mode_enabled) {

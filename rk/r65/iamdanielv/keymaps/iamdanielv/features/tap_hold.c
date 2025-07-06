@@ -322,7 +322,7 @@ void ralt_reset(tap_dance_state_t *state, void *user_data) {
  *
  * @param hold_keycode The keycode to register when the key is held.
  * @param record The keyrecord structure containing information about the key event.
- * @return True if the key was handled, false otherwise.
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) {
     if (record->tap.count == 0) {
@@ -348,7 +348,7 @@ bool handle_lt_0_tap_hold(uint16_t hold_keycode, keyrecord_t *record) {
  *
  * @param keycode The keycode that was pressed or released.
  * @param record The keyrecord structure containing information about the key event.
- * @return True if the keycode was handled, false otherwise.
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool handle_lt_0(uint16_t keycode, keyrecord_t *record) {
     // check if this is a Layer tap key, return true means we need to keep processing

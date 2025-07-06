@@ -102,8 +102,12 @@ void ralt_reset(tap_dance_state_t *state, void *user_data);
 /**
  * @brief Handles `LT(0, KC)` keycodes.
  *
+ * This function processes `LT(0, KC)` keycodes, which are used for tap and hold
+ * functionality on layer 0. It determines whether the key was tapped or held
+ * and calls the appropriate handler.
+ *
  * @param keycode The keycode that was pressed or released.
- * @param record The keyrecord structure.
- * @return True if the keycode was handled, false otherwise.
+ * @param record The keyrecord structure containing information about the key event.
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool handle_lt_0(uint16_t keycode, keyrecord_t *record);

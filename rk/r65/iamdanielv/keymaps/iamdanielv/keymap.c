@@ -170,6 +170,7 @@ inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline
  * @param keycode The keycode of the pressed or released key.
  * @param record Pointer to the keyrecord_t structure containing key event details.
  * @return True if the key event should be processed by the next handler in the chain, false otherwise.
+ * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (keycode == KC_SWP_FN) {
