@@ -55,7 +55,7 @@ bool process_rgb_keys(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (rgb_matrix_get_speed() >= (255 - RGB_MATRIX_SPD_STEP)) {
                     // this update would put us at max
-                    blink_arrows(); // ' - UP
+                    blink_arrows();
                     indicator_enqueue(QUOT_KI, INDCTR_INTVL_NORMAL, INDCTR_FLSH_QUAD, RGB_DRK_RED);
                     indicator_enqueue(SCLN_KI, INDCTR_INTVL_NORMAL, INDCTR_FLSH_DOUBLE, RGB_BLACK); // ; - DOWN
                     blink_space(false);
