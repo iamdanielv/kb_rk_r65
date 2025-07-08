@@ -160,8 +160,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 // function definitions for key handlers
 inline bool handle_backspace(keyrecord_t *record) __attribute__((always_inline));
 inline bool handle_nkro_toggle(keyrecord_t *record) __attribute__((always_inline));
-inline void handle_layer_lock_or_toggle_indicator(uint16_t keycode, keyrecord_t *record) __attribute__((always_inline));
-
 /**
  * @brief Main function to process key presses.
  *
@@ -173,6 +171,17 @@ inline void handle_layer_lock_or_toggle_indicator(uint16_t keycode, keyrecord_t 
  * @return True if the pipeline should continue processing, false if the key was handled here.
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    // Check for any layer lock or toggle key press
+    if (keycode == QK_LLCK || IS_QK_TOGGLE_LAYER(keycode))
+    {
+        // we only really care about key presses and ignore key releases
+        if (record->event.pressed) {
+            // When we lock, unlock or toggle a layer, flash the space bar
+            blink_space(true);
+        }
+    }
+
     if (keycode == KC_SWP_FN) {
         if (record->event.pressed) {
             fn_mode_enabled = !fn_mode_enabled;
@@ -181,8 +190,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
     }
-
-    handle_layer_lock_or_toggle_indicator(keycode, record);
 
     if (!process_fn_mode(keycode, record)) { return false; }
     if (!process_rgb_keys(keycode, record)) { return false; }
@@ -203,31 +210,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 /**
- * @brief Handles layer lock or toggle indicators
+ * @brief Called whenever the layer lock state changes.
  *
- * This function checks for layer lock or toggle key presses and triggers LED indicators accordingly.
- * It flashes the space bar for any layer lock/toggle and flashes the EXT_LYR arrows if the EXT_LYR is toggled.
+ * This function is a callback that gets executed every time the keyboard's
+ * layer lock state is updated.
  *
- * @param keycode The keycode of the pressed or released key.
- * @param record Pointer to the keyrecord_t structure containing key event details.
+ * @param state The new layer state bitmask.
  */
-void handle_layer_lock_or_toggle_indicator(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        // we only really care about key presses and ignore key releases
-        // Check for any layer lock or toggle key press
-        if (keycode == QK_LLCK || IS_QK_TOGGLE_LAYER(keycode) || keycode == LSFT_LLCK) {
-            // When we lock, unlock or toggle a layer, flash the space bar
-            blink_space(true);
-
-            // check if the toggle or layer lock is coming from the EXT_LYR or is for the EXT_LYR
-            if (keycode == TG(EXT_LYR) || EXT_LYR == layer_switch_get_layer(record->event.key))  {
-                // If it's the EXT_LYR toggle or layer lock, flash the EXT_LYR arrows
-                indicator_enqueue(I_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // up - I
-                indicator_enqueue(J_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // left - J
-                indicator_enqueue(K_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // down - K
-                indicator_enqueue(L_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // right - L
-            }
-        }
+void  dv_layer_lock_set_user(layer_state_t  state) {
+    if (dv_is_layer_locked(EXT_LYR)){
+        indicator_enqueue(I_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // up - I
+        indicator_enqueue(J_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // left - J
+        indicator_enqueue(K_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // down - K
+        indicator_enqueue(L_KI, INDCTR_INTVL_FAST, INDCTR_FLSH_DOUBLE, RGB_DRK_BLUE); // right - L
     }
 }
 
