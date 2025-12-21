@@ -165,6 +165,7 @@ enum layer_names {
 #define MO_CAPS   TD(TD_MO_CAPS)
 #define MO_RALT   TD(TD_RALT)
 #define MY_GRV    TD(TD_GRV)
+#define MY_HOME   TD(TD_HOME)
 
 // *************
 // * Shortcuts *

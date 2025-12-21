@@ -41,7 +41,8 @@ static td_state_t td_state[] = {
     [TD_CLEAR]   = TD_NONE,
     [TD_MO_CAPS] = TD_NONE,
     [TD_GRV]     = TD_NONE,
-    [TD_RALT]    = TD_NONE
+    [TD_RALT]    = TD_NONE,
+    [TD_HOME]    = TD_NONE
 };
 
 // **********************************************************
@@ -311,6 +312,45 @@ void ralt_reset(tap_dance_state_t *state, void *user_data) {
             break;
     }
     td_state[TD_RALT] = TD_NONE;
+}
+
+
+void home_finished(tap_dance_state_t *state, void *user_data) {
+    td_state[TD_HOME] = cur_dance(state);
+    switch (td_state[TD_HOME]) {
+        case TD_SINGLE_TAP:
+        case TD_SINGLE_HOLD:
+            register_code16(KC_HOME);
+            break;
+        case TD_DOUBLE_TAP:
+        case TD_DOUBLE_HOLD:
+        case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
+            register_code16(KC_END);
+            break;
+        default:
+            // do nothing
+            break;
+    }
+}
+
+void home_reset(tap_dance_state_t *state, void *user_data) {
+    switch (td_state[TD_HOME]) {
+        case TD_SINGLE_TAP:
+        case TD_SINGLE_HOLD:
+            wait_ms(TAP_CODE_DELAY);
+            unregister_code16(KC_HOME);
+            break;
+        case TD_DOUBLE_TAP:
+        case TD_DOUBLE_HOLD:
+        case TD_DOUBLE_SINGLE_TAP: // dance was interrupted, handle it the same as if it was a double tap
+            wait_ms(TAP_CODE_DELAY);
+            unregister_code16(KC_END);
+            break;
+        default:
+            // do nothing
+            break;
+    }
+    td_state[TD_HOME] = TD_NONE;
 }
 
 /**

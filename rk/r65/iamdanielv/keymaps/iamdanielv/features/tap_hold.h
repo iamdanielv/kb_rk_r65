@@ -17,7 +17,8 @@ enum tap_hold_keys {
     TD_CLEAR,   // require >= 3 taps to clear eeprom
     TD_MO_CAPS, // Tap: caps lock; Hold: MO(EXT_LYR); Double Tap: layer lock HRM_BASE_LYR; Double Hold: MO(NUM_LYR)
     TD_GRV,     // Tap: ESC; Double Tap: `; Hold: ``````
-    TD_RALT     // Tap: KC_RALT; Hold: mo(MEDIA_LYR); Double Tap: layer lock MEDIA_LYR; Double Hold: KC_RALT
+    TD_RALT,     // Tap: KC_RALT; Hold: mo(MEDIA_LYR); Double Tap: layer lock MEDIA_LYR; Double Hold: KC_RALT
+    TD_HOME     // Tap: KC_HOME; Hold: KC_HOME; Double Tap: KC_END; Double Hold: KC_END
 };
 
 /**
@@ -98,6 +99,9 @@ void ralt_finished(tap_dance_state_t *state, void *user_data);
  * @param user_data User-defined data.
  */
 void ralt_reset(tap_dance_state_t *state, void *user_data);
+
+void home_finished(tap_dance_state_t *state, void *user_data);
+void home_reset(tap_dance_state_t *state, void *user_data);
 
 /**
  * @brief Handles `LT(0, KC)` keycodes.
